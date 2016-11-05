@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>{% block title %} {% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/gsdk.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    {% block styles %}{% endblock %}
+  </head>
+
+  <body>
+    {% include "qctf_checksystem/navbar.html" %}
+    <div class="main">
+      <div class="container tim-container">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <script src="{% static '/js/jquery-ui.custom.min.js' %}"></script>
+    {% block globals %} {% endblock %}
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static '/js/bootstrap.js' %}"></script>
+    <script src="{% static '/js/gsdk-checkbox.js' %}"></script>
+    <script src="{% static '/js/gsdk-radio.js' %}"></script>
+    <script src="{% static '/js/gsdk-bootstrapswitch.js' %}"></script>
+    <script src="{% static '/js/get-shit-done.js' %}"></script>
+    <script src="{% static '/js/custom.js' %}"></script>
+    {% block scripts %} {% endblock %}
+  </body>
+</html>
