@@ -6,13 +6,30 @@
     {% for task in tasks %}
       <div class="card card-block">
         <h4 class="card-title">{{ task.title }}</h4>
-        <p class="card-text">{{ task.description|truncatewords:30 }}</p>
-        <a href="#" class="card-link">Open</a>
+        <p class="card-text">{{ task.description|safe|truncatewords:30 }}</p>
+        <center><button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal-{{ forloop.counter }}">Launch demo modal</button></center>
       </div>
-      <div class="card card-block">
-        <h4 class="card-title">{{ task.title }}</h4>
-        <p class="card-text">{{ task.description|truncatewords:30 }}</p>
-        <a href="#" class="card-link">Open</a>
+      <div class="modal fade" id="modal-{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ forloop.counter }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="modalLabel-{{ forloop.counter }}">{{ task.title }}</h4>
+            </div>
+            <div class="modal-body">
+              {{ task.description|safe }}
+            </div>
+            <div class="modal-footer">
+              <div class="form-group">
+                <input type="text" class="form-control" id="usr" placeholder="Flag">
+              </div>
+              <button type="button" class="btn btn-primary">Submit flag</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
       </div>
     {% endfor %}
 </div>

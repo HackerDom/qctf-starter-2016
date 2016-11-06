@@ -1,0 +1,25 @@
+{% extends "qctf_checksystem/base.html" %}
+
+{% block content %}
+<div class="tim-title">
+    <h2>Scoreboard</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Place</th>
+          <th>Name</th>
+          <th>Flag number</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for team in teams %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ team.get_name }}</td>
+            <td>{{ team.tasks_number }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}
