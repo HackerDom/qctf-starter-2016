@@ -13,7 +13,7 @@ h1, .h1 {
   font-size: 52px; }
 
 h2, .h2 {
-  font-size: 36px; }
+  font-size: 36px; color: #ffffff; }
 
 h3, .h3 {
   font-size: 28px;
@@ -66,7 +66,7 @@ h1 .subtitle {
 
 /*     General overwrite     */
 body {
-  font-family: "Helvetica Neue","Open Sans",Arial,sans-serif; }
+  font-family: "Helvetica Neue","Open Sans",Arial,sans-serif;background: #1A1A1A; }
 
 .main {
   background-color: #FFFFFF;
@@ -1360,7 +1360,7 @@ input.ct-red + span + label + span.switch-right {
     border-bottom: 1px solid rgba(255, 255, 255, 0.6); }
 
 .navbar-ct-blue {
-  background-color: rgba(52, 172, 220, 0.98); }
+  background-color: rgba(10, 10, 10, 0.98); }
 
 .navbar-ct-azzure {
   background-color: rgba(91, 202, 255, 0.98); }
@@ -2007,3 +2007,4 @@ input.ct-red + span + label + span.switch-right {
 
   .btn.dropdown-toggle {
     margin-bottom: 0; } }
+
