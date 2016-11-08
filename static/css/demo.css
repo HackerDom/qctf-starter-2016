@@ -75,18 +75,21 @@ body {
 }
 
 .card{
-    background-color: #FFFFFF;
+    background-color: #A0A0A0;
     padding: 10px 0 20px;
     width: 100%;
 }
 .card h3{
     margin-bottom: 20px;
+    color: #000;
 }
 .card button{
     margin-top: 30px;
+    color: #000;
 }
 .subscribe-form{
     padding-top: 20px;
+    color: #000;
 }
 .subscribe-form .form-control{
 
@@ -416,6 +419,15 @@ body {
   margin-right: 10px;
 }
 
+.card-text {
+    color: #333;
+}
+
 .card-title {
   margin-top: 0;
+    color: #333;
+}
+
+td {
+    color: #000;
 }
