@@ -1,0 +1,23 @@
+LANES_NUMBER = 3
+LANE_WIDTH = 20
+CANVAS_HEIGHT = 40
+SHOW_FLAG_AFTER = 10
+
+
+BALOON_SPRITE = '''------
+BALOON
+------'''
+
+
+PLANE_SPRITE = '''------
+ PLANE
+------'''
+
+
+GAME_OVER_SPRITE = '''YOU'RE SCREWED'''
+
+
+FLAG_SPRITE = '''QCTF_FLAG'''
+
+
+LANE_SYMBOL = '|'
