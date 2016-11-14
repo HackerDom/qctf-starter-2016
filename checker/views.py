@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
+from django.db.models import Count
 from .models import Task
 from cabinet.models import Team
 
 
+@login_required
 def index(request):
     tasks = Task.objects.all()
     return render(request, 'checker/index.html', {'tasks': tasks})
@@ -26,3 +28,9 @@ def scoreboard(request):
     teams = Team.objects.all().order_by('-tasks_number')
     print(teams)
     return render(request, 'checker/scoreboard.html', {'teams': teams})
+
+
+@login_required
+def hints(request):
+    tasks = Task.objects.all()
+    return render(request, 'checker/hints.html', {'tasks': tasks})

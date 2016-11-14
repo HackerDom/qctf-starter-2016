@@ -26,6 +26,9 @@
   </head>
 
   <body>
+    <div class="skype">
+      <img src="{% static 'img/skype.gif' %}" />
+    </div>
     {% include "qctf_checksystem/navbar.html" %}
     <div class="main">
       <div class="container tim-container">
@@ -34,16 +37,45 @@
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{% static '/js/jquery.min.js' %}"></script>
-    <script src="{% static '/js/jquery-ui.custom.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.custom.min.js' %}"></script>
     {% block globals %} {% endblock %}
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static '/js/bootstrap.js' %}"></script>
-    <script src="{% static '/js/gsdk-checkbox.js' %}"></script>
-    <script src="{% static '/js/gsdk-radio.js' %}"></script>
-    <script src="{% static '/js/gsdk-bootstrapswitch.js' %}"></script>
-    <script src="{% static '/js/get-shit-done.js' %}"></script>
-    <script src="{% static '/js/custom.js' %}"></script>
-    {% block scripts %} {% endblock %}
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/gsdk-checkbox.js' %}"></script>
+    <script src="{% static 'js/gsdk-radio.js' %}"></script>
+    <script src="{% static 'js/gsdk-bootstrapswitch.js' %}"></script>
+    <script src="{% static 'js/get-shit-done.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    </script>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

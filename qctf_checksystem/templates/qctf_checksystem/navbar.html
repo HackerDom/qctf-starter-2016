@@ -26,9 +26,17 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/checker/" {% if request.get_full_path == "/checker/" %} class="btn btn-round btn-default" {% endif %}>Tasks</a></li>
-                    <li><a href="/hints/" {% if request.get_full_path == "/hints/" %} class="btn btn-round btn-default" {% endif %}>Hints</a></li>
-                    <li><a href="/checker/scoreboard/" {% if request.get_full_path == "/checker/scoreboard/" %} class="btn btn-round btn-default" {% endif %}>Scoreboard</a></li>
+                  {% if user.is_authenticated %}
+                    <li>
+                      <ul>
+                        <li>Flags: {{ user.team.tasks_number }}</li>
+                        <li>Balance: {{ user.team.balance }}</li>
+                      </ul>
+                    </li>
+                  {% endif %}
+                  <li><a href="/checker/" {% if request.get_full_path == "/checker/" %} class="btn btn-round btn-default" {% endif %}>Tasks</a></li>
+                  <li><a href="/checker/hints/" {% if request.get_full_path == "/checker/hints/" %} class="btn btn-round btn-default" {% endif %}>Hints</a></li>
+                  <li><a href="/checker/scoreboard/" {% if request.get_full_path == "/checker/scoreboard/" %} class="btn btn-round btn-default" {% endif %}>Scoreboard</a></li>
                   <li><a href="/logout/" {% if request.get_full_path == "/logout/" %} class="btn btn-round btn-default" {% endif %}>Logout</a></li>
                </ul>
             </div><!-- /.navbar-collapse -->

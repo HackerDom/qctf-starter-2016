@@ -7,8 +7,8 @@ from django.dispatch import receiver
 
 
 class Team(models.Model):
-    balance = models.IntegerField(default=0)
-    tasks_number = models.IntegerField(default=0)
+    balance = models.PositiveIntegerField(default=0)
+    tasks_number = models.PositiveIntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):

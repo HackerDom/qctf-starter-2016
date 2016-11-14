@@ -1,0 +1,17 @@
+{% extends "qctf_checksystem/base.html" %}
+
+{% block title %}Hints{% endblock %}
+
+{% block content %}
+<div class="tim-title">
+  <h2>Hints</h2>
+  {% for task in tasks %}
+    <h3>{{ task.title }}</h3>
+    <ul>
+      {% for hint in task.hint_set.all %}
+        <li>{{ hint.name }} ({{ hint.price }}$)</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+</div>
+{% endblock %}

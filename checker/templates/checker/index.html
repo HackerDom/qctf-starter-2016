@@ -1,36 +1,75 @@
 {% extends "qctf_checksystem/base.html" %}
 
+{% block title %}Checksystem{% endblock %}
+
 {% block content %}
-<div class="tim-title">
+  <div class="tim-title">
     <h2>Tasks</h2>
+
     {% for task in tasks %}
-      <div class="card card-block">
+      <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}">
+        <div class="stamp"></div>
         <h4 class="card-title">{{ task.title }}</h4>
         <p class="card-text">{{ task.description|safe|truncatewords:30 }}</p>
-        <center><button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal-{{ forloop.counter }}">Launch demo modal</button></center>
+        <center><button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal-{{ forloop.counter }}">Подробнее...</button></center>
       </div>
       <div class="modal fade" id="modal-{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ forloop.counter }}" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
+          <div class="modal-content task-modal">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 class="modal-title" id="modalLabel-{{ forloop.counter }}">{{ task.title }}</h4>
+              <span>Already solved by {{ task.teams.count }} teams.</span>
             </div>
             <div class="modal-body">
               {{ task.description|safe }}
+              <div class="form-group">
+                <h4>Подсказки</h4>
+                <ol>
+                  {% for hint in task.hint_set.all %}
+                    <li>
+                      {% if hint in user.team.hints.all %}
+                        {{ hint.text|safe }}
+                      {% else %}
+                        Вы можете купить {{ hint.name }} в <a href="#">магазине</a>.
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ol>
+              </div>
             </div>
             <div class="modal-footer">
               <div class="form-group">
-                <input type="text" class="form-control" id="usr" placeholder="Flag">
+                <input type="text" class="form-control flag-input-{{ forloop.counter }}" placeholder="Flag">
               </div>
-              <button type="button" class="btn btn-primary">Submit flag</button>
+              <button type="button" task-id="{{ task.pk }}" class="btn btn-primary submit-flag-button">Submit flag</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
       </div>
     {% endfor %}
-</div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(function() {
+      $('.submit-flag-button').click(function() {
+        var task_id = $(this).attr('task-id');
+        var flag = $('.flag-input-' + task_id).val();
+        $.ajax({
+          type: "POST",
+          url: '/checker/check_flag/' + task_id + '/',
+          data: {flag: flag},
+          success: function(data) {
+            console.log(data);
+          },
+          dataType: 'json'
+        });
+      });
+    });
+  </script>
 {% endblock %}
