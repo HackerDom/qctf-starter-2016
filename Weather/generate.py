@@ -3,13 +3,16 @@ import struct
 import sys
 
 
-FLAG = 'QCTF_asdkjhfkaslhd'
+FLAG = 'QCTF_NaNs_are_not_what_they_seem'
 MIN_TEMPERATURE = -30
 MAX_TEMPERATURE = 30
 STATION_NAMES = [
-    'Station 1',
-    'Station 2',
-    '(boring) Station 3'
+    'Brazos 133B',
+    'Brazos 538',
+    'West Delta 27A',
+    'Green Canyon 338',
+    'Mississippi Canyon 474',
+    'Mississippi Canyon 311A'
 ]
 USUAL_MEASUREMENTS_NUMBER = 100
 
@@ -38,10 +41,10 @@ def generate_usual_measurements(quantity):
 def generate_fake_temperature(payload_bits):
     if not (set(payload_bits) <= {'0', '1'}):
         raise ValueError('payload_bits should consist only of ones and zeroes')
-    if len(payload_bits) != 53:
-        raise ValueError('Payload should be exactly 53 bits in size')
+    if len(payload_bits) != 52:
+        raise ValueError('Payload should be exactly 52 bits in size')
 
-    bits = payload_bits[0] + '1' * 11 + payload_bits[1:]
+    bits = payload_bits[0] + '1' * 12 + payload_bits[1:]
     byte_values = tuple(int(bits[i: i + 8], 2) for i in range(0, 64, 8))
     return bytes(reversed(byte_values))
 
@@ -50,10 +53,10 @@ def generate_fake_measurements(payload_bytes):
     payload_bits = ''.join(
         bin(byte_value)[2:].zfill(8)
         for byte_value in payload_bytes)
-    payload_bits += '0' * (53 - len(payload_bits) % 53)
+    payload_bits += '0' * (52 - len(payload_bits) % 52)
     return [
-        generate_name() + generate_fake_temperature(payload_bits[i: i + 53])
-        for i in range(0, len(payload_bits), 53)]
+        generate_name() + generate_fake_temperature(payload_bits[i: i + 52])
+        for i in range(0, len(payload_bits), 52)]
 
 
 def generate_all_measurements(usual_measurements_number, payload):
