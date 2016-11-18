@@ -43,6 +43,7 @@
             <div class="modal-footer">
               <div class="form-group">
                 <input type="text" class="form-control flag-input-{{ forloop.counter }}" placeholder="Flag">
+                <span id="task-{{ forloop.counter }}-status"></span>
               </div>
               <button type="button" task-id="{{ task.pk }}" class="btn btn-primary submit-flag-button">Submit flag</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -51,7 +52,30 @@
         </div>
       </div>
     {% endfor %}
+
+    <div class="modal fade" id="solved-task-modal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content task-modal">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Solved</h4>
+          </div>
+          <div class="modal-body">
+            <p id="solved-task-text">Some text in the modal.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
   </div>
+
 {% endblock %}
 
 {% block scripts %}
@@ -65,11 +89,24 @@
           url: '/checker/check_flag/' + task_id + '/',
           data: {flag: flag},
           success: function(data) {
-            console.log(data);
+            $("#task-" + task_id + "-status").text(data.status);
+            if (data.status === 'ok') {
+              $("#modal-" + task_id).modal('hide');
+              bsAlert(data.message);
+            } else {
+
+            }
           },
           dataType: 'json'
         });
       });
     });
+  </script>
+
+  <script>
+  function bsAlert(message) {
+      $("#solved-task-text").text(message);
+      $("#solved-task-modal").modal();
+  };
   </script>
 {% endblock %}

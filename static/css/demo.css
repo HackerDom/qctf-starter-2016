@@ -445,6 +445,7 @@ td {
 }
 
 .task-solved-block .stamp {
+  pointer-events: none;
   background-image: url('/static/img/stamp.png');
   position: absolute;
   width: 100%;

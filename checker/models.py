@@ -10,6 +10,8 @@ class Task(models.Model):
     flag = models.CharField(max_length=64)
     teams = models.ManyToManyField(Team, related_name='tasks', blank=True)
 
+    result_message = models.TextField()
+
     def __str__(self):
         return self.title
 
@@ -22,10 +24,12 @@ class Task(models.Model):
         team.save()
 
     def submit_flag(self, team, flag):
-        status = self.flag == flag
-        if not self._is_submited(team) and status:
+        correct = self.flag == flag
+        status = 'ok' if correct else 'Wrong flag.'
+        if not self._is_submited(team) and correct:
             self._award_team(team)
             self.teams.add(team)
+        # check time
         return status
 
 
