@@ -27,10 +27,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
                   {% if user.is_authenticated %}
-                    <li>
+                    <li class="nav-data">
                       <ul>
-                        <li>Flags: {{ user.team.tasks_number }}</li>
-                        <li>Balance: {{ user.team.balance }}</li>
+                        <li><i class="fa fa-flag"></i>Flags: {{ user.team.tasks_number }}</li>
+                        <li><i class="fa fa-money"></i>Balance: {{ user.team.balance }}</li>
                       </ul>
                     </li>
                   {% endif %}

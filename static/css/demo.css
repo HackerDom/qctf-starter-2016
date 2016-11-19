@@ -4,7 +4,7 @@ body {
 }
 
 .tim-container{
-    background: #1A1A1A;
+    background: #0F0F0F;
 
 }
 .tim-row{
@@ -75,7 +75,7 @@ body {
 }
 
 .card{
-    background-color: #A0A0A0;
+    background-color: #1A1A1A;
     padding: 10px 0 20px;
     width: 100%;
 }
@@ -85,7 +85,7 @@ body {
 }
 .card button{
     margin-top: 30px;
-    color: #000;
+    color: #efefef;
 }
 .subscribe-form{
     padding-top: 20px;
@@ -395,7 +395,7 @@ body {
     }
 }
 .main{
-    background-color: #1A1A1A;
+    background-color: #0F0F0F;
     position: relative;
 }
 
@@ -412,7 +412,7 @@ body {
   position: relative;
   display: inline-block;
   margin-bottom: .75rem;
-  background-color: #fff;
+  background-color: #1A1A1A;
   border-radius: .25rem;
   border: 1px solid rgba(0,0,0,.125);
   padding: 1.25rem;
@@ -420,20 +420,24 @@ body {
 }
 
 .card-text {
-  color: #333;
+  color: #efefef;
 }
 
 .card-title {
   margin-top: 0;
-  color: #333;
+  color: #efefef;
 }
 
 td {
-  color: #000;
+  color: #eee;
 }
 
 .task-modal {
-  color: #000;
+  color: #efefef;
+}
+
+.modal-content {
+    background-color: #1A1A1A;   
 }
 
 .task-block {
@@ -452,6 +456,12 @@ td {
   height: 230px;
   background-size: 320px 225px;
   background-repeat: no-repeat;
+}
+
+.close {
+    color: #fff;
+    text-shadow: 0 !important;
+    font-size: 26px;
 }
 
 .skype {
