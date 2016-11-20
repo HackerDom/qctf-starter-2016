@@ -1,0 +1,5 @@
+{
+  "ListenOn": ":8080",
+  "AllowedIP": "*",
+  "RequestUserAgent": "Translator/1.0"
+}
