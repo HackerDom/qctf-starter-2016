@@ -22,14 +22,12 @@ def check_flag(request, task_id):
     flag = request.POST.get('flag', '')
     status = task.submit_flag(team, flag)
     message = task.result_message if status == 'ok' else ''
-    print(status, message, task.result_message)
     return JsonResponse({'error': False, 'status': status, 'message': message,
                          'flags': team.tasks.count(), 'balance': team.balance})
 
 
 def scoreboard(request):
     teams = Team.objects.all().order_by('-balance')
-    print(teams)
     return render(request, 'checker/scoreboard.html', {'teams': teams})
 
 

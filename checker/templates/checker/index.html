@@ -5,7 +5,6 @@
 {% block content %}
   <div class="tim-title">
     <h2>Tasks</h2>
-
     {% for task in tasks %}
       <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}">
         <div class="stamp"></div>
@@ -91,7 +90,9 @@
           url: '/checker/check_flag/' + task_id + '/',
           data: {flag: flag},
           success: function(data) {
+            $("#task-" + task_id + "-status").show();
             $("#task-" + task_id + "-status").text(data.status);
+            $("#task-" + task_id + "-status").fadeOut(2000, function() {});
             if (data.status === 'ok') {
               $('#balance').text(data.balance);
               $('#flags-number').text(data.flags);

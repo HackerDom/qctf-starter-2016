@@ -26,7 +26,7 @@ SECRET_KEY = 'ixlsxi&_!4p_=6sn65#9glfx5l&mhh(ocka(to_-1++$r00#kr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.97.25.171', '127.0.0.1']
 
 
 # Application definition
@@ -132,3 +132,7 @@ STATICFILES_DIRS = [
 ]
 
 SUBMIT_DELAY = timedelta(seconds=5)
+CONTEST_DURATION = timedelta(hours=7)
+
+LOGIN_REDIRECT_URL = '/checker/'
+LOGIN_URL = '/profile/login/'

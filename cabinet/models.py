@@ -4,6 +4,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
+from django.conf import settings
 
 
 class Team(models.Model):
@@ -11,6 +13,7 @@ class Team(models.Model):
     tasks_number = models.PositiveIntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     replace_info = models.TextField(blank=True, default='[]')
+    start_time = models.DateTimeField()
 
     def __str__(self):
         return self.user.username
@@ -25,6 +28,12 @@ class Team(models.Model):
     def get_place(self):
         teams = Team.objects.filter(tasks_number__gt=self.tasks_number).count()
         return teams + 1
+
+    def contest_started(self):
+        return timezone.now() >= self.start_time
+
+    def contest_finished(self):
+        return timezone.now() > self.start_time + settings.CONTEST_DURATION
 
 
 @receiver(post_save, sender=User)

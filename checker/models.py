@@ -32,6 +32,10 @@ class Task(models.Model):
     def submit_flag(self, team, flag):
         if not self._check_delay(team):
             return 'Please wait.'
+        if not team.contest_finished():
+            return 'Contest is alreay finished.'
+        if team.contest_started():
+            return 'Contest is not started.'
 
         correct = self.flag == flag
         status = 'ok' if correct else 'Wrong flag.'
@@ -40,7 +44,7 @@ class Task(models.Model):
         if not self.is_solved(team) and correct:
             self._award_team(team)
             self.teams.add(team)
-        # check time
+
         return status
 
 
