@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-from base64 import encodestring
+import base64
+import zlib
 
 
-FLAG = 'QCTF_cyF616A3Rz_Check_Commands_Before_Pasting_Them_To_The_Terminal'
+with open('payload.py') as f:
+    payload = f.read()
 
-PAYLOAD = "with open('/tmp/output', 'w') as f: f.write('{}')".format(FLAG)
+encoded_payload = base64.encodebytes(zlib.compress(payload.encode(), 9)).replace(b'\n', b'').decode()
 
-
-encoded_payload = encodestring(PAYLOAD.encode()).replace(b'\n', b'').decode()
-
-print('python3 -c "from base64 import decodestring; exec(decodestring(b\'{}\'))"; history -c; exit'.format(encoded_payload))
+print('python3 -c "import base64,zlib;exec(zlib.decompress(base64.decodebytes(b\'{}\')))";history -c;setterm -reset'
+      .format(encoded_payload))
