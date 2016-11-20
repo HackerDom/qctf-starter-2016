@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -32,11 +31,6 @@ func RequestPage(rawurl string) (*http.Response, *GatewayError) {
 	request.Header.Set("User-Agent", config.RequestUserAgent)
 
 	client := new(http.Client)
-	if ipRestrictions {
-		client.CheckRedirect = func(_ *http.Request, _ []*http.Request) error {
-			return errors.New("Redirects are forbidden")
-		}
-	}
 	response, err := client.Do(request)
 	if err != nil {
 		return nil, &GatewayError{http.StatusBadGateway, "Request has failed: " + err.Error()}
@@ -45,7 +39,7 @@ func RequestPage(rawurl string) (*http.Response, *GatewayError) {
 	if response.StatusCode != http.StatusOK {
 		response.Body.Close()
 		return nil, &GatewayError{http.StatusForbidden,
-			fmt.Sprintf("Request returned status code %s, but only 200 is allowed", response.StatusCode)}
+			fmt.Sprintf("Request returned status code %d, but only 200 is allowed", response.StatusCode)}
 	}
 	return response, nil
 }
@@ -58,6 +52,11 @@ func CheckAndParseURL(rawurl string) (*url.URL, *GatewayError) {
 	parsedURL, err := url.Parse(rawurl)
 	if err != nil {
 		return nil, &GatewayError{http.StatusBadRequest, "Invalid URL: " + err.Error()}
+	}
+
+	if parsedURL.Host == config.BannedDomain {
+		return nil, &GatewayError{http.StatusForbidden,
+			fmt.Sprintf("Domain %s is forbidden by the service administration", parsedURL.Host)}
 	}
 
 	if ipRestrictions {

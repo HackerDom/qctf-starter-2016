@@ -1,26 +1,29 @@
 package main
 
 import (
-	"encoding/json"
+	"bytes"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"path"
+	"path/filepath"
+	"regexp"
 )
 
 var (
 	config struct {
-		ListenOn, AllowedIP, RequestUserAgent string
+		ListenOn, AllowedIP, BannedDomain, RequestUserAgent string
 	}
 	ipRestrictions bool
 
 	translator *Translator
-)
 
-const (
-	configFilename = "config.json"
-	dictFilename = "dictionary.txt"
+	executableDir  = filepath.Dir(os.Args[0])
+	configFilename = path.Join(executableDir, "config.json")
+	dictFilename   = path.Join(executableDir, "dictionary.txt")
+	templateDir    = path.Join(executableDir, "templates")
 )
 
 func main() {
@@ -39,6 +42,9 @@ func main() {
 	}
 	log.Printf("%d string pairs are loaded from dictionary", len(translator.Dict))
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, path.Join(templateDir, "index.html"))
+	})
 	http.HandleFunc("/translate", HandleTranslate)
 
 	log.Print("listening on ", config.ListenOn)
@@ -55,23 +61,25 @@ func HandleTranslate(w http.ResponseWriter, r *http.Request) {
 	}
 	defer response.Body.Close()
 
-	content, err := ioutil.ReadAll(io.LimitReader(response.Body, pageSizeLimit))
+	contentBytes, err := ioutil.ReadAll(io.LimitReader(response.Body, pageSizeLimit))
 	if err != nil {
 		w.WriteHeader(http.StatusBadGateway)
 		w.Write([]byte("Failed to read the response"))
 		return
 	}
-	w.Write([]byte(translator.Translate(string(content))))
+
+	content := translator.Translate(string(contentBytes))
+
+	headerBuf := new(bytes.Buffer)
+	pageHeaderTemplate.Execute(headerBuf, struct{ URL string }{rawurl})
+	content = bodyBeginRegexp.ReplaceAllStringFunc(content, func(matched string) string {
+		return matched + headerBuf.String()
+	})
+
+	w.Write([]byte(content))
 }
+
+var bodyBeginRegexp = regexp.MustCompile(`<body.*?>`)
+var pageHeaderTemplate = loadTemplate("page_header.html")
 
 const pageSizeLimit = 10 * 1024 * 1024
-
-func loadData(filename string, v interface{}) error {
-	f, err := os.Open(filename)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	return json.NewDecoder(f).Decode(v)
-}

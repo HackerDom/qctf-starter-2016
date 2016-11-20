@@ -1,5 +1,6 @@
 {
   "ListenOn": ":8080",
-  "AllowedIP": "*",
+  "AllowedIP": "138.68.111.83",
+  "BannedDomain": "algo.kolambda.com",
   "RequestUserAgent": "Translator/1.0"
 }
