@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.db import transaction
 from cabinet.models import Team
 
 
@@ -29,12 +30,13 @@ class Task(models.Model):
         time = timezone.now() - settings.SUBMIT_DELAY
         return not Submit.objects.filter(team=team, time__gt=time).exists()
 
+    @transaction.atomic
     def submit_flag(self, team, flag):
         if not self._check_delay(team):
             return 'Please wait.'
-        if not team.contest_finished():
+        if team.contest_finished():
             return 'Contest is alreay finished.'
-        if team.contest_started():
+        if not team.contest_started():
             return 'Contest is not started.'
 
         correct = self.flag == flag
@@ -64,6 +66,7 @@ class Hint(models.Model):
     def is_bought(self, team):
         return self.owners.filter(pk=team.pk).exists()
 
+    @transaction.atomic
     def buy(self, team):
         if not self.is_bought(team) and team.balance >= self.price:
             self.owners.add(team)
