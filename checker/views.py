@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.db.models import Count
-from .models import Task
+from .models import Task, Hint
 from cabinet.models import Team
 
 
@@ -23,11 +23,12 @@ def check_flag(request, task_id):
     status = task.submit_flag(team, flag)
     message = task.result_message if status == 'ok' else ''
     print(status, message, task.result_message)
-    return JsonResponse({'error': False, 'status': status, 'message': message})
+    return JsonResponse({'error': False, 'status': status, 'message': message,
+                         'flags': team.tasks.count(), 'balance': team.balance})
 
 
 def scoreboard(request):
-    teams = Team.objects.all().order_by('-tasks_number')
+    teams = Team.objects.all().order_by('-balance')
     print(teams)
     return render(request, 'checker/scoreboard.html', {'teams': teams})
 
@@ -36,3 +37,16 @@ def scoreboard(request):
 def hints(request):
     tasks = Task.objects.all()
     return render(request, 'checker/hints.html', {'tasks': tasks})
+
+
+@login_required
+@require_POST
+def buy_hint(request, hint_id):
+    team = request.user.team
+    hint = get_object_or_404(Hint, pk=hint_id)
+    task = hint.task
+    if task.is_solved(team) or hint.is_bought(team):
+        raise Http404
+    hint.buy(team)
+    return JsonResponse({'error': False, 'balance': team.balance,
+                         'hint': hint.get_hint_text(team)})

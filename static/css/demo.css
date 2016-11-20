@@ -75,6 +75,8 @@ body {
 }
 
 .card{
+    float: left;
+    height: 300px;
     background-color: #1A1A1A;
     padding: 10px 0 20px;
     width: 100%;
@@ -84,7 +86,9 @@ body {
     color: #000;
 }
 .card button{
-    margin-top: 30px;
+    bottom: 10px;
+    left: 115px;
+    position: absolute;
     color: #efefef;
 }
 .subscribe-form{
@@ -437,7 +441,7 @@ td {
 }
 
 .modal-content {
-    background-color: #1A1A1A;   
+    background-color: #1A1A1A;
 }
 
 .task-block {
@@ -448,14 +452,26 @@ td {
   color: #000;
 }
 
-.task-solved-block .stamp {
-  pointer-events: none;
-  background-image: url('/static/img/stamp.png');
-  position: absolute;
-  width: 100%;
-  height: 230px;
-  background-size: 320px 225px;
+.stamp {
   background-repeat: no-repeat;
+  width: 100%;
+  pointer-events: none;
+  position: absolute;
+}
+
+.card-block.task-solved-block .stamp {
+  height: 230px;
+  background-image: url('/static/img/stamp.png');
+  background-size: 320px 225px;
+}
+
+.task-solved-modal .stamp {
+  height: 310px;
+  background-image: url('/static/img/stamp.png');
+  background-size: 70%;
+  left: 85px;
+  top: -20px;
+
 }
 
 .close {

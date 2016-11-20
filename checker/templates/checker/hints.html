@@ -6,12 +6,59 @@
 <div class="tim-title">
   <h2>Hints</h2>
   {% for task in tasks %}
-    <h3>{{ task.title }}</h3>
-    <ul>
-      {% for hint in task.hint_set.all %}
-        <li>{{ hint.name }} ({{ hint.price }}$)</li>
-      {% endfor %}
-    </ul>
+    {% if user.team not in task.teams.all %}
+      <h3>{{ task.title }}</h3>
+      <ul>
+        {% for hint in task.hint_set.all %}
+          <li><a href="#" class="open-hint-button" data-toggle="modal" data-target="#modal-{{ hint.pk }}">{{ hint.name }} ({% if user.team in hint.owners.all %}уже куплен{% else %}{{ hint.price }}$ {% endif %})</a></li>
+
+          <div class="modal fade {% if user.team in hint.owners.all %}hint-bought-modal{% endif %}" id="modal-{{ hint.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ hint.pk }}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content task-modal">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="modalLabel-{{ hint.pk }}">{{ hint.name }}</h4>
+                </div>
+                <div class="modal-body">
+                  <div id="hint-{{ hint.pk }}-content">
+                    {% if user.team in hint.owners.all %}
+                      {{ hint.text|safe }}
+                    {% else %}
+                      К сожалению, вы ещё не купили этот хинт.
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  {% if user.team not in hint.owners.all %}<button type="button" hint-id="{{ hint.pk }}" class="btn btn-success buy-hint-button">Buy hint</button>{% endif %}
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </ul>
+    {% endif %}
   {% endfor %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(function() {
+      $('.buy-hint-button').click(function() {
+        var hint_id = $(this).attr('hint-id');
+        $.ajax({
+          type: "POST",
+          url: '/checker/hints/' + hint_id + '/buy/',
+          success: function(data) {
+            $('#balance').text(data.balance);
+            $('#hint-' + hint_id + '-content').html(data.hint);
+          },
+          dataType: 'json'
+        });
+      });
+    });
+  </script>
 {% endblock %}

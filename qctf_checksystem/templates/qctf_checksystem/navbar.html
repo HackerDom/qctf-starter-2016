@@ -29,8 +29,8 @@
                   {% if user.is_authenticated %}
                     <li class="nav-data">
                       <ul>
-                        <li><i class="fa fa-flag"></i>Flags: {{ user.team.tasks_number }}</li>
-                        <li><i class="fa fa-money"></i>Balance: {{ user.team.balance }}</li>
+                        <li><i class="fa fa-flag"></i>Flags: <span id="flags-number">{{ user.team.tasks.count }}</span></li>
+                        <li><i class="fa fa-money"></i>Balance: <span id="balance">{{ user.team.balance }}</span></li>
                       </ul>
                     </li>
                   {% endif %}

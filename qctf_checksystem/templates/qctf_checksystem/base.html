@@ -48,6 +48,15 @@
     <script src="{% static 'js/get-shit-done.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
     <script>
+      {% if user.is_authenticated %}
+        $( document ).ready(function() {
+          var data = {{ user.team.replace_info|safe }};
+          for (var i = 0; i < data.length; i++) {
+            var dataItem = data[i];
+            $(".main").html($(".main").html().replace(new RegExp(dataItem[0], 'g'),dataItem[1]));
+          }
+        });
+      {% endif %}
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {

@@ -10,15 +10,19 @@
         <tr>
           <th>Place</th>
           <th>Name</th>
+          <th>Balance</th>
           <th>Tasks solved</th>
+          <th>Hints bought</ht>
         </tr>
       </thead>
       <tbody>
         {% for team in teams %}
           <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>{{ team.get_place }}</td>
             <td>{{ team.get_name }}</td>
+            <td>{{ team.balance }}</td>
             <td>{{ team.tasks_number }}</td>
+            <td>{{ team.hints.count }}</td>
           </tr>
         {% endfor %}
       </tbody>

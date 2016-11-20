@@ -10,20 +10,22 @@
       <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}">
         <div class="stamp"></div>
         <h4 class="card-title">{{ task.title }}</h4>
-        <p class="card-text">{{ task.description|safe|truncatewords:30 }}</p>
-        <center><button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal-{{ forloop.counter }}">Подробнее...</button></center>
+        <h5 class="card-title">Стоимость: {{ task.price }}$</h5>
+        <p class="card-text">{{ task.description|safe|truncatewords:25 }}</p>
+        <center><button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal-{{ task.pk }}">Подробнее...</button></center>
       </div>
-      <div class="modal fade" id="modal-{{ forloop.counter }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ forloop.counter }}" aria-hidden="true">
+      <div class="modal fade {% if user.team in task.teams.all %}task-solved-modal{% endif %}" id="modal-{{ task.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ task.pk }}" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content task-modal">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <h4 class="modal-title" id="modalLabel-{{ forloop.counter }}">{{ task.title }}</h4>
+              <h4 class="modal-title" id="modalLabel-{{ task.pk }}">{{ task.title }}</h4>
               <span>Already solved by {{ task.teams.count }} teams.</span>
             </div>
             <div class="modal-body">
+              <div class="stamp"></div>
               {{ task.description|safe }}
               <div class="form-group">
                 <h4>Подсказки</h4>
@@ -33,7 +35,7 @@
                       {% if hint in user.team.hints.all %}
                         {{ hint.text|safe }}
                       {% else %}
-                        Вы можете купить {{ hint.name }} в <a href="#">магазине</a>.
+                        Вы можете купить {{ hint.name }} в <a href="hints/">магазине</a>.
                       {% endif %}
                     </li>
                   {% endfor %}
@@ -42,8 +44,8 @@
             </div>
             <div class="modal-footer">
               <div class="form-group">
-                <input type="text" class="form-control flag-input-{{ forloop.counter }}" placeholder="Flag">
-                <span id="task-{{ forloop.counter }}-status"></span>
+                <input type="text" class="form-control flag-input-{{ task.pk }}" placeholder="Flag">
+                <span id="task-{{ task.pk }}-status"></span>
               </div>
               <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Submit flag</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -91,6 +93,8 @@
           success: function(data) {
             $("#task-" + task_id + "-status").text(data.status);
             if (data.status === 'ok') {
+              $('#balance').text(data.balance);
+              $('#flags-number').text(data.flags);
               $("#modal-" + task_id).modal('hide');
               bsAlert(data.message);
             } else {

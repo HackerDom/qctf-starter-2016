@@ -10,12 +10,21 @@ class Team(models.Model):
     balance = models.PositiveIntegerField(default=0)
     tasks_number = models.PositiveIntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    replace_info = models.TextField(blank=True, default='[]')
 
     def __str__(self):
         return self.user.username
 
     def get_name(self):
         return self.user.username
+
+    def spend_money(self, number):
+        self.balance -= number
+        self.save()
+
+    def get_place(self):
+        teams = Team.objects.filter(tasks_number__gt=self.tasks_number).count()
+        return teams + 1
 
 
 @receiver(post_save, sender=User)
