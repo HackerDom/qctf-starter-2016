@@ -1,4 +1,4 @@
-use Crypt::RSA;
+use Crypt::OpenSSL::RSA;
 use IO::Socket::INET;
 
 
@@ -14,7 +14,7 @@ die "cannot connect to the server $!\n" unless $socket;
 print "connected to the server\n";
 
 
-my $private = <<MSG;
+my $sprivate = <<"MSG";
 -----BEGIN PRIVATE KEY-----
 MIIJQwIBADANBgkqhkiG9w0BAQEFAASCCS0wggkpAgEAAoICAQDSxmdrRGuagUSc
 p11w0ZOT8mkvLgANmLN9mfTntlO9Y38g0gCEPwyth/xfbJGaf62urBV1hnYSS0uo
@@ -75,9 +75,15 @@ $socket->send($message);
 print "sent: $message\n";
 shutdown($socket, 1);
 
+
 my $response = "";
 $socket->recv($response, 4096);
-my $decrypted = $rsa->decrypt( Ciphertext => $response, Key => $private);
-print "response: $response\n";
+chop($response);
+
+
+my $private = Crypt::OpenSSL::RSA->new_private_key($sprivate);
+my $decrypted = $private->decrypt($response);
+print "response: $decrypted\n";
+
 
 $socket->close();
