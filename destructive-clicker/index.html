@@ -1,0 +1,110 @@
+<html>
+    <head>
+        <title>Destructive Clicker</title>
+        <link type="text/css" rel="stylesheet" href="style.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="balance">
+                <h1 id="balance">Balance: 100$</h1>
+            </div>
+            <div class="item-panel">
+                <center><h1>Destructive Clicker</h1></center>
+                <div id="item-container">
+                </div>
+            </div>
+            <div class="main-scene">
+                <div id="dv-logo" class="dv-logo"></div>
+            </div>
+        </div>
+        <script>
+            $(function() {
+                
+                var items = [{
+                    'name': 'Маша',
+                    'description': 'Директор RuCTF, решает Stegano, Маша. Разбирается в биологии. Учит детей кодить.',
+                    'dps': 0.1,
+                    'price': 20,
+                    'number': 0,
+                    'limit': 100,
+                    'image': 'sprites/masha3.png'
+                }, {
+                    'name': 'a1exdandy',
+                    'description': 'Может разревёрсить любую программу, взломать любое шифрование, заставить любого волонтёра подписаться на @dvteam_org!',
+                    'dps': 1,
+                    'price': 200,
+                    'number': 0,
+                    'limit': 100,
+                    'image': 'sprites/lesha2.png'
+                }, {
+                    'name': 'Flag!',
+                    'description': 'Флаг к таску.',
+                    'dps': 0,
+                    'price': 1,
+                    'number': 0,
+                    'limit': 1,
+                    'image': 'sprites/flag.png',
+                    'on_first_purchase': function() {
+                        alert('Congratz! Here is a flag: 06500c397d0adcaa4d74c44c6d66e59f=');
+                    }
+                }];
+                
+                var balance = 0;
+                function increase_balance(delta) {
+                    balance += delta;
+                    update_balance();
+                }
+                
+                function update_balance() {
+                    $('#balance').text('Balance: ' + Math.floor(balance) + '$');
+                }
+                
+                function init_items() {
+                    for (var i = 0; i < items.length; i++) {
+                        $('#item-container').append('<div class="item" item-id="' + i + '"><div class="image"><img src="' + items[i].image + '" width=96 height=120/></div><div class="description"><h2>' + items[i].name + '</h2><p>' + items[i].description + '</p><span class="number">' + items[i].number + '</span><span class="price">' + items[i].price + '$</span></div></div>');
+                    }
+                }
+                
+                function hit_with_items() {
+                    var dps = 0;
+                    for (var i = 0; i < items.length; i++) {
+                        dps += items[i].number * items[i].dps;
+                    }
+                    console.log(dps);
+                    increase_balance(dps);
+                }
+                
+                function buy_item(index) {
+                    if (items[index].price > balance || items[index].number >= items[index].limit) {
+                        return false;
+                    }
+                    if ('on_first_purchase' in items[index] && items[index].number === 0) {
+                        items[index].on_first_purchase();
+                    }
+                    balance -= items[index].price;
+                    items[index].number++;
+                    $('.item[item-id="' + index + '"] .number').text(items[index].number);
+                    return true;
+                }
+                
+                $('#dv-logo').click(function(event) {
+                    $(this).addClass('clicked').delay(70).queue(function(next){
+                        increase_balance(1);
+                        $(this).removeClass('clicked');
+                        next();
+                    });
+                });
+                
+                $("#item-container").on("click", ".item", function(){
+                    buy_item($(this).attr('item-id'));
+                });
+                
+                update_balance();
+                init_items();
+                setInterval(hit_with_items, 1000);
+            });
+        </script>
+    </body>
+</html>
+
