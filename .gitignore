@@ -1,5 +1,6 @@
 production.env
 
+checksystem/qctf_checksystem/static
 *.sqlite3
 
 .idea
