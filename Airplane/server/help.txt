@@ -1,0 +1,3 @@
+          Objective: reach 5000 points
+Controls: a and d to change lanes, w to continue
+              Press Enter to start              

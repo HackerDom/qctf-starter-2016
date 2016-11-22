@@ -3,7 +3,7 @@ from game import Game, Action
 
 def main():
     game = Game()
-    while True:
+    while not game.game_over and not game.draw_flag:
         print(game.draw())
         inp = input()
         if inp == 'a':
