@@ -1,0 +1,15 @@
+version: '2'
+services:
+  checksystem:
+      build: ./checksystem
+      volumes:
+        - /app/qctf_checksystem/static
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    volumes_from:
+      - checksystem:ro
