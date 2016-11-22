@@ -1,9 +1,16 @@
 version: '2'
 services:
   checksystem:
-      build: ./checksystem
-      volumes:
-        - /app/qctf_checksystem/static
+    build: ./checksystem
+    env_file: ./production.env
+    volumes:
+      - /static
+
+  db:
+    image: mysql
+    env_file: ./production.env
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
 
   nginx:
     image: nginx

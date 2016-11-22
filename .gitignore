@@ -1,3 +1,5 @@
+production.env
+
 *.sqlite3
 
 .idea
