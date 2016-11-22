@@ -6,6 +6,8 @@ import logging
 
 HOST = '159.203.132.20'
 PORT = 4321
+NUMBER_OF_CONNECTIONS = 20
+
 INPUT_LENGTH = 80 * 23 + 100
 
 
@@ -99,4 +101,4 @@ def main(number_of_connections):
 
 
 if __name__ == '__main__':
-    main(20)
+    main(NUMBER_OF_CONNECTIONS)

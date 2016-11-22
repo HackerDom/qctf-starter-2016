@@ -36,7 +36,7 @@ class Game:
         self.draw_flag = False
 
     def current_plane_generation_probability(self):
-        suitable_lanes = [0, 1, 2]
+        suitable_lanes = list(range(LANES_NUMBER))
         if not self.planes:
             return 1, suitable_lanes
         last_plane_bottom, last_plane_lane = self.planes[-1]
