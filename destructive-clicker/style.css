@@ -1,0 +1,110 @@
+@import 'https://fonts.googleapis.com/css?family=VT323';
+@font-face {
+    font-family: HelveticaNeueCyr;
+    src: url(HelveticaNeueCyr-Roman.otf);
+}
+
+* {
+    font-family: 'VT323', monospace;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.item-panel {
+    width: 400px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #171717;
+}
+.main-scene {
+    position: relative;
+    margin-left: 400px;
+    height: 100%;
+    background-color: #bfb;
+    background: url('backgrounds/dark_city.gif') no-repeat;
+    background-size: cover;
+}
+.dv-logo {
+    cursor: pointer;
+    
+    -webkit-filter: drop-shadow(10px 20px 80px #fff);
+    filter: drop-shadow(5px 5px 5px #fff);
+
+    top: 50%;
+    left: 50%;
+    margin: -132px 0 0 -200px;
+    position: absolute;
+    width: 400px;
+    height: 264px;
+    background: url('sprites/dv.png') no-repeat;
+    background-size: contain;
+}
+
+.dv-logo.clicked {
+    -moz-transform: scale(1.3, 1.1); /* Для Firefox */
+    -ms-transform: scale(1.3, 1.1); /* Для IE */
+    -webkit-transform: scale(1.3, 1.1); /* Для Safari, Chrome, iOS */
+    -o-transform: scale(1.3, 1.1); /* Для Opera */
+    transform: scale(1.3, 1.1);
+}
+
+.item-panel .item {
+    cursor: pointer;
+    width: 100%;
+    height: 140px;
+    margin-bottom: 10px;
+    background-color: #212121;
+}
+
+.item-panel .item .image {
+    display: inline-block;
+    float: left;
+}
+
+.item-panel .item .description {
+    width: 290px;
+    height: 100%;
+    position: relative;
+    color: #dbdbdb;
+    padding-left: 10px;
+    display: inline-block;
+    float: left;
+}
+
+.item-panel .item .description .number {
+    position: absolute;
+    left: 10;
+    bottom: 0;
+    font-size: 20px;
+}
+
+.item-panel .item .description .price {
+    position: absolute;
+    right: 10;
+    bottom: 0;
+    font-size: 20px;
+}
+
+h1 {
+    margin: 10px;
+    color: #F5D76E;
+}
+
+h2 {
+
+}
+
+.balance {
+    z-index: 2;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
