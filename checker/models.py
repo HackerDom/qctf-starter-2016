@@ -13,7 +13,8 @@ class Task(models.Model):
     flag = models.CharField(max_length=64)
     teams = models.ManyToManyField(Team, related_name='tasks', blank=True)
 
-    result_message = models.TextField()
+    correct_flag_message = models.TextField()
+    wrong_flag_message = models.TextField()
 
     def __str__(self):
         return self.title
@@ -33,21 +34,25 @@ class Task(models.Model):
     @transaction.atomic
     def submit_flag(self, team, flag):
         if not self._check_delay(team):
-            return 'Please wait.'
+            return {'message': 'Please wait.', 'is_correct': False}
         if team.contest_finished():
-            return 'Contest is alreay finished.'
+            return {'message': 'Contest is alreay finished.',
+                    'is_correct': False}
         if not team.contest_started():
-            return 'Contest is not started.'
+            return {'message': 'Contest is not started.', 'is_correct': False}
 
         correct = self.flag == flag
-        status = 'ok' if correct else 'Wrong flag.'
+        message = self.correct_flag_message if correct else \
+            self.wrong_flag_message
+
         submit = Submit(team=team, flag=flag)
         submit.save()
+
         if not self.is_solved(team) and correct:
             self._award_team(team)
             self.teams.add(team)
 
-        return status
+        return {'message': message, 'is_correct': correct}
 
 
 class Hint(models.Model):

@@ -20,10 +20,9 @@ def check_flag(request, task_id):
     team = request.user.team
     task = get_object_or_404(Task, pk=task_id)
     flag = request.POST.get('flag', '')
-    status = task.submit_flag(team, flag)
-    message = task.result_message if status == 'ok' else ''
-    return JsonResponse({'error': False, 'status': status, 'message': message,
-                         'flags': team.tasks.count(), 'balance': team.balance})
+    result = task.submit_flag(team, flag)
+    result.update({'flags': team.tasks.count(), 'balance': team.balance})
+    return JsonResponse(result)
 
 
 def scoreboard(request):
