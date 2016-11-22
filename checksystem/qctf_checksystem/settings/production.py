@@ -16,7 +16,7 @@ ALLOWED_HOSTS = ['contest.qctf.ru', '78.155.207.64', '127.0.0.1']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         'HOST': 'db',
         'PORT': 3306,
         'NAME': os.environ['MYSQL_DATABASE'],
