@@ -1,3 +1,7 @@
+kurlyandian/translator/translator
+.idea
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
