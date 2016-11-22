@@ -19,7 +19,7 @@ class Server:
         self.sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
     def run(self):
-        print('listening on {}'.format(self.port))
+        print('listening on {}\n'.format(self.port))
         pool = ThreadPoolExecutor(256)
         self.sock.bind((LOCALHOST, self.port))
         self.sock.listen(1)
@@ -31,15 +31,13 @@ class Server:
     def handle(self, conn, host, port):
         try:
             data = conn.recv(4096)
-            print('just received "{}" from {}:{}\n'.format(data, host, port))
+            print('just received "{}" from {}:{}'.format(data, host, port))
             loaded = data.decode('utf-8')
             if 'start conversation' in loaded:
                 packet = self.get_encrypted('test packet')
                 conn.send(packet)
                 conn.close()
-                print('sent an encrypted packet to {}'.format(host)) #  DEBUG
-            else:
-                print('bad message') #  DEBUG
+                print('sent an encrypted packet to {}\n'.format(host)) #  DEBUG
         except socket.error as e:
             print(e)
 
@@ -48,10 +46,8 @@ class Server:
             keydata = public_file.read()
         try:
             public = rsa.PublicKey.load_pkcs1(keydata, 'PEM')
-            print('loaded public key...') #  DEBUG
             data = data.encode('utf-8')
             packet = rsa.encrypt(data, public)
-            print('encrypted...') #  DEBUG
         except Exception as e:
             print('error while loading public key: {}'.format(e))
             raise(e)
