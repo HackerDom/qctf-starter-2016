@@ -1,18 +1,19 @@
-badip:
+services:
+  badip:
     build: ../../badip/www
     ports:
       - "9081:9081"
-grouping-s:
+  grouping-s:
     build: ../../grouping-s/www/translator
     ports:
       - "8080:8080"
-nginx:
-    image: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - /var/www/:/var/www/
-      - /var/www/deploy/simple-web/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    volumes_from:
-      - badip:ro
-      - grouping-s:ro
+#  nginx:
+#    image: nginx
+#    networks:
+#      simple-web:
+#        ipv4_address: 172.16.20.4
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - /var/www/:/var/www/
+#      - /var/www/deploy/simple-web/nginx.conf:/etc/nginx/conf.d/default.conf:ro
