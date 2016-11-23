@@ -1,4 +1,9 @@
+production.env
+
+checksystem/qctf_checksystem/static
 *.sqlite3
+
+.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

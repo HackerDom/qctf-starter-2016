@@ -13,20 +13,10 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 from datetime import timedelta
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ixlsxi&_!4p_=6sn65#9glfx5l&mhh(ocka(to_-1++$r00#kr'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['10.97.25.171', '127.0.0.1']
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 
 # Application definition
@@ -75,17 +65,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'qctf_checksystem.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -125,8 +104,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-ENV_PATH = os.path.abspath(os.path.dirname(__file__))
-STATIC_ROOT = os.path.join(ENV_PATH, 'static/')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
