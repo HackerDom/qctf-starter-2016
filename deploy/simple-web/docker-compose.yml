@@ -2,6 +2,8 @@ badip:
     build: ../../badip
     ports:
       - "9081:9081"
+grouping-s:
+    build: ../../grouping-s/translator
 nginx:
     image: nginx
     ports:
