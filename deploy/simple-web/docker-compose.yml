@@ -4,6 +4,8 @@ badip:
       - "9081:9081"
 grouping-s:
     build: ../../grouping-s/www/translator
+    ports:
+      - "8080:8080"
 nginx:
     image: nginx
     ports:
