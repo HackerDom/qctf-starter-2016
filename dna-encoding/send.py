@@ -3,21 +3,30 @@
 import socket
 import struct
 import sys
+import zlib
 
 
 def main():
-	with open('key', 'rb') as f:
-		key = f.read()
-	
-	conn = socket.socket()
-	conn.connect(('secret-service.kurlyandia-gov.com', 7777))
-	
-	for filename in sys.argv:
-		with open(filename, 'rb') as f:
-			content = f.read()
-		
-		conn.send(struct.pack('!I', len(content)))
-		conn.send(content)
-	
-	conn.close()
-	
+    with open('key', 'rb') as f:
+        key = f.read()
+
+    key_index = 0
+    for filename in sys.argv:
+        with open(filename, 'rb') as f:
+            content = f.read()
+
+        content = bytearray(zlib.compress(content, 9))
+
+        for i in range(len(content)):
+            content[i] ^= key[key_index]
+            key_index += 1
+
+        with socket.socket() as conn:
+            conn.connect(('secret-service.kurlyandia-gov.com', 7777))
+
+            conn.sendall(struct.pack('!I', len(content)))
+            conn.sendall(content)
+
+
+if __name__ == '__main__':
+    main()
