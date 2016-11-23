@@ -2,6 +2,8 @@ version: '2'
 services:
   checksystem:
     build: ./checksystem
+    depends_on:
+      - db
     env_file: ./production.env
     volumes:
       - /static
@@ -10,6 +12,7 @@ services:
     image: mysql
     env_file: ./production.env
     volumes:
+      - ./mysql/mysql.cnf:/etc/mysql/conf.d/default.cnf:ro
       - /var/lib/mysql:/var/lib/mysql
 
   nginx:
