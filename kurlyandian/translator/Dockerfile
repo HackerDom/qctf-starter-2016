@@ -2,7 +2,9 @@ FROM golang:latest
 
 COPY . /app
 
-WORKDIR /app/translator
+WORKDIR /app
 RUN go build
 
-CMD [ "./translator" ]
+CMD [ "./app" ]
+
+EXPOSE 8080
