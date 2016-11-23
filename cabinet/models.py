@@ -13,7 +13,7 @@ class Team(models.Model):
     tasks_number = models.PositiveIntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     replace_info = models.TextField(blank=True, default='[]')
-    start_time = models.DateTimeField(default=timezone.now())
+    start_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.user.username
