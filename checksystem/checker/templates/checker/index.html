@@ -86,7 +86,7 @@
         var flag = $('.flag-input-' + task_id).val();
         $.ajax({
           type: "POST",
-          url: '/checker/check_flag/' + task_id + '/',
+          url: '/check_flag/' + task_id + '/',
           data: {flag: flag},
           success: function(data) {
             $("#task-" + task_id + "-status").show();

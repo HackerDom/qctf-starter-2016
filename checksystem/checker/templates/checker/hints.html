@@ -50,7 +50,7 @@
         var hint_id = $(this).attr('hint-id');
         $.ajax({
           type: "POST",
-          url: '/checker/hints/' + hint_id + '/buy/',
+          url: '/hints/' + hint_id + '/buy/',
           success: function(data) {
             $('#balance').text(data.balance);
             $('#hint-' + hint_id + '-content').html(data.hint);
