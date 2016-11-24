@@ -5,8 +5,11 @@ After=docker.service
 [Service]
 Restart=always
 WorkingDirectory=/var/www/deploy/simple-web
-ExecStartPre=-/usr/bin/docker-compose down
-ExecStart=/ust/bin/docker-compose up
+ExecStartPre=-/usr/bin/docker-compose kill badip
+ExecStartPre=-/usr/bin/docker-compose rm badip
+ExecStartPre=-/usr/bin/docker-compose kill grouping-s
+ExecStartPre=-/usr/bin/docker-compose rm grouping-s
+ExecStart=/usr/bin/docker-compose up
 ExecStop=/usr/bin/docker-compose stop
 
 [Install]
