@@ -38,28 +38,30 @@ class Crawler:
                 raise ValueError('Too big page ({} bytes)'.format(len(content)))
 
             d = PyQuery(content)
+
+            texts = [el.strip() for el in d('body :not(script):not(style)').contents() if isinstance(el, str)]
+            texts = [el for el in texts if el]
+            texts = texts[:Crawler._MAX_TEXT_NODES]
+
+            self._texts.save(user, url, texts)
+
+            message = '@{}: {} crawled, {} text nodes indexed'.format(user, url, len(texts))
+
+            if processed_link['distance'] < Crawler._MAX_DEPTH:
+                links = [url for url in d('a[href]').map(lambda _, el: d(el).attr('href'))
+                         if any(url.startswith(proto + '://') for proto in Crawler._ALLOWED_PROTOCOLS)]
+                links = links[:Crawler._MAX_LINKS]
+
+                self._links.save(user, links, processed_link['distance'] + 1, force_status=False)
+
+                message += ', {} links added'.format(len(links))
+
+            self._links.update_status(user, url, 'crawled')
+            self._logger.info(message)
         except Exception as e:
+            self._links.update_status(user, url, 'failed', reason='{}: {}'.format(type(e).__name__, e))
             self._logger.warning('Exception on requesting page: %s', e)
-            return
 
-        texts = [el.strip() for el in d('body :not(script):not(style)').contents() if isinstance(el, str)]
-        texts = [el for el in texts if el]
-        texts = texts[:Crawler._MAX_TEXT_NODES]
-
-        self._texts.save(user, url, texts)
-
-        message = '@{}: {} crawled, {} text nodes indexed'.format(user, url, len(texts))
-
-        if processed_link['distance'] < Crawler._MAX_DEPTH:
-            links = [url for url in d('a[href]').map(lambda _, el: d(el).attr('href'))
-                     if any(url.startswith(proto + '://') for proto in Crawler._ALLOWED_PROTOCOLS)]
-            links = links[:Crawler._MAX_LINKS]
-
-            self._links.save(user, links, processed_link['distance'] + 1)
-
-            message += ', {} links added'.format(len(links))
-
-        self._logger.info(message)
         return True
 
     _MAX_DEPTH = 2
