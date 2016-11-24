@@ -3,30 +3,34 @@
 {% block title %}Hints{% endblock %}
 
 {% block content %}
-<div class="tim-title">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Place</th>
-          <th>Name</th>
-          <th>Balance</th>
-          <th>Tasks solved</th>
-          <th>Hints bought</th>
-          <th>Region</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for team in teams %}
-          <tr>
-            <td>{{ team.get_place }}</td>
-            <td>{{ team.get_name }}</td>
-            <td>{{ team.balance }}</td>
-            <td>{{ team.tasks_number }}</td>
-            <td>{{ team.hints.count }}</td>
-            <td>{{ team.region.name }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-</div>
+  {% if not user.team.contest_started %}
+    <h2>Дождитесь начала контеста</h2>
+  {% else %}
+    <div class="tim-title">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Place</th>
+              <th>Name</th>
+              <th>Balance</th>
+              <th>Tasks solved</th>
+              <th>Hints bought</th>
+              <th>Region</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in teams %}
+              <tr>
+                <td>{{ team.get_place }}</td>
+                <td>{{ team.get_name }}</td>
+                <td>{{ team.balance }}</td>
+                <td>{{ team.tasks_number }}</td>
+                <td>{{ team.hints.count }}</td>
+                <td>{{ team.region.name }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+  {% endif %}
 {% endblock %}
