@@ -8,7 +8,7 @@
     <h2>Дождитесь начала контеста</h2>
   {% else %}
     {% for task in tasks %}
-      {% if user.team not in task.teams.all %}
+      {% if user.team not in task.teams.all and not task.parent or user.team not in task.teams.all and user.team in task.parent.teams.all %}
         <h3>{{ task.title }}</h3>
         <ul>
           {% for hint in task.hint_set.all %}

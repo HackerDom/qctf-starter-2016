@@ -12,6 +12,8 @@ class Task(models.Model):
     price = models.PositiveIntegerField()
     teams = models.ManyToManyField(Team, related_name='tasks', blank=True)
 
+    parent = models.ForeignKey('self', blank=True, null=True,
+                               related_name='children')
     default_flag = models.CharField(blank=True, default='', max_length=100)
 
     correct_flag_message = models.TextField()
