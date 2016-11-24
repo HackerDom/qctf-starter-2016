@@ -11,7 +11,8 @@
           <th>Name</th>
           <th>Balance</th>
           <th>Tasks solved</th>
-          <th>Hints bought</ht>
+          <th>Hints bought</th>
+          <th>Region</th>
         </tr>
       </thead>
       <tbody>
@@ -22,6 +23,7 @@
             <td>{{ team.balance }}</td>
             <td>{{ team.tasks_number }}</td>
             <td>{{ team.hints.count }}</td>
+            <td>{{ team.region.name }}</td>
           </tr>
         {% endfor %}
       </tbody>
