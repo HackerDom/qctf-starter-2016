@@ -11,7 +11,7 @@ def main():
         key = f.read()
 
     key_index = 0
-    for filename in sys.argv:
+    for filename in sys.argv[1:]:
         with open(filename, 'rb') as f:
             content = f.read()
 
@@ -21,6 +21,8 @@ def main():
             content[i] ^= key[key_index]
             key_index += 1
 
+        print('Send file {} with lenght'.format(filename, len(content)))   
+        
         with socket.socket() as conn:
             conn.connect(('secret-service.kurlyandia-gov.com', 7777))
 
