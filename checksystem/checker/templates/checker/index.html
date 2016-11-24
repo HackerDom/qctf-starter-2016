@@ -4,14 +4,13 @@
 
 {% block content %}
   <div class="tim-title">
-    <h2>Tasks</h2>
     {% for task in tasks %}
       <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}" id="card-{{ task.pk }}">
         <div class="stamp"></div>
         <h4 class="card-title">{{ task.title }}</h4>
         <h5 class="card-title">Стоимость: {{ task.price }}$</h5>
-        <p class="card-text">{{ task.description|safe|truncatewords:25 }}</p>
-        <center><button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal-{{ task.pk }}">Подробнее...</button></center>
+        <p class="card-text">{{ task.description|safe|truncatechars:185 }}</p>
+        <center><button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal-{{ task.pk }}">Подробнее</button></center>
       </div>
       <div class="modal fade {% if user.team in task.teams.all %}task-solved-modal{% endif %}" id="modal-{{ task.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ task.pk }}" aria-hidden="true">
         <div class="modal-dialog" role="document">

@@ -12,8 +12,13 @@ class Task(models.Model):
     price = models.PositiveIntegerField()
     teams = models.ManyToManyField(Team, related_name='tasks', blank=True)
 
+    default_flag = models.CharField(blank=True, default='', max_length=100)
+
     correct_flag_message = models.TextField()
     wrong_flag_message = models.TextField()
+
+    class Meta:
+        ordering = ['price']
 
     def __str__(self):
         return self.title
@@ -26,7 +31,7 @@ class Task(models.Model):
     def _get_flag(self, team):
         flag = Flag.objects.filter(team=team, task=self).first()
         if flag is None:
-            return None
+            return self.default_flag if self.default_flag else None
         return flag.flag
 
     def is_solved(self, team):

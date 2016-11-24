@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="tim-title">
-  <h2>Hints</h2>
   {% for task in tasks %}
     {% if user.team not in task.teams.all %}
       <h3>{{ task.title }}</h3>

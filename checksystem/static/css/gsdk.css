@@ -2009,8 +2009,8 @@ input.ct-red + span + label + span.switch-right {
     margin-bottom: 0; } }
 
 .nav-data {
-    padding-top: 26px;
-    margin-right: 16px;   
+    padding-top: 24px;
+    margin-right: 16px;
 }
 
 .nav-data li {
@@ -2029,4 +2029,8 @@ input.ct-red + span + label + span.switch-right {
 
 td {
     color: #eee;
+}
+
+.tim-container {
+  padding-bottom: 20px;
 }
