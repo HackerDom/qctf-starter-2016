@@ -18,4 +18,4 @@ DST="$DST/deploy/simple-web"
 cp $SRC/docker-compose.yml $DST/docker-compose.yml
 cp $SRC/nginx.conf /etc/nginx/nginx.conf
 cp $SRC/compose-simple-web.service \
-  /etc/systemd/system/multi-user.target.wants/
+  /etc/systemd/system/compose-simple-web.service
