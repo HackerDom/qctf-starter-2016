@@ -9,6 +9,7 @@ from django.conf import settings
 
 
 class Team(models.Model):
+    name = models.CharField(max_length=100)
     balance = models.PositiveIntegerField(default=0)
     tasks_number = models.PositiveIntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -16,10 +17,10 @@ class Team(models.Model):
     start_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.user.username
+        return self.name
 
     def get_name(self):
-        return self.user.username
+        return self.name
 
     def spend_money(self, number):
         self.balance -= number

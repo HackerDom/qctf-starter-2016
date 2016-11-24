@@ -17,7 +17,7 @@
                             <img src="/static/img/logo.gif">
                         </div>
                         <div class="brand">
-                            QCTF Checksystem
+                            {% if user.is_authenticated %}{{ user.team.get_name }}{% else %}QCTF Checksystem{% endif %}
                         </div>
                     </div>
                 </a>
