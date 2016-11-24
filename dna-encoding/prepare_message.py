@@ -19,7 +19,7 @@ if __name__ == '__main__':
         sample_idx = random.randint(1, 5)
         image_path = os.path.join(
             SAMPLES_PATH, '{}{}.bmp'.format(c, sample_idx))
-        
+
         letter_image = Image.open(image_path).convert('RGBA')
         rotate_angle = random.randint(-ROTATE_LIMIT, ROTATE_LIMIT)
         letter_image = letter_image.rotate(rotate_angle)
@@ -30,4 +30,3 @@ if __name__ == '__main__':
         result_img.save(
             os.path.join(MESSAGE_PATH, '{:02d}.bmp'.format(idx)))
         idx += 1
-
