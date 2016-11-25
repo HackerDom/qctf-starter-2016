@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+
+import logging
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
@@ -26,6 +28,8 @@ class Task(models.Model):
         return self.title
 
     def _check_flag(self, team, flag):
+        logging.warning('Team {}({}) tried to submit flag {}'.format(
+            team.name, team.pk, flag))
         is_stolen = Flag.objects.filter(flag__iexact=flag) \
                                 .exclude(team=team).exists()
         if is_stolen:
