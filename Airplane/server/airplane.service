@@ -3,8 +3,8 @@ Description=QCTF task 'Airplane'
 After=network.target
 
 [Service]
-ExecStart=python3 server.py
-RootDirectory=/root/qctf-starter-2016/Airplane/server/
+ExecStart=/usr/bin/env python3 server.py
+WorkingDirectory=/root/qctf-starter-2016/Airplane/server/
 Restart=always
 Type=simple
 
