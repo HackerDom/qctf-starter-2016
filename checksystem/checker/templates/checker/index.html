@@ -39,7 +39,7 @@
                   </div>
                   <div class="modal-footer">
                     <div class="form-group">
-                      <input type="text" class="form-control flag-input-{{ task.pk }}" placeholder="Флаг">
+                      <input task-id="{{ task.pk }}" type="text" class="form-control flag-input flag-input-{{ task.pk }}" placeholder="Флаг">
                       <span id="task-{{ task.pk }}-status"></span>
                     </div>
                     <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Отправить</button>
@@ -73,9 +73,7 @@
         }
       });
 
-
-      $('.submit-flag-button').click(function() {
-        var task_id = $(this).attr('task-id');
+      function send_flag(task_id) {
         var flag = $('.flag-input-' + task_id).val();
         $.ajax({
           type: "POST",
@@ -98,6 +96,18 @@
           },
           dataType: 'json'
         });
+      }
+
+      $('.submit-flag-button').click(function() {
+        var task_id = $(this).attr('task-id');
+        send_flag(task_id);
+      });
+
+      $(".flag-input").keyup(function(event) {
+        if (event.keyCode === 13) {
+          var task_id = $(this).attr('task-id');
+          send_flag(task_id);
+        }
       });
     });
   </script>
