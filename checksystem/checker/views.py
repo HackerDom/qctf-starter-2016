@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, Http404
 from django.utils import timezone
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import Task, Hint
 from cabinet.models import Team
 
@@ -55,3 +56,12 @@ def buy_hint(request, hint_id):
     hint.buy(team)
     return JsonResponse({'error': False, 'balance': team.balance,
                          'hint': hint.get_hint_text(team)})
+
+
+@staff_member_required
+@login_required
+def admin_scoreboard(request):
+    teams = Team.objects.all()
+    tasks = Task.objects.all()
+    return render(request, 'checker/admin_scoreboard.html', {'teams': teams,
+                                                             'tasks': tasks})

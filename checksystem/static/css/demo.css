@@ -560,3 +560,12 @@ td {
 .read-clar {
   opacity: 0.5;
 }
+
+.scoreboard-solved {
+  font-weight: bold;
+  text-align: center;
+}
+
+.admin-scoreboard th,td {
+  text-align: center;
+}

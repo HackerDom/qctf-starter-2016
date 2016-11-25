@@ -1,0 +1,37 @@
+{% extends "qctf_checksystem/base.html" %}
+
+{% block title %}Результаты{% endblock %}
+
+{% block content %}
+  <div class="tim-title">
+      <table class="table table-striped admin-scoreboard">
+        <thead>
+          <tr>
+            <th></th>
+            {% for task in tasks %}
+              <th>{{ task.title }}</th>
+            {% endfor %}
+            <th>Количество</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for team in teams %}
+            <tr>
+              <th>{{ team.get_name }}</th>
+              {% for task in tasks %}
+                {% if team in task.teams.all %}<td class="scoreboard-solved">+</td>{% else %}<td></td>{% endif %}
+              {% endfor %}
+              <td>{{ team.tasks.all.count }}</td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <th>Статистика</th>
+            {% for task in tasks %}
+              <th class="scoreboard-solved">{{ task.teams.count }}</th>
+            {% endfor %}
+            <th></th>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+{% endblock %}

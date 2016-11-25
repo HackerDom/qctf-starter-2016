@@ -9,4 +9,7 @@ urlpatterns = [
         name='check_flag'),
     url(r'^hints/(?P<hint_id>\d+)/buy/$', views.buy_hint,
         name='buy_hint'),
+    url(r'^scoreboard/admin/$', views.admin_scoreboard,
+        name='admin_scoreboard'),
+
 ]
