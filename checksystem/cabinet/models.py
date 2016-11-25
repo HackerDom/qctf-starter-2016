@@ -20,8 +20,8 @@ class Region(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=100, default='')
-    balance = models.PositiveIntegerField(default=0)
-    tasks_number = models.PositiveIntegerField(default=0)
+    balance = models.IntegerField(default=0)
+    tasks_number = models.IntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     replace_info = models.TextField(blank=True, default='[]')
     region = models.ForeignKey(Region, null=True, blank=True)
