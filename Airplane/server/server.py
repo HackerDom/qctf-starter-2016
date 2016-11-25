@@ -3,8 +3,38 @@ import asyncio
 import logging
 import traceback
 
+import statsd
+
 from game import Game, Action
 from constants import *
+
+
+class StatsdSender:
+    def __init__(self, statsd_client):
+        self.client = statsd_client
+        self.restarts_counter = statsd_client.get_client(name='restarts', class_=statsd.Counter)
+        self.command_counter = statsd_client.get_client(name='commands', class_=statsd.Counter)
+        self.response_counter = statsd_client.get_client(name='responses', class_=statsd.Counter)
+        self.connection_counter = statsd_client.get_client(name='connections', class_=statsd.Counter)
+        self.flags_counter = statsd_client.get_client(name='flags', class_=statsd.Counter)
+
+    def restarted(self):
+        self.restarts_counter += 1
+
+    def command_received(self):
+        self.command_counter += 1
+
+    def response_sent(self):
+        self.response_counter += 1
+
+    def flag_sent(self):
+        self.flags_counter += 1
+
+    def connection_opened(self):
+        self.connection_counter += 1
+
+    def connection_closed(self):
+        self.connection_counter -= 1
 
 
 async def read_command(reader):
@@ -13,8 +43,8 @@ async def read_command(reader):
         command = await reader.read(1)
     return command
 
-
-async def handle_connection(reader, writer, logger):
+async def handle_connection(reader, writer, logger, statsd_sender):
+    statsd_sender.connection_opened()
     host, port = writer.get_extra_info('peername')
     if logger:
         logger.debug('New connection: {}:{}'.format(host, port))
@@ -22,16 +52,21 @@ async def handle_connection(reader, writer, logger):
         game = Game()
         while True:
             writer.write(b'\n' * 100 + game.draw().encode() + b'\n')
+            statsd_sender.response_sent()
+            if game.draw_flag:
+                statsd_sender.flag_sent()
 
             if game.game_over or game.draw_flag:
                 break
             if game.show_help:
                 await reader.readline()
+                statsd_sender.command_received()
                 game.tick(None)
                 continue
 
             try:
                 command = await asyncio.wait_for(read_command(reader), timeout=NO_INPUT_TIMEOUT)
+                statsd_sender.command_received()
                 if not command:
                     if logger:
                         logger.debug('Connection closed by remote peer: {}:{}'.format(host, port))
@@ -50,20 +85,22 @@ async def handle_connection(reader, writer, logger):
                 break
     finally:
         writer.close()
+        statsd_sender.connection_closed()
 
 
-def run_server(port, logger):
+def run_server(port, logger, statsd_sender):
     while True:
         try:
             loop = asyncio.get_event_loop()
             server = loop.run_until_complete(
                 asyncio.start_server(
-                    lambda r, w: handle_connection(r, w, logger),
+                    lambda r, w: handle_connection(r, w, logger, statsd_sender),
                     port=port,
                     loop=loop))
             if logger:
                 logger.info('Listening on 0.0.0.0:{}...'.format(port))
             try:
+                statsd_sender.restarted()
                 loop.run_forever()
             finally:
                 server.close()
@@ -94,7 +131,14 @@ def main():
 
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     logger = logging.getLogger('airplane-server')
-    run_server(port, logger)
+
+    statsd_connection = statsd.Connection(
+        host=STATSD_HOST,
+        port=STATSD_PORT)
+    statsd_client = statsd.Client(STATSD_NAMESPACE, statsd_connection)
+    statsd_sender = StatsdSender(statsd_client)
+
+    run_server(port, logger, statsd_sender)
 
 
 if __name__ == '__main__':

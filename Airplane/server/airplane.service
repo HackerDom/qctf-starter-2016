@@ -1,0 +1,12 @@
+[Unit]
+Description=QCTF task 'Airplane'
+After=network.target
+
+[Service]
+ExecStart=python3 server.py
+RootDirectory=/root/qctf-starter-2016/Airplane/server/
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
