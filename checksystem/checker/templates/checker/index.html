@@ -7,56 +7,54 @@
     {% if not user.team.contest_started %}
       <h2>Дождитесь начала контеста</h2>
     {% else %}
-      <div class="card wide-card card-block task-block">
-        <div class="card-title">
-          <h4 class="card-title">
-            <span>Легенда</span>
-          </h4>
-        </div>
-        <p class="card-text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tempor vulputate laoreet. Cras elit tellus, congue ut ante quis, vehicula tincidunt diam. In et sem a arcu facilisis consequat. Donec at venenatis lacus. Mauris blandit sed eros id eleifend. Duis aliquet purus id enim rutrum congue. Suspendisse vulputate hendrerit mauris, nec porttitor nunc bibendum quis. Sed dignissim ut ante quis rutrum. Fusce facilisis vulputate nulla at porttitor. Maecenas lobortis nec tellus in consectetur. Etiam sit amet tristique quam. Vestibulum auctor sagittis mi, quis venenatis tortor. Pellentesque sagittis elit vel tellus mattis, quis vulputate lectus feugiat. Nulla ut fringilla orci.
-        </p>
-        <p>
-          Nunc elit arcu, dignissim eu nunc ac, volutpat tincidunt sem. Donec non eros pretium, elementum ipsum vel, vulputate lacus
-        </p>
-      </div>
       {% for task in tasks %}
         {% if not task.parent or user.team in task.parent.teams.all %}
-          <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}" id="card-{{ task.pk }}" data-toggle="modal" data-target="#modal-{{ task.pk }}">
-            <div class="card-title">
-              <h4 class="card-title">
-                <span>{{ task.title }}</span>
-                <span class="pull-right">{{ task.price }} <i class="fa fa-bitcoin"></i></span>
-              </h4>
-              {# <h5 class="card-title">Стоимость: {{ task.price }} $</h5> #}
+          {% if forloop.first %}
+            <div class="row">
+          {% endif %}
+          <div class="col-xs-4">
+            <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}" id="card-{{ task.pk }}" data-toggle="modal" data-target="#modal-{{ task.pk }}">
+              <div class="card-title">
+                <h4 class="card-title">
+                  <span>{{ task.title }}</span>
+                  <span class="pull-right">{{ task.price }} <i class="fa fa-bitcoin"></i></span>
+                </h4>
+                {# <h5 class="card-title">Стоимость: {{ task.price }} $</h5> #}
+              </div>
+              <p class="card-text">{{ task.description|safe|truncatechars_html:185 }}</p>
             </div>
-            <p class="card-text">{{ task.description|safe|truncatechars_html:185 }}</p>
-          </div>
-          <div class="modal fade {% if user.team in task.teams.all %}task-solved-modal{% endif %}" id="modal-{{ task.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ task.pk }}" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content task-modal">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <h4 class="modal-title" id="modalLabel-{{ task.pk }}">{{ task.title }}</h4>
-                  <span>Решили {{ task.teams.count }} команд.</span>
-                </div>
-                <div class="modal-body">
-                  <div class="stamp"></div>
-                  {{ task.description|safe }}
-                </div>
-                <div class="modal-footer">
-                  <div class="form-group">
-                    <input type="text" class="form-control flag-input-{{ task.pk }}" placeholder="Флаг">
-                    <span id="task-{{ task.pk }}-status"></span>
+            <div class="modal fade {% if user.team in task.teams.all %}task-solved-modal{% endif %}" id="modal-{{ task.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ task.pk }}" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content task-modal">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabel-{{ task.pk }}">{{ task.title }}</h4>
+                    <span>Решили {{ task.teams.count }} команд.</span>
                   </div>
-                  <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Отправить</button>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                  <div class="modal-body">
+                    <div class="stamp"></div>
+                    {{ task.description|safe }}
+                  </div>
+                  <div class="modal-footer">
+                    <div class="form-group">
+                      <input type="text" class="form-control flag-input-{{ task.pk }}" placeholder="Флаг">
+                      <span id="task-{{ task.pk }}-status"></span>
+                    </div>
+                    <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Отправить</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          {% if forloop.counter|divisibleby:3 %}
+            </div><div class="row">
+          {% endif %}
+          {% if forloop.last %}
+            </div>
+          {% endif %}
         {% endif %}
       {% endfor %}
     {% endif %}
