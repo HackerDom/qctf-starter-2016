@@ -10,6 +10,7 @@ from django.conf import settings
 
 class Region(models.Model):
     name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, blank=True, default='')
     start_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -17,12 +18,13 @@ class Region(models.Model):
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, default='')
     balance = models.PositiveIntegerField(default=0)
     tasks_number = models.PositiveIntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     replace_info = models.TextField(blank=True, default='[]')
-    region = models.ForeignKey(Region)
+    region = models.ForeignKey(Region, null=True, blank=True)
+    is_visible = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -38,7 +40,8 @@ class Team(models.Model):
         self.save()
 
     def get_place(self):
-        teams = Team.objects.filter(tasks_number__gt=self.tasks_number).count()
+        teams = Team.objects.filter(tasks_number__gt=self.tasks_number,
+                                    is_visible=True).count()
         return teams + 1
 
     def contest_started(self):

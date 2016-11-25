@@ -25,9 +25,8 @@ def check_flag(request, task_id):
     return JsonResponse(result)
 
 
-@login_required
 def scoreboard(request):
-    teams = Team.objects.all().order_by('-balance')
+    teams = Team.objects.filter(is_visible=True).order_by('-balance')
     return render(request, 'checker/scoreboard.html', {'teams': teams})
 
 
