@@ -26,7 +26,8 @@ def check_flag(request, task_id):
 
 
 def scoreboard(request):
-    teams = Team.objects.filter(is_visible=True).order_by('-balance')
+    teams = Team.objects.filter(is_visible=True).order_by(
+        '-balance', 'sumbit_time', 'pk')
     return render(request, 'checker/scoreboard.html', {'teams': teams})
 
 

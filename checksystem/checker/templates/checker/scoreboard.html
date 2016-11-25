@@ -18,7 +18,7 @@
         <tbody>
           {% for team in teams %}
             <tr>
-              <td>{{ team.get_place }}</td>
+              <td>{{ forloop.counter }}</td>
               <td>{{ team.get_name }}</td>
               <td>{{ team.balance }}</td>
               <td>{{ team.tasks_number }}</td>

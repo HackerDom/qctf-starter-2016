@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from datetime import timedelta
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -25,6 +26,7 @@ class Team(models.Model):
     replace_info = models.TextField(blank=True, default='[]')
     region = models.ForeignKey(Region, null=True, blank=True)
     is_visible = models.BooleanField(default=False)
+    sumbit_time = models.DurationField(default=timedelta())
 
     def __str__(self):
         return self.name

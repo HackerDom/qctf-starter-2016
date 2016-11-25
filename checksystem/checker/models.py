@@ -26,6 +26,7 @@ class Task(models.Model):
         return self.title
 
     def _award_team(self, team):
+        team.sumbit_time = timezone.now() - team.get_start_time()
         team.tasks_number += 1
         team.balance += self.price
         team.save()
