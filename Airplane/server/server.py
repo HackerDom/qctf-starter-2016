@@ -52,6 +52,7 @@ async def handle_connection(reader, writer, logger, statsd_sender):
         game = Game()
         while True:
             writer.write(b'\n' * 100 + game.draw().encode() + b'\n')
+            await asyncio.sleep(MIN_TICK_LENGTH)
             statsd_sender.response_sent()
             if game.draw_flag:
                 statsd_sender.flag_sent()
