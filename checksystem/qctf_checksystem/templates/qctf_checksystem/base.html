@@ -117,6 +117,13 @@
             }
         });
     </script>
+    {% if request.first_visit %}
+      <script>
+        $( document ).ready(function() {
+          $('#legend-modal').modal('show');
+        });
+      </script>
+    {% endif %}
     {% block scripts %}{% endblock %}
   </body>
 </html>
