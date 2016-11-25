@@ -17,7 +17,7 @@
                             <img src="/static/img/logo.gif">
                         </div>
                         <div class="brand">
-                            {% if user.is_authenticated %}{{ user.team.get_name|safe|truncatechars_html:185 }}{% else %}QCTF{% endif %}
+                            {% if user.is_authenticated %}{{ user.team.get_name|truncatechars_html:25 }}{% else %}QCTF{% endif %}
                         </div>
                     </div>
                 </a>
