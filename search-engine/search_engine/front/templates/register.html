@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% block body %}
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -11,11 +12,13 @@
 {% endwith %}
 
 <form method="post">
-    <label for="login">Login:</label>
-    <input name="login" id="login" autofocus>
+    <label for="username">Имя пользователя:</label>
+    <input name="username" id="username" autofocus>
 
-    <label for="password">Password:</label>
+    <label for="password">Пароль:</label>
     <input name="password" id="password" type="password">
 
-    <input type="submit" value="Register">
+    <input type="submit" value="Зарегистроваться">
 </form>
+
+{% endblock %}

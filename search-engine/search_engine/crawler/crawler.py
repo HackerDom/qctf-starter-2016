@@ -1,5 +1,6 @@
 import logging
 import time
+import traceback
 
 import requests
 from pyquery import PyQuery
@@ -29,45 +30,50 @@ class Crawler:
         processed_link = self._links.select_next()
         if processed_link is None:
             return False
-        user = processed_link['user']
+        username = processed_link['username']
         url = processed_link['url']
 
         try:
-            content = requests.get(url, timeout=Crawler._REQUEST_TIMEOUT).content
+            response = requests.get(url, timeout=Crawler._REQUEST_TIMEOUT)
+            if response.status_code != 200:
+                self._links.update_status(username, url, 'failed', reason=response.status_code)
+                return True
+
+            content = response.content
             if len(content) > Crawler._MAX_PAGE_SIZE:
                 raise ValueError('Too big page ({} bytes)'.format(len(content)))
 
             d = PyQuery(content)
+            d.remove('script, style')
+            title = d('title').text()
+            body = d('body')
+            text = (body if body else d).text()
 
-            texts = [el.strip() for el in d('body :not(script):not(style)').contents() if isinstance(el, str)]
-            texts = [el for el in texts if el]
-            texts = texts[:Crawler._MAX_TEXT_NODES]
+            self._texts.save(username, url, title, text)
 
-            self._texts.save(user, url, texts)
-
-            message = '@{}: {} crawled, {} text nodes indexed'.format(user, url, len(texts))
+            message = '@{}: {} crawled'.format(username, url)
 
             if processed_link['distance'] < Crawler._MAX_DEPTH:
                 links = [url for url in d('a[href]').map(lambda _, el: d(el).attr('href'))
                          if url.startswith('http://') or url.startswith('https://')]
                 links = links[:Crawler._MAX_LINKS]
 
-                self._links.save(user, links, processed_link['distance'] + 1, force_status=False)
+                self._links.save(username, links, processed_link['distance'] + 1, force_status=False)
 
                 message += ', {} links added'.format(len(links))
 
-            self._links.update_status(user, url, 'crawled')
+            self._links.update_status(username, url, 'crawled')
             self._logger.info(message)
         except Exception as e:
-            self._links.update_status(user, url, 'failed', reason='{}: {}'.format(type(e).__name__, e))
-            self._logger.warning('Exception on requesting page: %s', e)
+            self._links.update_status(username, url, 'failed', reason='{}: {}'.format(type(e).__name__, e))
 
+            self._logger.warning('Exception on requesting page: %s', e)
+            traceback.print_exc()
         return True
 
     _MAX_DEPTH = 2
 
     _MAX_PAGE_SIZE = 1024 * 1024
-    _MAX_TEXT_NODES = 100
     _MAX_LINKS = 20
 
     _REQUEST_TIMEOUT = 3

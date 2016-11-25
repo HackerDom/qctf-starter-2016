@@ -14,24 +14,32 @@ class LinkDAO:
 
     def setup(self):
         self._collection.create_index([
+            ('status', pymongo.ASCENDING),
             ('distance', pymongo.ASCENDING),
             ('add_time', pymongo.ASCENDING),
         ])
+        self._collection.create_index([
+            ('username', pymongo.ASCENDING),
+            ('add_time', pymongo.DESCENDING),
+        ])
 
     def select_next(self) -> Optional[dict]:
-        return self._collection.find_one_and_update({}, sort=[
+        return self._collection.find_one_and_update({
+            'status': 'queued',
+        }, sort=[
             ('distance', pymongo.ASCENDING),
             ('add_time', pymongo.ASCENDING),
         ], update={
-            'status': 'processing',
+            '$set': {
+                'status': 'processing',
+            },
         })
 
     @staticmethod
-    def _get_id(user: str, url: str) -> bytes:
-        # Such ids guarantee fast maintenance of uniqueness
-        return sha1((user + '$' + url).encode()).digest()
+    def _get_id(username: str, url: str) -> bytes:
+        return sha1((username + '$' + url).encode()).digest()[:12]
 
-    def save(self, user: str, links: List[str], distance: int, *, force_status: bool):
+    def save(self, username: str, links: List[str], distance: int, *, force_status: bool):
         requests = []
         for url in links:
             body = {
@@ -40,23 +48,32 @@ class LinkDAO:
                 },
                 '$setOnInsert': {
                     'url': url,
-                    'user': user,
+                    'username': username,
                 },
             }
-            body['$set' if force_status else '$setOnInsert'].update({
+            status_set_body = {
                 'add_time': datetime.utcnow(),
                 'status': 'queued',
-            })
+            }
+            if force_status:
+                body['$set'] = status_set_body
+            else:
+                body['$setOnInsert'].update(status_set_body)
 
-            requests.append(pymongo.UpdateOne({'_id': LinkDAO._get_id(user, url)}, body, upsert=True))
-        self._collection.bulk_write(requests, ordered=False)
+            requests.append(pymongo.UpdateOne({'_id': LinkDAO._get_id(username, url)}, body, upsert=True))
+        if requests:
+            self._collection.bulk_write(requests, ordered=False)
 
-    def update_status(self, user: str, url: str, status: str, *, reason: str=None):
-        body = {'status': status}
+    def update_status(self, username: str, url: str, status: str, *, reason: str=None):
+        body = {
+            '$set': {
+                'status': status,
+            },
+        }
         if reason is not None:
-            body['status_reason'] = reason
+            body['$set']['status_reason'] = reason
 
-        self._collection.update_one({'_id': LinkDAO._get_id(user, url)}, body)
+        self._collection.update_one({'_id': LinkDAO._get_id(username, url)}, body)
 
-    def get_by_user(self, user: str) -> List[dict]:
-        return self._collection.find({'user': user}, sort=[('add_time', pymongo.DESCENDING)])
+    def get_by_user(self, username: str) -> List[dict]:
+        return self._collection.find({'username': username}, sort=[('add_time', pymongo.DESCENDING)])

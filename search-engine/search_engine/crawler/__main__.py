@@ -12,7 +12,7 @@ logging.basicConfig(format='%(levelname)s\t%(asctime)s\t%(name)s\t%(message)s', 
 
 
 def main():
-    es = Elasticsearch(timeout=30)
+    es = Elasticsearch(settings.ES_HOSTS, timeout=30)
     mongo = MongoClient(settings.MONGO_URI)[settings.MONGO_DB_NAME]
 
     links = db.LinkDAO(mongo)

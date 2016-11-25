@@ -1,7 +1,5 @@
 from hashlib import sha1
-from typing import List
 
-import elasticsearch.helpers
 from elasticsearch import Elasticsearch
 
 from search_engine import settings
@@ -26,22 +24,20 @@ class TextDAO:
                     },
                 },
             },
-        })
+        }, ignore=400)  # Ignore IndexAlreadyExistsException
 
     _TYPE_PREFIX = 'user_'
 
-    def save(self, user: str, url: str, texts: List[str]):
-        es_requests = [{
-            '_index': settings.ES_INDEX_NAME,
-            '_type': TextDAO._TYPE_PREFIX + user,
-            '_id': sha1(text.encode()).hexdigest(),  # Such ids guarantee fast maintenance of uniqueness
-            'url': url,
-            'user': user,
+    def save(self, username: str, url: str, title: str, text: str):
+        body = {
+            'title': title,
             'text': text,
-        } for text in texts]
-        elasticsearch.helpers.bulk(self._es, es_requests)
+            'url': url,
+        }
+        self._es.index(index=settings.ES_INDEX_NAME, doc_type=TextDAO._TYPE_PREFIX + username,
+                       id=sha1(url.encode()).hexdigest(), body=body)
 
-    def search(self, user: str, query: str) -> List[dict]:
+    def search(self, username: str, query: str) -> dict:
         body = {
             "query": {
                 "match": {
@@ -50,9 +46,12 @@ class TextDAO:
             },
             "highlight": {
                 "fields": {
-                    "text": {}
+                    "text": {
+                        "fragment_size": 150
+                    }
                 }
             }
         }
-        result = self._es.search(index='messages', doc_type=TextDAO._TYPE_PREFIX + user, body=body, size=20)
-        return result['hits']['hits']
+        result = self._es.search(index=settings.ES_INDEX_NAME, doc_type=TextDAO._TYPE_PREFIX + username,
+                                 body=body, size=20)
+        return result['hits']

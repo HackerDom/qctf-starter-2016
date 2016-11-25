@@ -12,5 +12,5 @@ class UserDAO:
         result = self._collection.update_one({'_id': user['_id']}, {'$setOnInsert': user}, upsert=True)
         return result.upserted_id is not None
 
-    def find(self, login: str) -> Optional[dict]:
-        return self._collection.find_one({'_id': login})
+    def find(self, username: str) -> Optional[dict]:
+        return self._collection.find_one({'_id': username})

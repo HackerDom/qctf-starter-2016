@@ -1,20 +1,41 @@
 {% extends "layout.html" %}
+{% block body %}
 
-<h2>Search</h2>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class=flashes>
+    {% for category, message in messages %}
+    <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<h2>Поиск</h2>
 <form action="{{ url_for('search') }}">
-    <label for="query">Query:</label>
+    <label for="query">Запрос:</label>
     <input name="query" id="query">
-    <input type="submit" value="Search">
+    <input type="submit" value="Искать">
 </form>
 
-<h2>Crawl</h2>
-<form action="{{ url_for('crawl') }}" method="post">
+<h2>Запуск обхода страниц</h2>
+<form action="{{ url_for('crawl_submit') }}" method="post">
     <label for="url">URL:</label>
-    <input name="url" id="url">
-    <input type="submit" value="Crawl">
+    <input name="url" id="url" value="http://">
+    <input type="submit" value="Запустить">
 </form>
+<p>При запуске нового обхода ваша предыдущая поисковая БД будет очищена.</p>
 
-<h2>State</h2>
-{% for link in user_links %}
-<pre>{{ link }}</pre>
-{% endfor %}
+<h2>Состояние</h2>
+<table>
+    {% for link in user_links %}
+    <tr>
+        <td>{{ link.add_time }}</td>
+        <td>{{ link.url }}</td>
+        <td>{{ link.status }}</td>
+        <td>{{ link.distance }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

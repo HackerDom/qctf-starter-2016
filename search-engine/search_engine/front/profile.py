@@ -1,3 +1,5 @@
+import re
+
 from flask import flash, render_template, redirect, request, session, url_for
 
 from search_engine.front import app, links, texts
@@ -7,7 +9,7 @@ from search_engine.front.auth import login_required
 @app.route('/')
 @login_required
 def index():
-    user_links = links.get_by_user(session['login'])
+    user_links = links.get_by_user(session['username'])
     return render_template('index.html', user_links=user_links)
 
 
@@ -19,8 +21,11 @@ def search():
         flash('Поисковый запрос не введён', 'error')
         return redirect(url_for('index'))
 
-    results = texts.search(query)
-    return render_template('search.html', results=results)
+    hits = texts.search(session['username'], query)
+    for item in hits['hits']:
+        highlighted = ' … '.join(item['highlight']['text'])
+        item['highlighted'] = re.sub(r'<(/?)em>', r'<\1strong>', highlighted)
+    return render_template('search.html', query=query, hits=hits)
 
 
 @app.route('/crawl', methods=['POST'])
@@ -37,5 +42,5 @@ def crawl_submit():
         flash('Запрещено индексировать ресурсы внутренней сети')
         return redirect(url_for('index'))
 
-    links.save(session['url'], [url], 0, force_status=True)
+    links.save(session['username'], [url], 0, force_status=True)
     return redirect(url_for('index'))

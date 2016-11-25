@@ -1,3 +1,13 @@
 {% extends "layout.html" %}
+{% block body %}
 
-<h2>Search for something</h2>
+<p>Найдено {{ hits.total }} результатов по запросу <strong>{{ query }}</strong></p>
+
+{% for item in hits.hits %}
+<section>
+    <p><a href="{{ item._source.url }}">{{ item._source.title|default('Без заголовка', true) }}</a></p>
+    <p>{{ item.highlighted|safe }}</p>
+</section>
+{% endfor %}
+
+{% endblock %}

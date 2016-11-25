@@ -8,16 +8,14 @@
 <body>
     <header>
         <div>
-        {% if not session.login %}
-        <a href="{{ url_for('login') }}">Log in</a>
+        {% if not session.username %}
+        <a href="{{ url_for('register') }}">Регистрация</a>
+        <a href="{{ url_for('login') }}">Войти</a>
         {% else %}
-        <a href="{{ url_for('logout') }}">Log out</a>
+        <a href="{{ url_for('logout') }}">Выйти</a>
         {% endif %}
         </div>
     </header>
-    {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-    {% endfor %}
     {% block body %}{% endblock %}
 </body>
 </html>
