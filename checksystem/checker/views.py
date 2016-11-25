@@ -32,8 +32,9 @@ def scoreboard(request):
 
 @login_required
 def hints(request):
-    tasks = Task.objects.all()
-    return render(request, 'checker/hints.html', {'tasks': tasks})
+    hints = Hint.objects.all()
+    # tasks = Task.objects.all()
+    return render(request, 'checker/hints.html', {'hints': hints})
 
 
 @login_required

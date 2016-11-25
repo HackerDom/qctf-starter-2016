@@ -21,7 +21,7 @@
                 </h4>
                 {# <h5 class="card-title">Стоимость: {{ task.price }} $</h5> #}
               </div>
-              <p class="card-text">{{ task.description|safe|truncatechars_html:185 }}</p>
+              <div class="card-text">{{ task.description|safe|truncatechars_html:185 }}</div>
             </div>
             <div class="modal fade {% if user.team in task.teams.all %}task-solved-modal{% endif %}" id="modal-{{ task.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ task.pk }}" aria-hidden="true">
               <div class="modal-dialog" role="document">

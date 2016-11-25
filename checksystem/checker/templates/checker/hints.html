@@ -7,41 +7,35 @@
   {% if not user.team.contest_started %}
     <h2>Дождитесь начала контеста</h2>
   {% else %}
-    {% for task in tasks %}
-      {% if user.team not in task.teams.all and not task.parent or user.team not in task.teams.all and user.team in task.parent.teams.all %}
-        <h3>{{ task.title }}</h3>
-        <ul>
-          {% for hint in task.hint_set.all %}
-            <li><a href="#" class="open-hint-button" data-toggle="modal" data-target="#modal-{{ hint.pk }}">{{ hint.name }} ({% if user.team in hint.owners.all %}уже куплен{% else %}{{ hint.price }}$ {% endif %})</a></li>
+    {% for hint in hints %}
 
-            <div class="modal fade {% if user.team in hint.owners.all %}hint-bought-modal{% endif %}" id="modal-{{ hint.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ hint.pk }}" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content task-modal">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="modalLabel-{{ hint.pk }}">{{ hint.name }}</h4>
-                  </div>
-                  <div class="modal-body">
-                    <div id="hint-{{ hint.pk }}-content">
-                      {% if user.team in hint.owners.all %}
-                        {{ hint.text|safe }}
-                      {% else %}
-                        К сожалению, вы ещё не купили этот хинт.
-                      {% endif %}
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    {% if user.team not in hint.owners.all %}<button type="button" hint-id="{{ hint.pk }}" class="btn btn-success buy-hint-button">Buy hint</button>{% endif %}
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
+
+
+      <div class="modal fade {% if user.team in hint.owners.all %}hint-bought-modal{% endif %}" id="modal-{{ hint.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ hint.pk }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content task-modal">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="modalLabel-{{ hint.pk }}">{{ hint.name }}</h4>
+            </div>
+            <div class="modal-body">
+              <div id="hint-{{ hint.pk }}-content">
+                {% if user.team in hint.owners.all %}
+                  {{ hint.text|safe }}
+                {% else %}
+                  К сожалению, вы ещё не купили этот хинт.
+                {% endif %}
               </div>
             </div>
-          {% endfor %}
-        </ul>
-      {% endif %}
+            <div class="modal-footer">
+              {% if user.team not in hint.owners.all %}<button type="button" hint-id="{{ hint.pk }}" class="btn btn-success buy-hint-button">Buy hint</button>{% endif %}
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     {% endfor %}
   {% endif %}
 </div>

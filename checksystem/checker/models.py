@@ -77,7 +77,7 @@ class Task(models.Model):
 class Hint(models.Model):
     task = models.ForeignKey(Task)
     name = models.CharField(max_length=100)
-    # description = models.TextField(blank=True, default='')
+    description = models.TextField(blank=True, default='')
     price = models.PositiveIntegerField()
     text = models.TextField()
     owners = models.ManyToManyField(Team, related_name='hints', blank=True)
