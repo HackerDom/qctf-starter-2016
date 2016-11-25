@@ -28,6 +28,8 @@ class Team(models.Model):
     is_visible = models.BooleanField(default=False)
     sumbit_time = models.DurationField(default=timedelta())
 
+    stolen_flags = models.IntegerField(default=0)
+
     def __str__(self):
         return self.name
 

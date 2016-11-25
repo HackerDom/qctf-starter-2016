@@ -25,6 +25,13 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
+    def _check_flag(self, team, flag):
+        is_stolen = Flag.objects.filter(flag__iexact=flag) \
+                                .exclude(team=team).exists()
+        if is_stolen:
+            team.stolen_flags += 1
+            team.save()
+
     def _award_team(self, team):
         team.sumbit_time = timezone.now() - team.get_start_time()
         team.tasks_number += 1
@@ -46,6 +53,8 @@ class Task(models.Model):
 
     @transaction.atomic
     def submit_flag(self, team, flag):
+        self._check_flag(team, flag)
+
         need_refresh = False
         if not self._check_delay(team):
             return {'message': 'Please wait.', 'is_correct': False}
