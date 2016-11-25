@@ -10,7 +10,7 @@ mongo = MongoClient(settings.MONGO_URI)[settings.MONGO_DB_NAME]
 users = db.UserDAO(mongo)
 
 
-@app.route('/info/<login>', methods=['GET'])
+@app.route('/info/<login>')
 def get_info(login: str):
     user = users.find(login)
     if user is None:

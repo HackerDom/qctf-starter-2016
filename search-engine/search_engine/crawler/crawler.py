@@ -49,7 +49,7 @@ class Crawler:
 
             if processed_link['distance'] < Crawler._MAX_DEPTH:
                 links = [url for url in d('a[href]').map(lambda _, el: d(el).attr('href'))
-                         if any(url.startswith(proto + '://') for proto in Crawler._ALLOWED_PROTOCOLS)]
+                         if url.startswith('http://') or url.startswith('https://')]
                 links = links[:Crawler._MAX_LINKS]
 
                 self._links.save(user, links, processed_link['distance'] + 1, force_status=False)
@@ -71,5 +71,3 @@ class Crawler:
     _MAX_LINKS = 20
 
     _REQUEST_TIMEOUT = 3
-
-    _ALLOWED_PROTOCOLS = ['http', 'https']

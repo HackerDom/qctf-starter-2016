@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Правительственная поисковая система</title>
+</head>
+<body>
+    <header>
+        <div>
+        {% if not session.login %}
+        <a href="{{ url_for('login') }}">Log in</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}">Log out</a>
+        {% endif %}
+        </div>
+    </header>
+    {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block body %}{% endblock %}
+</body>
+</html>

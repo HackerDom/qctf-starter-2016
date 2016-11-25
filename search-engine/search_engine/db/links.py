@@ -57,3 +57,6 @@ class LinkDAO:
             body['status_reason'] = reason
 
         self._collection.update_one({'_id': LinkDAO._get_id(user, url)}, body)
+
+    def get_by_user(self, user: str) -> List[dict]:
+        return self._collection.find({'user': user}, sort=[('add_time', pymongo.DESCENDING)])
