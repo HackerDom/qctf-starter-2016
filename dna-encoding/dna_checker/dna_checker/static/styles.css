@@ -23,7 +23,7 @@ body {
 }
 
 
-#mainPanel form label, #mainPanel form input {
+#mainPanel form * {
     font-size: 40px;
     width: 450px;
     text-align: center;
@@ -32,12 +32,23 @@ body {
     margin-bottom: 5px;
 }
 
-#mainPanel form {
-    padding-top: 20px;
+#mainPanel form p.form-title {
+    width: 100%;
+    font-size: 30px;
+}
+
+#mainPanel form label {
+    font-size: 25px;
+}
+
+#mainPanel form p.err_msg {
+    width: 100%;
+    font-size: 20px;
+    color: red;
 }
 
 #mainPanel div {
-    padding-top: 50px;
+    padding-top: 75px;
 }
 
 #mainPanel div p {
@@ -49,23 +60,19 @@ body {
 }
 
 #mainPanel div p.flag {
-    font-size: 16px;
+    font-size: 18px;
 }
 
-#mainPanel form p.err_msg {
-    font-size: 16px;
-    color: red;
-}
 
 #mainPanel {
     background: #fff;
     position: fixed;
     width: 480px;
-    height: 230px;
+    height: 270px;
     left: 50%;
     top: 50%;
     margin-left: -240px;
-    margin-top: -115px;
+    margin-top: -135px;
     padding: 10px;
     border-radius: 3px;
     border: solid #a9b7e2 3px;
