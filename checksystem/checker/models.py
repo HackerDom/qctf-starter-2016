@@ -56,7 +56,7 @@ class Task(models.Model):
         if correct_flag is None:
             return {'message': 'No flag for you. :(', 'is_correct': False}
 
-        is_correct = correct_flag == flag
+        is_correct = correct_flag.lower() == flag.lower()
         message = self.correct_flag_message if is_correct else \
             self.wrong_flag_message
 

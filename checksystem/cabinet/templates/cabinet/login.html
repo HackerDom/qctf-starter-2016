@@ -1,6 +1,6 @@
 {% extends "qctf_checksystem/base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Авторизация{% endblock %}
 
 {% block content %}
   <div class="tim-title">
@@ -8,16 +8,16 @@
       <div class="col-xs-1 col-sm-3 col-md-4 col-lg-4 left-column vcenter"></div>
       <form class="col-xs-10 col-sm-6 col-md-4 col-lg-4 vcenter" method="post" action="">
         {% csrf_token %}
-        <h2>Login</h2>
+        <h2>Авторизация</h2>
         <div class="form-group">
-          <label for="email">Username:</label>
+          <label for="email">Логин:</label>
           <input class="form-control" autofocus id="id_username" maxlength="254" name="username" type="text" required>
         </div>
         <div class="form-group">
-          <label for="pwd">Password:</label>
+          <label for="pwd">Пароль:</label>
           <input class="form-control" id="id_password" name="password" type="password" required>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default">Войти</button>
       </form>
     </div>
   </div>

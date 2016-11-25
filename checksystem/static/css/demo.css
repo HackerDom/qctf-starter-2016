@@ -74,9 +74,10 @@ body {
     text-transform: capitalize;
 }
 
-.card{
+.card {
+    cursor: pointer;
     float: left;
-    height: 300px;
+    height: 260px;
     background-color: #1A1A1A;
     padding: 10px 0 20px;
     width: 100%;

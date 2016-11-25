@@ -1,6 +1,6 @@
 {% extends "qctf_checksystem/base.html" %}
 
-{% block title %}Checksystem{% endblock %}
+{% block title %}Правительство{% endblock %}
 
 {% block content %}
   <div class="tim-title">
@@ -9,48 +9,35 @@
     {% else %}
       {% for task in tasks %}
         {% if not task.parent or user.team in task.parent.teams.all %}
-          <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}" id="card-{{ task.pk }}">
+          <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}" id="card-{{ task.pk }}" data-toggle="modal" data-target="#modal-{{ task.pk }}">
             <div class="stamp"></div>
-            <h4 class="card-title">{{ task.title }}</h4>
-            <h5 class="card-title">Стоимость: {{ task.price }}$</h5>
+            <div class="card-title">
+              <h4 class="card-title">{{ task.title }}</h4>
+              <h5 class="card-title">Стоимость: {{ task.price }} $</h5>
+            </div>
             <p class="card-text">{{ task.description|safe|truncatechars_html:185 }}</p>
-            <center><button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#modal-{{ task.pk }}">Подробнее</button></center>
           </div>
           <div class="modal fade {% if user.team in task.teams.all %}task-solved-modal{% endif %}" id="modal-{{ task.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ task.pk }}" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content task-modal">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
                     <span aria-hidden="true">&times;</span>
                   </button>
                   <h4 class="modal-title" id="modalLabel-{{ task.pk }}">{{ task.title }}</h4>
-                  <span>Already solved by {{ task.teams.count }} team{{ task.teams.count|pluralize }}.</span>
+                  <span>Решили {{ task.teams.count }} команд.</span>
                 </div>
                 <div class="modal-body">
                   <div class="stamp"></div>
                   {{ task.description|safe }}
-                  <div class="form-group">
-                    <h4>Подсказки</h4>
-                    <ol>
-                      {% for hint in task.hint_set.all %}
-                        <li>
-                          {% if hint in user.team.hints.all %}
-                            {{ hint.text|safe }}
-                          {% else %}
-                            Вы можете купить {{ hint.name }} в <a href="hints/">магазине</a>.
-                          {% endif %}
-                        </li>
-                      {% endfor %}
-                    </ol>
-                  </div>
                 </div>
                 <div class="modal-footer">
                   <div class="form-group">
-                    <input type="text" class="form-control flag-input-{{ task.pk }}" placeholder="Flag">
+                    <input type="text" class="form-control flag-input-{{ task.pk }}" placeholder="Флаг">
                     <span id="task-{{ task.pk }}-status"></span>
                   </div>
-                  <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Submit flag</button>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Отправить</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                 </div>
               </div>
             </div>
@@ -58,28 +45,6 @@
         {% endif %}
       {% endfor %}
     {% endif %}
-
-    <div class="modal fade" id="solved-task-modal" role="dialog">
-      <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content task-modal">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Solved</h4>
-          </div>
-          <div class="modal-body">
-            <p id="solved-task-text">Some text in the modal.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-
   </div>
 
 {% endblock %}
@@ -99,7 +64,7 @@
             $("#task-" + task_id + "-status").text(data.message);
             $('#balance').text(data.balance);
             $('#flags-number').text(data.flags);
-            $("#task-" + task_id + "-status").fadeOut(2000, function() {});
+            $("#task-" + task_id + "-status").fadeOut(4000, function() {});
             if (data.is_correct) {
               $("#card-" + task_id).addClass("task-solved-block");
               $("#modal-" + task_id).addClass("task-solved-modal");
@@ -109,12 +74,5 @@
         });
       });
     });
-  </script>
-
-  <script>
-  function bsAlert(message) {
-      $("#solved-task-text").text(message);
-      $("#solved-task-modal").modal();
-  };
   </script>
 {% endblock %}
