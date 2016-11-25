@@ -514,3 +514,37 @@ td {
 .block img {
   width: 100%;
 }
+
+.help-icon {
+  cursor: pointer;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  font-size:35px;
+  background: #1A1A1A;
+  padding: 6px;
+
+  -webkit-border-radius: 1100%;
+  -moz-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+
+  border: 2px solid #E5E5E5;
+  color: #E5E5E5;
+
+  text-align: center;
+  display: fixed;
+  vertical-align: middle;
+
+  width: 60px;
+  height: 60px;
+  -moz-transition: .3s;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+}
+
+.help-icon:hover {
+  background-color: #E5E5E5;
+  color: #1A1A1A;
+}

@@ -11,6 +11,7 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ionicons.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/gsdk.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}" />
@@ -35,6 +36,35 @@
     <div class="main">
       <div class="container tim-container">
         {% block content %}{% endblock %}
+      </div>
+    </div>
+
+    <i class="ion-help help-icon" data-pack="default" data-tags="question, ?" data-toggle="modal" data-target="#legend-modal"></i>
+
+    <div id="legend-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Легенда</h4>
+          </div>
+          <div class="modal-body">
+            <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pharetra tellus sed eros tempor, at fermentum ante semper. Praesent eu dignissim magna. Praesent ex tellus, laoreet id nisi sed, tempus elementum lacus. Nunc dignissim odio in velit ullamcorper vehicula. Quisque commodo pulvinar mauris vel eleifend. Aliquam aliquet, quam sit amet pretium vestibulum, neque ligula elementum tortor, eget condimentum tellus mi eget massa. Aliquam erat nisl, ultricies gravida nibh vel, auctor suscipit augue.
+            </p>
+            <p>
+            Nullam eget sem eu lorem lacinia venenatis. Nullam sed maximus sapien. Quisque laoreet nibh id nisi consequat, sit amet feugiat purus egestas. Morbi non egestas turpis, sit amet imperdiet eros. Nam euismod, est id dictum ultrices, quam libero suscipit nisi, ac aliquet ex lorem id enim. Nam molestie tincidunt arcu, vel aliquam lacus consequat sed. Quisque diam purus, sagittis quis ante a, efficitur dignissim ex. Nullam interdum turpis at facilisis faucibus. Fusce elementum in purus a tempor. Proin dignissim dui quis tristique sagittis.
+            </p>
+            <p>
+            Fusce in feugiat lacus. In ut felis venenatis, tempus mi eget, malesuada ipsum. Ut commodo finibus fermentum. Maecenas risus tortor, vehicula in cursus tristique, gravida vitae purus. Aliquam erat volutpat. Fusce id ultrices orci. Pellentesque eu porttitor magna, vel cursus massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu viverra massa, at iaculis augue.
+            </p>
+            <p>
+            Donec vel elit dictum, scelerisque urna at, luctus nibh. Praesent rutrum eros lacus, vitae tincidunt odio pretium quis. Sed ac tortor nibh. Vestibulum condimentum, neque ut ullamcorper eleifend, tortor turpis pretium lorem, quis cursus urna orci id ex. Aliquam sed suscipit lectus, eget bibendum dolor. Aliquam non rutrum purus. Donec ac turpis efficitur, scelerisque dui a, eleifend arcu. Suspendisse scelerisque turpis eget tristique venenatis. Vivamus rhoncus odio sit amet nunc convallis vehicula. Nullam pharetra diam non enim vulputate, in porttitor nulla volutpat. Phasellus tincidunt nibh nibh, eget molestie tortor scelerisque ut. Pellentesque pharetra pulvinar risus nec vestibulum. Proin pulvinar felis nunc, et porta ipsum tincidunt non. Vivamus nisl justo, maximus id risus eget, laoreet mattis justo. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
