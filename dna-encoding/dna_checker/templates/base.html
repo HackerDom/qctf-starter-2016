@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Доступ к биологическому оружию</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='balls.js') }}"></script>
+</head>
+<body onload="init(12)" onresize="refreshSize()">
+    <div id="mainPanel">
+        {% block panel %}
+        {% endblock %}
+    </div>
+</body>
+</html>

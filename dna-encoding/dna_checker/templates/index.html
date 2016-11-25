@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block panel %}
+<form method="POST" action="/">
+    <label for="dnaCode">Введите код доступа:</label>
+    <input id="dnaCode" name="dnaCode" type="text" placeholder="AGCTAGCTAGCTAGCT" />
+    <input type="submit" value="Войти" />
+    <p class="err_msg">{{ err_msg }}</p>
+</form>
+{% endblock %}
