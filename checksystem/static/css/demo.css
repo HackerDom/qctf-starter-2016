@@ -78,7 +78,7 @@ body {
 .card {
     cursor: pointer;
     float: left;
-    height: 260px;
+    height: 220px;
     background-color: #1A1A1A;
     padding: 10px 0 20px;
     width: 100%;

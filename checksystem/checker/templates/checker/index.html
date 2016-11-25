@@ -26,7 +26,7 @@
             <div class="card-title">
               <h4 class="card-title">
                 <span>{{ task.title }}</span>
-                <span class="pull-right">{{ task.price }} <i class="fa fa-rouble"></i></span>
+                <span class="pull-right">{{ task.price }} <i class="fa fa-bitcoin"></i></span>
               </h4>
               {# <h5 class="card-title">Стоимость: {{ task.price }} $</h5> #}
             </div>
@@ -66,7 +66,16 @@
 
 {% block scripts %}
   <script>
+    var need_refresh = false;
     $(function() {
+      $('.modal').on('hidden.bs.modal', function () {
+        console.log(need_refresh);
+        if (need_refresh) {
+          location.reload();
+        }
+      });
+
+
       $('.submit-flag-button').click(function() {
         var task_id = $(this).attr('task-id');
         var flag = $('.flag-input-' + task_id).val();
@@ -75,12 +84,16 @@
           url: '/check_flag/' + task_id + '/',
           data: {flag: flag},
           success: function(data) {
+            if ('need_refresh' in data) {
+              need_refresh = data.need_refresh;
+            }
             $("#task-" + task_id + "-status").show();
             $("#task-" + task_id + "-status").text(data.message);
             $('#balance').text(data.balance);
             $('#flags-number').text(data.flags);
             $("#task-" + task_id + "-status").fadeOut(4000, function() {});
             if (data.is_correct) {
+              need_refresh = true;
               $("#card-" + task_id).addClass("task-solved-block");
               $("#modal-" + task_id).addClass("task-solved-modal");
             }

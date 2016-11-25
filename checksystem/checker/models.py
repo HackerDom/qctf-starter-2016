@@ -45,6 +45,7 @@ class Task(models.Model):
 
     @transaction.atomic
     def submit_flag(self, team, flag):
+        need_refresh = False
         if not self._check_delay(team):
             return {'message': 'Please wait.', 'is_correct': False}
         if team.contest_finished():
@@ -64,15 +65,19 @@ class Task(models.Model):
         submit.save()
 
         if not self.is_solved(team) and is_correct:
+            if self.children.count() > 0:
+                need_refresh = True
             self._award_team(team)
             self.teams.add(team)
 
-        return {'message': message, 'is_correct': is_correct}
+        return {'message': message, 'is_correct': is_correct,
+                'need_refresh': need_refresh}
 
 
 class Hint(models.Model):
     task = models.ForeignKey(Task)
     name = models.CharField(max_length=100)
+    # description = models.TextField(blank=True, default='')
     price = models.PositiveIntegerField()
     text = models.TextField()
     owners = models.ManyToManyField(Team, related_name='hints', blank=True)
