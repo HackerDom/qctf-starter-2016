@@ -9,7 +9,7 @@ from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from struct import pack, unpack, Struct
 
 
-LOCALHOST = '127.0.0.1'
+LOCALHOST = '0.0.0.0'
 
 
 class Server:
