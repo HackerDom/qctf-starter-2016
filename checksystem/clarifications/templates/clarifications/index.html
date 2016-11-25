@@ -1,0 +1,23 @@
+{% extends "qctf_checksystem/base.html" %}
+
+{% block title %}Сообщения{% endblock %}
+
+{% block content %}
+  <div class="tim-title">
+    {% for clar in clars %}
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 center-block clar-block {% if clar.is_read %} read-clar {% endif %}">
+          <a href="{% url 'read_clar' clar_id=1 %}"><h3>{{ clar.title }}</h3></a>
+          <div>
+            {{ clar.text|safe|truncatechars_html:400 }}
+          </div>
+          <div class="clar-footer">
+            <span class="pull-left">{{ clar.time }}</span>
+            <a href="{% url 'read_clar' clar_id=1 %}" type="button" class="btn btn-link pull-right">Читать полностью</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

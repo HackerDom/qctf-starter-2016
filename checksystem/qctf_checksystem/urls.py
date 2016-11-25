@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^profile/', include('cabinet.urls')),
+    url(r'^clarifications/', include('clarifications.urls')),
     url(r'^', include('checker.urls')),
     # url(r'^$', TemplateView.as_view(
     #     template_name='qctf_checksystem/index.html')),

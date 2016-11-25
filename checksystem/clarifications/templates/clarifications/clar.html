@@ -1,0 +1,13 @@
+{% extends "qctf_checksystem/base.html" %}
+
+{% block title %}Сообщения{% endblock %}
+
+{% block content %}
+  <div class="tim-title">
+    <h3>{{ clar.title }}</h3>
+    <div>
+      {{ clar.text|safe|truncatechars_html:400 }}
+    </div>
+    <a href=".." type="button" class="btn btn-link">Назад</a>
+  </div>
+{% endblock %}

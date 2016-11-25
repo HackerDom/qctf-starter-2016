@@ -86,7 +86,7 @@ body {
     transition: .1s;
 }
 
-.card:not(.wide-card):hover {
+.card:hover {
   outline-style: solid;
   outline-color: #777;
   background-color: #2B2B2B;
@@ -547,4 +547,16 @@ td {
 .help-icon:hover {
   background-color: #E5E5E5;
   color: #1A1A1A;
+}
+
+.clar-block {
+  border: solid white 1px;
+}
+
+.clar-footer {
+  height: 60px;
+}
+
+.read-clar {
+  opacity: 0.5;
 }

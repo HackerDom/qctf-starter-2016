@@ -37,6 +37,7 @@
                   <li><a href="/" {% if request.get_full_path == "/" %} class="btn btn-round btn-default" {% endif %}>Задания</a></li>
                   <li><a href="/market/" {% if request.get_full_path == "/market/" %} class="btn btn-round btn-default" {% endif %}>Биржа</a></li>
                   <li><a href="/scoreboard/" {% if request.get_full_path == "/scoreboard/" %} class="btn btn-round btn-default" {% endif %}>Результаты</a></li>
+                  <li><a href="/clarifications/" {% if request.get_full_path == "/clarifications/" %} class="btn btn-round btn-default" {% endif %}>Вопросы <span class="badge">{% if user.team.get_clars_count > 0 %}{{ user.team.get_clars_count }}{% endif %}</span></a></li>
                   <li><a href="/profile/logout/" {% if request.get_full_path == "/profile/logout/" %} class="btn btn-round btn-default" {% endif %}>Выйти</a></li>
                </ul>
             </div><!-- /.navbar-collapse -->

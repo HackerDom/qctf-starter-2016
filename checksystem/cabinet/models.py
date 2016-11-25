@@ -53,6 +53,9 @@ class Team(models.Model):
         finish_time = self.get_start_time() + settings.CONTEST_DURATION
         return timezone.now() > finish_time
 
+    def get_clars_count(self):
+        return self.userclar_set.filter(is_read=False).count()
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
