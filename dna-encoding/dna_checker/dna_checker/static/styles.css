@@ -32,6 +32,10 @@ body {
     margin-bottom: 5px;
 }
 
+#mainPanel form input[type=text] {
+    box-sizing: border-box;
+}
+
 #mainPanel form p.form-title {
     width: 100%;
     font-size: 30px;

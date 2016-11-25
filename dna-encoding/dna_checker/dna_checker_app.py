@@ -16,6 +16,6 @@ def main():
         return render_template('index.html')
     elif request.method == 'POST':
         dna_code = request.form.get('dnaCode', '')
-        if dna_code == CORRECT_DNA_CODE:
+        if dna_code.upper() == CORRECT_DNA_CODE:
             return render_template('flag.html', flag=FLAG)
         return render_template('index.html', err_msg='Неверный код!')
