@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, Http404
-from django.db.models import Count
+from django.utils import timezone
 from .models import Task, Hint
 from cabinet.models import Team
 
@@ -26,8 +26,9 @@ def check_flag(request, task_id):
 
 
 def scoreboard(request):
-    teams = Team.objects.filter(is_visible=True).order_by(
-        '-balance', 'sumbit_time', 'pk')
+    teams = Team.objects.filter(region__start_time__lte=timezone.now(),
+                                is_visible=True).order_by('-balance',
+                                                          'sumbit_time', 'pk')
     return render(request, 'checker/scoreboard.html', {'teams': teams})
 
 
