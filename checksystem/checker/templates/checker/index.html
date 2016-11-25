@@ -7,13 +7,28 @@
     {% if not user.team.contest_started %}
       <h2>Дождитесь начала контеста</h2>
     {% else %}
+      <div class="card wide-card card-block task-block">
+        <div class="card-title">
+          <h4 class="card-title">
+            <span>Легенда</span>
+          </h4>
+        </div>
+        <p class="card-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tempor vulputate laoreet. Cras elit tellus, congue ut ante quis, vehicula tincidunt diam. In et sem a arcu facilisis consequat. Donec at venenatis lacus. Mauris blandit sed eros id eleifend. Duis aliquet purus id enim rutrum congue. Suspendisse vulputate hendrerit mauris, nec porttitor nunc bibendum quis. Sed dignissim ut ante quis rutrum. Fusce facilisis vulputate nulla at porttitor. Maecenas lobortis nec tellus in consectetur. Etiam sit amet tristique quam. Vestibulum auctor sagittis mi, quis venenatis tortor. Pellentesque sagittis elit vel tellus mattis, quis vulputate lectus feugiat. Nulla ut fringilla orci.
+        </p>
+        <p>
+          Nunc elit arcu, dignissim eu nunc ac, volutpat tincidunt sem. Donec non eros pretium, elementum ipsum vel, vulputate lacus
+        </p>
+      </div>
       {% for task in tasks %}
         {% if not task.parent or user.team in task.parent.teams.all %}
           <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}" id="card-{{ task.pk }}" data-toggle="modal" data-target="#modal-{{ task.pk }}">
-            <div class="stamp"></div>
             <div class="card-title">
-              <h4 class="card-title">{{ task.title }}</h4>
-              <h5 class="card-title">Стоимость: {{ task.price }} $</h5>
+              <h4 class="card-title">
+                <span>{{ task.title }}</span>
+                <span class="pull-right">{{ task.price }} <i class="fa fa-rouble"></i></span>
+              </h4>
+              {# <h5 class="card-title">Стоимость: {{ task.price }} $</h5> #}
             </div>
             <p class="card-text">{{ task.description|safe|truncatechars_html:185 }}</p>
           </div>

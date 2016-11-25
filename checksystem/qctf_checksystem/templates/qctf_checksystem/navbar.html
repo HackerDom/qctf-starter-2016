@@ -17,7 +17,7 @@
                             <img src="/static/img/logo.gif">
                         </div>
                         <div class="brand">
-                            {% if user.is_authenticated %}{{ user.team.get_name }}{% else %}QCTF Checksystem{% endif %}
+                            {% if user.is_authenticated %}{{ user.team.get_name|safe|truncatechars_html:185 }}{% else %}QCTF{% endif %}
                         </div>
                     </div>
                 </a>
@@ -34,8 +34,8 @@
                       </ul>
                     </li>
                   {% endif %}
-                  <li><a href="/" {% if request.get_full_path == "/" %} class="btn btn-round btn-default" {% endif %}>Правительство</a></li>
-                  <li><a href="/hints/" {% if request.get_full_path == "/hints/" %} class="btn btn-round btn-default" {% endif %}>Биржа</a></li>
+                  <li><a href="/" {% if request.get_full_path == "/" %} class="btn btn-round btn-default" {% endif %}>Задания</a></li>
+                  <li><a href="/market/" {% if request.get_full_path == "/market/" %} class="btn btn-round btn-default" {% endif %}>Биржа</a></li>
                   <li><a href="/scoreboard/" {% if request.get_full_path == "/scoreboard/" %} class="btn btn-round btn-default" {% endif %}>Результаты</a></li>
                   <li><a href="/profile/logout/" {% if request.get_full_path == "/profile/logout/" %} class="btn btn-round btn-default" {% endif %}>Выйти</a></li>
                </ul>

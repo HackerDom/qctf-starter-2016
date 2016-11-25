@@ -1,6 +1,7 @@
 
 body {
     color: #fff;
+    overflow-y: scroll;
 }
 
 .tim-container{
@@ -81,7 +82,20 @@ body {
     background-color: #1A1A1A;
     padding: 10px 0 20px;
     width: 100%;
+
+    transition: .1s;
 }
+
+.card:not(.wide-card):hover {
+  outline-style: solid;
+  outline-color: #777;
+  background-color: #2B2B2B;
+}
+
+.wide-card {
+  max-width: 100% !important;
+}
+
 .card h3{
     margin-bottom: 20px;
     color: #000;
@@ -452,7 +466,11 @@ td {
   color: #000;
 }
 
-.stamp {
+.card-block.task-solved-block {
+  opacity: 0.3;
+}
+
+/*.stamp {
   background-repeat: no-repeat;
   width: 100%;
   pointer-events: none;
@@ -472,7 +490,7 @@ td {
   left: 85px;
   top: -20px;
 
-}
+}*/
 
 .close {
     color: #fff;
