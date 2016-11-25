@@ -43,8 +43,13 @@ def buy_hint(request, hint_id):
     team = request.user.team
     hint = get_object_or_404(Hint, pk=hint_id)
     task = hint.task
-    if task.is_solved(team) or hint.is_bought(team):
+    if hint.is_bought(team):
+        return JsonResponse({'error': False, 'balance': team.balance,
+                             'hint': hint.get_hint_text(team)})
+
+    if task.is_solved(team):
         raise Http404
+
     hint.buy(team)
     return JsonResponse({'error': False, 'balance': team.balance,
                          'hint': hint.get_hint_text(team)})
