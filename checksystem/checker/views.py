@@ -38,7 +38,7 @@ def scoreboard(request):
 
 @login_required
 def hints(request):
-    hints = Hint.objects.select_related('task', 'task__parent', 'task__parent__teams').all()
+    hints = Hint.objects.select_related('task', 'task__parent').all().prefetch_related('task__parent__teams')
     # tasks = Task.objects.all()
     return render(request, 'checker/hints.html', {'hints': hints})
 
