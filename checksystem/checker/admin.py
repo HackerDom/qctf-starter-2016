@@ -18,7 +18,7 @@ admin.site.register(Task, TaskAdmin)
 
 class FlagAdmin(admin.ModelAdmin):
     list_display = ('id', 'team', 'task', 'flag')
-    list_filter = ('team', )
+    list_filter = ('task', 'team')
     search_fields = ('team__name', 'task__title', 'flag')
 
 admin.site.register(Flag, FlagAdmin)
