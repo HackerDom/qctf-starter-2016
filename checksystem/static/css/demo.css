@@ -465,6 +465,11 @@ td {
 
 .modal-body {
     padding: 5px 15px;
+    font-size: 16px;
+}
+
+.modal-body p {
+    margin: 20px 0;
 }
 
 .modal-footer {
