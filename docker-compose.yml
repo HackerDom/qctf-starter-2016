@@ -12,9 +12,11 @@ services:
   db:
     image: mysql
     env_file: ./production.env
+    ports:
+      - "3306:3306"
     restart: always
     volumes:
-      - ./mysql/mysql.cnf:/etc/mysql/conf.d/default.cnf:ro
+      - ./mysql:/etc/mysql/conf.d:ro
       - /var/lib/mysql:/var/lib/mysql
 
   nginx:
