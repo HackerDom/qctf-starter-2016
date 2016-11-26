@@ -74,7 +74,7 @@ def get_unrated_teams():
         assert len(row) == 5
         start_time = row[1]
         teams.append(AggregatedTeam(
-            region='',
+            region='Spare region MSK' + start_time,
             region_name='spare-' + start_time,
             start_time=start_time,
             team_name='spare-team-' + str(len(teams) + 1),
