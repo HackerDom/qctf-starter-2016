@@ -636,3 +636,8 @@ td {
         min-width: 800px;
     }
 }
+
+input[type="text"].loading {
+    background-size: 25px 25px;
+    background: #ffffff url("/static/img/loading.gif") no-repeat right center;
+}

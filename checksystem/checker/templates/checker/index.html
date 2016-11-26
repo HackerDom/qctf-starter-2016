@@ -79,7 +79,9 @@
       });
 
       function send_flag(task_id) {
-        var flag = $('.flag-input-' + task_id).val();
+        var $flag_input = $('.flag-input-' + task_id);
+        $flag_input.addClass('loading');
+        var flag = $flag_input.val();
         $.ajax({
           type: "POST",
           url: '/check_flag/' + task_id + '/',
@@ -103,6 +105,8 @@
             }
           },
           dataType: 'json'
+        }).always(function() {
+            $flag_input.removeClass('loading');
         });
       }
 
