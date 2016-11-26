@@ -12,6 +12,9 @@ from cabinet.models import Team
 @login_required
 def index(request):
     tasks = Task.objects.all()
+    team = request.user.team
+    for task in tasks:
+        task.is_solved_by_current_team = task.is_solved(team)
     return render(request, 'checker/index.html', {'tasks': tasks})
 
 

@@ -497,6 +497,10 @@ td {
     padding-top: 10px;
 }
 
+.task-status.success {
+    color: #49d645;
+}
+
 .card-block.task-solved-block {
   opacity: 0.3;
 }
