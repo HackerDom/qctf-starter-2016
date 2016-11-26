@@ -4,11 +4,19 @@ from constants import PASSWORD_SECRET
 from models import Photo
 
 
-class UsersService:
+class UserService:
     def __init__(self, db_connection):
         self.conn = db_connection
 
-    def does_username_exist(self, username):
+    def get_user_by_user_id(self, user_id):
+        c = self.conn.cursor()
+        c.execute('SELECT * FROM Users WHERE Id = ?', (user_id,))
+        result = c.fetchone()
+        if result is None:
+            return None
+        return result[0]
+
+    def username_exists(self, username):
         c = self.conn.cursor()
         c.execute('SELECT * FROM Users WHERE Username = ?', (username,))
         return c.fetchone() is not None
@@ -37,7 +45,7 @@ class UsersService:
         return stored_hash and stored_hash[0] == expected_hash
 
     def add_user(self, username, password):
-        if self.does_username_exist(username):
+        if self.username_exists(username):
             return None
 
         hash = hashlib.sha256((username + password + PASSWORD_SECRET).encode()).hexdigest()
@@ -54,7 +62,7 @@ class UsersService:
         return True
 
 
-class PhotosService:
+class PhotoService:
     def __init__(self, db_connection):
         self.conn = db_connection
 
@@ -68,19 +76,19 @@ class PhotosService:
 
     def get_featured_photos(self):
         c = self.conn.cursor()
-        c.execute('SELECT * FROM Photos WHERE IsFeatured = 1')
+        c.execute('SELECT * FROM Photos WHERE IsFeatured = 1 ORDER BY Id DESC')
         return [Photo(*values) for values in c]
 
     def get_photos_by_user_id(self, user_id):
         c = self.conn.cursor()
-        c.execute('SELECT * FROM Photos WHERE UserId = ?', (user_id,))
+        c.execute('SELECT * FROM Photos WHERE UserId = ? ORDER BY Id DESC', (user_id,))
         return [Photo(*values) for values in c]
 
     def get_photos_by_coordinates(self, lat_ref, lat, long_ref, long):
         c = self.conn.cursor()
         c.execute(
-            'SELECT * FROM Photos WHERE LatitudeRef = ? AND Latitude = ? AND LongitudeRef = ? AND Longitude = ?',
-            (lat_ref, lat, long_ref, long))
+            'SELECT * FROM Photos WHERE LatitudeRef = ? AND Latitude = ? AND LongitudeRef = ?'
+            ' AND Longitude = ? ORDER BY Id DESC', (lat_ref, lat, long_ref, long))
         return [Photo(*values) for values in c]
 
     def add_photo(self, photo):

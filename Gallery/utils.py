@@ -15,8 +15,6 @@ def encode_jwt(user_id, username, expires_at=None):
 
 
 def decode_jwt(token):
-    if token is None:
-        return None
     return jwt.decode(token, JWT_SECRET)
 
 
@@ -25,7 +23,7 @@ def check_jwt(token):
         payload = decode_jwt(token)
     except DecodeError:
         return False
-    if payload is None or set(payload.keys()) != {'user_id', 'username', 'expires'}:
+    if payload is None or not isinstance(payload, dict) or set(payload.keys()) != {'user_id', 'username', 'expires'}:
         return False
     return datetime.datetime.utcfromtimestamp(payload['expires']) >= datetime.datetime.now()
 
@@ -41,17 +39,17 @@ def get_nearby_coordinates(lat_ref, lat, long_ref, long):
                 continue
             if new_lat < 0:
                 new_lat *= -1
-                new_lat_ref = b'N' if new_lat_ref == b'S' else b'S'
+                new_lat_ref = 'N' if new_lat_ref == 'S' else 'S'
             if new_long < 0 or new_long > 180:
-                new_long_ref = b'E' if new_long_ref == b'W' else b'W'
+                new_long_ref = 'E' if new_long_ref == 'W' else 'W'
                 if new_long < 0:
                     new_long *= -1
                 else:
                     new_long = 360 - new_long
             if new_lat == 0:
-                new_lat_ref = b'N'
+                new_lat_ref = 'N'
             if new_long in [0, 180]:
-                new_long_ref = b'W'
+                new_long_ref = 'W'
             yield new_lat_ref, new_lat, new_long_ref, new_long
 
 
@@ -60,6 +58,8 @@ def extract_coordinates_from_jpeg(jpeg_bytes):
     if not gps or len(gps) < 5:
         return None
     lat_ref, lat, long_ref, long = gps[1], gps[2], gps[3], gps[4]
+    lat_ref = lat_ref.decode('utf-8')
     lat = lat[0][0]
+    long_ref = long_ref.decode('utf-8')
     long = long[0][0]
     return lat_ref, lat, long_ref, long
