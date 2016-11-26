@@ -1,11 +1,11 @@
 @import 'https://fonts.googleapis.com/css?family=VT323';
 @font-face {
     font-family: HelveticaNeueCyr;
-    src: url(HelveticaNeueCyr-Roman.otf);
+    src: url(fonts/pixelartfont.ttf);
 }
 
 * {
-    font-family: 'VT323', monospace;
+    font-family: HelveticaNeueCyr;
     margin: 0;
     padding: 0;
     border: 0;
@@ -16,16 +16,31 @@
     height: 100%;
 }
 .item-panel {
-    width: 400px;
+    overflow-y: scroll;
+    width: 420px;
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
     background-color: #171717;
 }
+.item-panel::-webkit-scrollbar-track
+{
+    background-color: rgb(219, 219, 219);
+}
+
+.item-panel::-webkit-scrollbar {
+    width: 10px;
+    background-color: rgb(219, 219, 219);
+}
+
+.item-panel::-webkit-scrollbar-thumb {
+    background-color: #212121;
+    border: 2px solid #555;
+}
 .main-scene {
     position: relative;
-    margin-left: 400px;
+    margin-left: 420px;
     height: 100%;
     background-color: #bfb;
     background: url('backgrounds/dark_city.gif') no-repeat;
