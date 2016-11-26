@@ -1,0 +1,7 @@
+<h3>Upload:</h3>
+{% if error_message is defined %}
+<p style="color: red">{{ error_message }}</p>
+{% endif %}
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" value="Choose a photo" /><input type="submit" value="Upload" />
+</form>

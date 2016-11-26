@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1>{{ title }} (user {{ username }})</h1>
+{% for filename in filenames %}
+<img src="/static/photos/{{filename}}" style="max-width: 200px;" />
+{% endfor %}
+{% include 'upload.html' %}
+{% endblock %}
