@@ -11,12 +11,12 @@
     </p>
   {% else %}
     {% for hint in hints %}
+      {% if forloop.first %}
+        <div class="row">
+      {% endif %}
       {% if not hint.task.parent or user.team in hint.task.parent.teams.all %}
 
-        {% if forloop.first %}
-          <div class="row">
-        {% endif %}
-        <div class="col-xs-4">
+       <div class="col-xs-4">
           <div class="card card-block task-block {% if user.team in hint.task.teams.all %}task-solved-block{% endif %}" id="card-{{ hint.pk }}" data-toggle="modal" data-target="#modal-{{ hint.pk }}">
             <div class="card-title">
               <h4 class="card-title">
