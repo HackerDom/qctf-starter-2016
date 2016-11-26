@@ -1,11 +1,14 @@
 {% extends "qctf_checksystem/base.html" %}
 
-{% block title %}Правительство{% endblock %}
+{% block title %}Задания{% endblock %}
 
 {% block content %}
   <div class="tim-title tasks-list">
     {% if not user.team.contest_started %}
-      <h2>Дождитесь начала контеста</h2>
+      <h2>У нас пока ничего для вас нет</h2>
+      <p>
+        Приходите позже
+      </p>
     {% else %}
       {% for task in tasks %}
         {% if not task.parent or user.team in task.parent.teams.all %}
@@ -90,9 +93,9 @@
             $status.text(data.message);
             $('#balance').text(data.balance);
             $('#flags-number').text(data.flags);
-            setTimeout(6000, function(){
+            setTimeout(function(){
               $status.fadeOut(4000);
-            });
+            }, 6000);
             if (data.is_correct) {
               need_refresh = true;
               $("#card-" + task_id).addClass("task-solved-block");

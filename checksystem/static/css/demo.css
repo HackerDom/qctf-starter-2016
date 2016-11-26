@@ -439,6 +439,10 @@ body {
 .card-title {
   margin-top: 0;
   color: #efefef;
+  max-height: 35px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tasks-list .row {
@@ -583,19 +587,52 @@ td {
   text-align: center;
 }
 
-.admin-scoreboard th,td {
+.admin-scoreboard th {
+    text-align: left
+}
+
+.admin-scoreboard td {
   text-align: center;
 }
 
 .navbar .btn.active {
     pointer-events: none;
     cursor: default;
-    background-color: #fff;
+    background-color: #ccc;
     color: black !important;
     font-weight: bold;
     font-size: 16px;
+    border: 0;
+
+    padding: 25px 15px !important;
+    margin: 0 !important;
+    border-radius: 0;
 }
 
 .results-table td {
     text-align: left;
+}
+
+@media (max-width: 767px) {
+    .navbar .nav-data + li {
+        margin-top: 40px;
+    }
+
+    .navbar li a {
+        text-align: left;
+    }
+}
+
+.modal-open {
+    overflow-y: scroll;
+}
+
+.modal {
+    overflow-y: auto;
+}
+
+@media (min-width: 900px) {
+    .modal-dialog.modal-dialog-wide {
+        min-width: 800px;
+    }
 }

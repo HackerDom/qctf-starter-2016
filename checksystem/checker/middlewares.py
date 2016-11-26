@@ -1,13 +1,14 @@
 class FirstVisitMiddleware(object):
     def process_request(self, request):
-        if request.user.is_authenticated:
-            request.first_visit = False
-            if not request.COOKIES.get('visited', False):
-                request.first_visit = True
+        request.first_visit = False
+        if request.user.is_authenticated and request.method == 'GET' and not request.COOKIES.get('visited', False):
+            request.first_visit = True
 
     def process_response(self, request, response):
-        if not request.user.is_authenticated or request.method == 'POST':
+        if not hasattr(request, 'first_visit'):
             return response
-        if not request.COOKIES.get('visited', False):
+        if request.method != 'GET':
+            return response
+        if request.first_visit:
             response.set_cookie('visited', '1')
         return response
