@@ -20,13 +20,14 @@ services:
     depends_on:
       - mongo
     env_file: ./production.env
+    links:
+      - auth:auth.local
     restart: always
     
   front:
     build: ./search-engine
     command: gunicorn search_engine.front:app
     depends_on:
-      - auth
       - mongo
     env_file: ./production.env
     links:
