@@ -26,7 +26,7 @@ class Team(models.Model):
     replace_info = models.TextField(blank=True, default='[]')
     region = models.ForeignKey(Region, null=True, blank=True)
     is_visible = models.BooleanField(default=False)
-    sumbit_time = models.DurationField(default=timedelta())
+    submit_time = models.DurationField(default=timedelta())
 
     stolen_flags = models.IntegerField(default=0)
 

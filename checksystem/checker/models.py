@@ -27,17 +27,17 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
-    def _check_flag(self, team, flag):
-        logging.warning('Team {}({}) tried to submit flag {}'.format(
-            team.name, team.pk, flag))
+    def _check_flag_for_stoling(self, team, flag):
         is_stolen = Flag.objects.filter(flag__iexact=flag) \
                                 .exclude(team=team).exists()
         if is_stolen:
+            logging.warning('Team {}({}) tried to stole flag {}'.format(
+                team.name, team.pk, flag))
             team.stolen_flags += 1
             team.save()
 
     def _award_team(self, team):
-        team.sumbit_time = timezone.now() - team.get_start_time()
+        team.submit_time = timezone.now() - team.get_start_time()
         team.tasks_number += 1
         team.balance += self.price
         team.save()
@@ -57,25 +57,24 @@ class Task(models.Model):
 
     @transaction.atomic
     def submit_flag(self, team, flag):
-        self._check_flag(team, flag)
+        self._check_flag_for_stoling(team, flag)
 
         need_refresh = False
         if not self._check_delay(team):
-            return {'message': 'Please wait.', 'is_correct': False}
+            return {'message': 'Пожалуйста, подождите, вы отправляете флаги слишком часто', 'is_correct': False}
         if team.contest_finished():
-            return {'message': 'Contest is alreay finished.',
-                    'is_correct': False}
+            return {'message': 'Соревнование завершено', 'is_correct': False}
         if not team.contest_started():
-            return {'message': 'Contest is not started.', 'is_correct': False}
+            return {'message': 'Соревнование ещё не началось!', 'is_correct': False}
         correct_flag = self._get_flag(team)
         if correct_flag is None:
-            return {'message': 'No flag for you. :(', 'is_correct': False}
+            return {'message': 'Вы не можете сдать это задание :(', 'is_correct': False}
 
         is_correct = correct_flag.lower() == flag.lower()
         message = self.correct_flag_message if is_correct else \
             self.wrong_flag_message
 
-        submit = Submit(team=team, flag=flag)
+        submit = Submit(team=team, task=self, flag=flag)
         submit.save()
 
         if not self.is_solved(team) and is_correct:
@@ -117,6 +116,7 @@ class Hint(models.Model):
 
 class Submit(models.Model):
     team = models.ForeignKey(Team)
+    task = models.ForeignKey(Task, null=True, default=None)
     flag = models.CharField(max_length=100)
     time = models.DateTimeField(auto_now_add=True)
 
