@@ -1,6 +1,7 @@
 kurlyandian/translator/translator
 .idea
 
+production.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

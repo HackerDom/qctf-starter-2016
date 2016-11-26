@@ -1,0 +1,44 @@
+version: '2'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - /data/db:/data/db
+
+  auth:
+    build: ./search-engine
+    command: gunicorn search_engine.auth:app
+    depends_on:
+      - mongo
+    env_file: ./production.env
+    restart: always
+
+  crawler:
+    build: ./search-engine
+    command: python3 -m search_engine.crawler
+    depends_on:
+      - mongo
+    env_file: ./production.env
+    restart: always
+    
+  front:
+    build: ./search-engine
+    command: gunicorn search_engine.front:app
+    depends_on:
+      - auth
+      - mongo
+    env_file: ./production.env
+    links:
+      - auth:auth.local
+    restart: always
+
+  nginx:
+    image: nginx
+    depends_on:
+      - front
+    ports:
+      - "80:80"
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
