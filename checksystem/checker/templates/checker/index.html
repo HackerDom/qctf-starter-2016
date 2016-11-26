@@ -1,11 +1,14 @@
 {% extends "qctf_checksystem/base.html" %}
 
-{% block title %}Правительство{% endblock %}
+{% block title %}Задания{% endblock %}
 
 {% block content %}
   <div class="tim-title tasks-list">
     {% if not user.team.contest_started %}
-      <h2>Дождитесь начала контеста</h2>
+      <h2>У нас пока ничего для вас нет</h2>
+      <p>
+        Приходите позже
+      </p>
     {% else %}
       {% for task in tasks %}
         {% if not task.parent or user.team in task.parent.teams.all %}
@@ -13,11 +16,11 @@
             <div class="row">
           {% endif %}
           <div class="col-xs-4">
-            <div class="card card-block task-block {% if user.team in task.teams.all %}task-solved-block{% endif %}" id="card-{{ task.pk }}" data-toggle="modal" data-target="#modal-{{ task.pk }}">
+            <div class="card card-block task-block {% if task.is_solved_by_current_team %}task-solved-block{% endif %}" id="card-{{ task.pk }}" data-toggle="modal" data-target="#modal-{{ task.pk }}">
               <div class="card-title">
                 <h4 class="card-title">
-                  <span>{{ task.title }}</span>
                   <span class="pull-right">{{ task.price }} <i class="fa fa-bitcoin"></i></span>
+                  <span>{{ task.title }}</span>
                 </h4>
               </div>
               <div class="card-text dotdotdot">{{ task.description|safe|truncatechars_html:185 }}</div>
@@ -45,7 +48,11 @@
                         <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Отправить</button>
                       </span>
                     </div>
-                    <div id="task-{{ task.pk }}-status" class="task-status"></div>
+                    <div id="task-{{ task.pk }}-status" class="task-status {% if task.is_solved_by_current_team %}success{% endif %}">
+                        {% if task.is_solved_by_current_team %}
+                            Вы выполнили это задание
+                        {% endif %}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -69,14 +76,20 @@
     var need_refresh = false;
     $(function() {
       $('.modal').on('hidden.bs.modal', function () {
-        console.log(need_refresh);
         if (need_refresh) {
           location.reload();
         }
       });
 
       function send_flag(task_id) {
-        var flag = $('.flag-input-' + task_id).val();
+        var $flag_input = $('.flag-input-' + task_id);
+        $flag_input.addClass('loading');
+        var flag = $flag_input.val();
+        var $status = $("#task-" + task_id + "-status");
+        if ($status[0].timeout) {
+            clearTimeout($status[0]);
+        }
+        $status.stop();
         $.ajax({
           type: "POST",
           url: '/check_flag/' + task_id + '/',
@@ -85,21 +98,23 @@
             if ('need_refresh' in data) {
               need_refresh = data.need_refresh;
             }
-            var $status = $("#task-" + task_id + "-status");
+            $status.hide();
+            $status.removeClass('success').text(data.message).css('opacity', 1);
             $status.show();
-            $status.text(data.message);
             $('#balance').text(data.balance);
             $('#flags-number').text(data.flags);
-            setTimeout(6000, function(){
+            $status[0].timeout = setTimeout(function(){
               $status.fadeOut(4000);
-            });
+            }, 6000);
             if (data.is_correct) {
-              need_refresh = true;
               $("#card-" + task_id).addClass("task-solved-block");
               $("#modal-" + task_id).addClass("task-solved-modal");
+              $status.addClass('success');
             }
           },
           dataType: 'json'
+        }).always(function() {
+            $flag_input.removeClass('loading');
         });
       }
 

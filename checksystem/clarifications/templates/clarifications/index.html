@@ -6,15 +6,15 @@
   <div class="tim-title">
     {% for clar in clars %}
       <div class="row">
-        <div class="col-md-3"></div>
         <div class="col-md-6 center-block clar-block {% if clar.is_read %} read-clar {% endif %}">
-          <a href="{% url 'read_clar' clar_id=1 %}"><h3>{{ clar.title }}</h3></a>
-          <div>
-            {{ clar.text|safe|truncatechars_html:400 }}
+          <h3>{{ clar.title }}</h3>
+          <div class="time">
+            {{ clar.time }}
           </div>
-          <div class="clar-footer">
-            <span class="pull-left">{{ clar.time }}</span>
-            <a href="{% url 'read_clar' clar_id=1 %}" type="button" class="btn btn-link pull-right">Читать полностью</a>
+          <div class="clar-content">
+              <p>
+                  {{ clar.text|safe|linebreaksbr }}
+              </p>
           </div>
         </div>
       </div>

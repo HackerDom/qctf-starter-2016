@@ -1,11 +1,14 @@
 {% extends "qctf_checksystem/base.html" %}
 
-{% block title %}Hints{% endblock %}
+{% block title %}Биржа{% endblock %}
 
 {% block content %}
-<div class="tim-title">
+<div class="tim-title hints-list">
   {% if not user.team.contest_started %}
-    <h2>Дождитесь начала контеста</h2>
+    <h2>У нас пока ничего для вас нет</h2>
+    <p>
+      Приходите позже
+    </p>
   {% else %}
     {% for hint in hints %}
       {% if not hint.task.parent or user.team in hint.task.parent.teams.all %}
@@ -17,8 +20,8 @@
           <div class="card card-block task-block {% if user.team in hint.task.teams.all %}task-solved-block{% endif %}" id="card-{{ hint.pk }}" data-toggle="modal" data-target="#modal-{{ hint.pk }}">
             <div class="card-title">
               <h4 class="card-title">
-                <span>{{ hint.name }}</span>
                 <span class="pull-right">&ndash;{{ hint.price }} <i class="fa fa-bitcoin"></i></span>
+                <span>{{ hint.name }}</span>
               </h4>
             </div>
             <div class="card-text">
@@ -41,15 +44,25 @@
                 <div class="modal-body">
                   <div id="hint-{{ hint.pk }}-content">
                     {% if user.team in hint.owners.all %}
-                      {{ hint.text|safe }}
+                      <p>
+                          {{ hint.text|safe }}
+                      </p>
                     {% else %}
-                      К сожалению, вы ещё не купили этот хинт.
+                      <p>
+                        Купите лот за {{ hint.price }}<i class="fa fa-bitcoin"></i>, чтобы увидеть его содержимое
+                      </p>
+                    {% endif %}
+                    {% if user.team in hint.task.teams.all %}
+                      <p class="text-success">
+                        Вы выполнили задание, к которому относится этот лот.
+                      </p>
                     {% endif %}
                   </div>
                 </div>
                 <div class="modal-footer">
-                  {% if user.team not in hint.owners.all %}<button type="button" hint-id="{{ hint.pk }}" class="btn btn-success buy-hint-button">Buy hint</button>{% endif %}
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  {% if user.team not in hint.owners.all and user.team not in hint.task.teams.all%}
+                      <button type="button" hint-id="{{ hint.pk }}" class="btn btn-success buy-hint-button">Купить</button>
+                  {% endif %}
                 </div>
               </div>
             </div>

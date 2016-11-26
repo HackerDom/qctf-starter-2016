@@ -6,38 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>{% block title %} {% endblock %}</title>
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
-        (function (d, w, c) {
-            (w[c] = w[c] || []).push(function() {
-                try {
-                    w.yaCounter41162049 = new Ya.Metrika({
-                        id:41162049,
-                        clickmap:true,
-                        trackLinks:true,
-                        accurateTrackBounce:true
-                    });
-                } catch(e) { }
-            });
+    <title>{% block title %}QCTF Starter 2016{% endblock %}</title>
+    <!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter41162049 = new Ya.Metrika({ id:41162049, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, ut:"noindex" }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/41162049?ut=noindex" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
 
-            var n = d.getElementsByTagName("script")[0],
-                s = d.createElement("script"),
-                f = function () { n.parentNode.insertBefore(s, n); };
-            s.type = "text/javascript";
-            s.async = true;
-            s.src = "https://mc.yandex.ru/metrika/watch.js";
-
-            if (w.opera == "[object Opera]") {
-                d.addEventListener("DOMContentLoaded", f, false);
-            } else { f(); }
-        })(document, window, "yandex_metrika_callbacks");
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/41162049" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-
-    <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/ionicons.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
@@ -62,40 +33,49 @@
       </div>
     </div>
 
-    <i class="ion-help help-icon" data-pack="default" data-tags="question, ?" data-toggle="modal" data-target="#legend-modal"></i>
+    {% if user.is_authenticated and user.team.contest_started %}
+        <i class="ion-help help-icon" data-pack="default" data-tags="question, ?" data-toggle="modal" data-target="#legend-modal"></i>
 
-    <div id="legend-modal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
+        <div id="legend-modal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-dialog-wide">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Легенда</h4>
-          </div>
-          <div class="modal-body">
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pharetra tellus sed eros tempor, at fermentum ante semper. Praesent eu dignissim magna. Praesent ex tellus, laoreet id nisi sed, tempus elementum lacus. Nunc dignissim odio in velit ullamcorper vehicula. Quisque commodo pulvinar mauris vel eleifend. Aliquam aliquet, quam sit amet pretium vestibulum, neque ligula elementum tortor, eget condimentum tellus mi eget massa. Aliquam erat nisl, ultricies gravida nibh vel, auctor suscipit augue.
-            </p>
-            <p>
-            Nullam eget sem eu lorem lacinia venenatis. Nullam sed maximus sapien. Quisque laoreet nibh id nisi consequat, sit amet feugiat purus egestas. Morbi non egestas turpis, sit amet imperdiet eros. Nam euismod, est id dictum ultrices, quam libero suscipit nisi, ac aliquet ex lorem id enim. Nam molestie tincidunt arcu, vel aliquam lacus consequat sed. Quisque diam purus, sagittis quis ante a, efficitur dignissim ex. Nullam interdum turpis at facilisis faucibus. Fusce elementum in purus a tempor. Proin dignissim dui quis tristique sagittis.
-            </p>
-            <p>
-            Fusce in feugiat lacus. In ut felis venenatis, tempus mi eget, malesuada ipsum. Ut commodo finibus fermentum. Maecenas risus tortor, vehicula in cursus tristique, gravida vitae purus. Aliquam erat volutpat. Fusce id ultrices orci. Pellentesque eu porttitor magna, vel cursus massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu viverra massa, at iaculis augue.
-            </p>
-            <p>
-            Donec vel elit dictum, scelerisque urna at, luctus nibh. Praesent rutrum eros lacus, vitae tincidunt odio pretium quis. Sed ac tortor nibh. Vestibulum condimentum, neque ut ullamcorper eleifend, tortor turpis pretium lorem, quis cursus urna orci id ex. Aliquam sed suscipit lectus, eget bibendum dolor. Aliquam non rutrum purus. Donec ac turpis efficitur, scelerisque dui a, eleifend arcu. Suspendisse scelerisque turpis eget tristique venenatis. Vivamus rhoncus odio sit amet nunc convallis vehicula. Nullam pharetra diam non enim vulputate, in porttitor nulla volutpat. Phasellus tincidunt nibh nibh, eget molestie tortor scelerisque ut. Pellentesque pharetra pulvinar risus nec vestibulum. Proin pulvinar felis nunc, et porta ipsum tincidunt non. Vivamus nisl justo, maximus id risus eget, laoreet mattis justo. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-            </p>
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Письмо от 27 ноября 2016 г. № 612/КФ</h4>
+              </div>
+              <div class="modal-body">
+                <p>
+                    Четырнадцать месяцев назад корпорация Black Circle Labs построила три суперкомпьютера,
+                    предназначенных для распознавания, воспроизведения и&nbsp;программирования человеческих эмоций:
+                    Leviathan, Transfixion и&nbsp;BuriedThought. Сразу несколько преступных группировок изъявили
+                    желание получить компьютеры в&nbsp;свои руки&nbsp;— неудивительно, ведь с&nbsp;помощью любой из&nbsp;этих
+                    машин можно заставить кого угодно подписать нужную бумагу&nbsp;или даже убить человека.
+                </p>
+                <p>
+                    Нашему ведомству поставлена задача защитить компьютеры от&nbsp;угрожающих безопасности
+                    человечества формаций и&nbsp;группировок, наиболее крупными и&nbsp;опасными из&nbsp;которых
+                    являются группировка S, представленная высококлассными компьютерными специалистами
+                    формация Координаторов, религиозная формация&nbsp;П и&nbsp;террористическая группировка буо-сахитов.
+                    Сейчас преступники сильны как никогда, поэтому нам нужна ваша помощь.
+                    Вам предстоит выполнить несколько наших заданий и помешать преступникам
+                    получить доступ к&nbsp;суперкомпьютерам.
+                </p>
+                <p>
+                    Да,&nbsp;ещё кое-что: у&nbsp;нас налажен контакт с&nbsp;биржей. Некоторые документы,
+                    представленные там, могут помочь вам в&nbsp;работе, однако помните, что эти
+                    услуги вам придётся оплатить из своего кармана.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+    {% endif %}
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.custom.min.js' %}"></script>
     {% block globals %} {% endblock %}
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static 'js/bootstrap.js' %}"></script>
     <script src="{% static 'js/gsdk-checkbox.js' %}"></script>
     <script src="{% static 'js/gsdk-radio.js' %}"></script>

@@ -12,6 +12,9 @@ from cabinet.models import Team
 @login_required
 def index(request):
     tasks = Task.objects.all()
+    team = request.user.team
+    for task in tasks:
+        task.is_solved_by_current_team = task.is_solved(team)
     return render(request, 'checker/index.html', {'tasks': tasks})
 
 
@@ -51,7 +54,8 @@ def buy_hint(request, hint_id):
                              'hint': hint.get_hint_text(team)})
 
     if task.is_solved(team):
-        raise Http404
+        return JsonResponse({'error': False, 'balance': team.balance,
+                             'hint': 'Вы выполнили задание, к которому относится этот лот'})
 
     hint.buy(team)
     return JsonResponse({'error': False, 'balance': team.balance,

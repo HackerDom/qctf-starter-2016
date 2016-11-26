@@ -6,7 +6,7 @@ After=docker.service
 Restart=always
 WorkingDirectory=/var/www/qctf-checksystem
 ExecStartPre=-/usr/local/bin/docker-compose down
-ExecStart=/usr/local/bin/docker-compose up
+ExecStart=/usr/local/bin/docker-compose up --build
 ExecStop=/usr/local/bin/docker-compose stop
 NotifyAccess=all
 

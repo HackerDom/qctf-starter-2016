@@ -18,11 +18,11 @@ RATED_TEAMS_FILE = 'rated_teams.csv'
 UNRATED_TEAMS_FILE = 'unrated_teams.csv'
 
 flag_files = [
-    ('Git', 'git_flags.json'),
-    ('Optimization', 'optimization_flags.json'),
-    ('Weather', 'weather_flags.json'),
-    ('Hard Reverse', 'hard_reverse_flags.json'),
-    ('Easy Reverse', 'easy_reverse_flags.json')
+    ('Координаторы (1)', 'git_flags.json'),
+    ('Координаторы (5)', 'optimization_flags.json'),
+    ('Буо-сахиты (1)', 'weather_flags.json'),
+    ('Буо-сахиты (3)', 'hard_reverse_flags.json'),
+    ('Формация П (3)', 'easy_reverse_flags.json')
 ]
 
 replace_info_files = [
@@ -36,12 +36,14 @@ replace_info_files = [
     ]
 
 contest_day = datetime.datetime(2016, 11, 27)
+MSK_TIMEZONE_OFFSET = 180
+MSK_TIMEZONE = timezone.get_fixed_timezone(MSK_TIMEZONE_OFFSET)
 
 class AggregatedTeam:
     def __init__(self, *, region, region_name, start_time, team_name, login, password):
         self.region = region
         self.region_name = region_name
-        self.start_time = contest_day.replace(hour=int(start_time), tzinfo=timezone.get_fixed_timezone(3))
+        self.start_time = contest_day.replace(hour=int(start_time), tzinfo=MSK_TIMEZONE)
         self.team_name = team_name
         self.login = login
         self.password = password
@@ -72,7 +74,7 @@ def get_unrated_teams():
         assert len(row) == 5
         start_time = row[1]
         teams.append(AggregatedTeam(
-            region='',
+            region='Spare region MSK' + start_time,
             region_name='spare-' + start_time,
             start_time=start_time,
             team_name='spare-team-' + str(len(teams) + 1),

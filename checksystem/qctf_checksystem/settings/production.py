@@ -8,7 +8,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['contest.qctf.ru', 'contest2589.qctf.ru', '78.155.207.64', '127.0.0.1']
+ALLOWED_HOSTS = ['contest.qctf.ru', 'contest2.qctf.ru', 'contest2589.qctf.ru', '78.155.207.64', '127.0.0.1']
 
 
 # Database

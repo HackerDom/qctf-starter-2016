@@ -12,7 +12,7 @@ class UserClar(models.Model):
     def __str__(self):
         return self.title
 
-    def read(self):
+    def mark_as_read(self):
         self.is_read = True
         self.save()
 
