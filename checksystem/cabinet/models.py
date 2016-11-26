@@ -58,6 +58,9 @@ class Team(models.Model):
     def get_clars_count(self):
         return self.userclar_set.filter(is_read=False).count()
 
+    def get_total_clars_count(self):
+        return self.userclar_set.count()
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

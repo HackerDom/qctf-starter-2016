@@ -29,8 +29,8 @@
                       {% if user.is_authenticated and user.team.contest_started%}
                         <li class="nav-data">
                           <ul>
-                            <li><i class="fa fa-flag"></i><span id="flags-number">{{ user.team.tasks.count }}</span></li>
-                            <li><i class="fa fa-money"></i><span id="balance">{{ user.team.balance }} <i class="fa fa-bitcoin"></i></span></li>
+                            <li><span id="flags-number">{{ user.team.tasks.count }}</span> <i class="fa fa-flag"></i></li>
+                            <li><span id="balance">{{ user.team.balance }} <i class="fa fa-bitcoin"></i></span></li>
                           </ul>
                         </li>
                       {% endif %}
@@ -38,7 +38,9 @@
                       {% if user.team.contest_started %}
                         <li><a href="/market/" {% if request.get_full_path == "/market/" %} class="btn btn-default active" {% endif %}>Биржа</a></li>
                         <li><a href="/scoreboard/" {% if request.get_full_path == "/scoreboard/" %} class="btn btn-default active" {% endif %}>Результаты</a></li>
-                        <li><a href="/clarifications/" {% if request.get_full_path == "/clarifications/" %} class="btn btn-default active" {% endif %}>Сообщения <span class="badge">{% if user.team.get_clars_count > 0 %}{{ user.team.get_clars_count }}{% endif %}</span></a></li>
+                        {% if user.team.get_total_clars_count > 0 %}
+                          <li><a href="/clarifications/" {% if request.get_full_path == "/clarifications/" %} class="btn btn-default active" {% endif %}>Сообщения <span class="badge">{% if user.team.get_clars_count > 0 %}{{ user.team.get_clars_count }}{% endif %}</span></a></li>
+                        {% endif %}
                       {% endif %}
                       <li><a href="/profile/logout/" {% if request.get_full_path == "/profile/logout/" %} class="btn btn-default active" {% endif %}>Выйти</a></li>
                    </ul>
