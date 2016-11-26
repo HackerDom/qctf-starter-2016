@@ -60,7 +60,9 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  {% if user.team not in hint.owners.all %}<button type="button" hint-id="{{ hint.pk }}" class="btn btn-success buy-hint-button">Купить</button>{% endif %}
+                  {% if user.team not in hint.owners.all and user.team not in hint.task.teams.all%}
+                      <button type="button" hint-id="{{ hint.pk }}" class="btn btn-success buy-hint-button">Купить</button>
+                  {% endif %}
                 </div>
               </div>
             </div>
