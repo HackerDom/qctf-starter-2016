@@ -21,10 +21,9 @@ class Crawler:
             found = self._check_next()
 
             if not found:
-                self._logger.debug('No links in the queue, sleeping')
                 time.sleep(Crawler._NOT_FOUND_DELAY)
 
-    _NOT_FOUND_DELAY = 3
+    _NOT_FOUND_DELAY = 10
 
     def _check_next(self) -> bool:
         processed_link = self._links.select_next()
