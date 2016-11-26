@@ -3,13 +3,16 @@
 import json
 import sys
 import csv
+import datetime
+import os
+
+from django.core.management.base import BaseCommand
+from django.utils import timezone
 from checker.models import Task
 from checker.models import Flag
 from cabinet.models import Team
 from cabinet.models import User
 from cabinet.models import Region
-import datetime
-from django.utils import timezone
 
 RATED_TEAMS_FILE = 'rated_teams.csv'
 UNRATED_TEAMS_FILE = 'unrated_teams.csv'
@@ -150,6 +153,24 @@ def main():
     teams = get_rated_teams() + get_unrated_teams()
 
     create_teams(teams, replace_info_provider, flag_provider)
+
+class Command(BaseCommand):
+    help = 'Creates users, regions and flags'
+
+    def add_arguments(self, parser):
+        parser.add_argument('configs_path', type=str)
+
+    def handle(self, *args, **options):
+        initial_path = os.path.abspath(os.path.curdir)
+        os.chdir(options['configs_path'])
+        try:
+            self.stdout.write('Going to create users, ' +
+            'regions and flags using csv and json ' + 
+            'data from {}'.format(os.path.abspath(os.path.curdir)))
+            main()
+            self.stdout.write(self.style.SUCCESS('Done'))
+        finally:
+            os.chdir(initial_path)
 
 if __name__ == '__main__':
     main()
