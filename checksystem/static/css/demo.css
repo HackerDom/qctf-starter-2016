@@ -468,6 +468,7 @@ td {
 
 .modal-footer {
     text-align: left;
+    padding: 5px 15px;
 }
 
 .task-block {
