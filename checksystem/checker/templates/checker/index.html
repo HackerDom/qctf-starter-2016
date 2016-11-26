@@ -34,7 +34,7 @@
                     </button>
                     <h4 class="modal-title" id="modalLabel-{{ task.pk }}">{{ task.title }}</h4>
                     <span>
-                        Сотрудников, выполнивших задание: {{ task.teams.count }}
+                        Сотрудников, выполнивших задание: {{ task.get_visible_teams_solved_count }}
                     </span>
                   </div>
                   <div class="modal-body">

@@ -48,6 +48,9 @@ class Task(models.Model):
             return self.default_flag if self.default_flag else None
         return flag.flag
 
+    def get_visible_teams_solved_count(self):
+        return self.teams.filter(is_visible=True).count()
+
     def is_solved(self, team):
         return self.teams.filter(pk=team.pk).exists()
 
