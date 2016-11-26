@@ -36,7 +36,7 @@ def login_submit():
         return redirect(url_for('index'))
 
     session['username'] = username
-    logging.info('User "%s" logged in', username)
+    logging.info('@%s logged in', username)
 
     return redirect(url_for('index'))
 
@@ -44,7 +44,7 @@ def login_submit():
 @app.route('/logout')
 def logout():
     if 'username' in session:
-        logging.info('User "%s" logged out', session['username'])
+        logging.info('@%s logged out', session['username'])
         del session['username']
 
     return redirect(url_for('index'))
@@ -80,7 +80,7 @@ def register_submit():
         return redirect(url_for('index'))
 
     session['username'] = username
-    logging.info('User "%s" registered and logged in', username)
+    logging.info('@%s registered and logged in', username)
 
     return redirect(url_for('index'))
 

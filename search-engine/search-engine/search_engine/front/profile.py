@@ -1,3 +1,4 @@
+import logging
 import re
 
 from flask import flash, render_template, redirect, request, session, url_for
@@ -20,8 +21,11 @@ def search():
     if not query:
         flash('Поисковый запрос не введён', 'error')
         return redirect(url_for('index'))
+    username = session['username']
 
-    hits = texts.search(session['username'], query)
+    logging.info('@%s searches "%s"', username, query)
+
+    hits = texts.search(username, query)
     for item in hits['hits']:
         highlighted = ' … '.join(item['highlight']['text'])
         item['highlighted'] = re.sub(r'<(/?)em>', r'<\1strong>', highlighted)
@@ -42,6 +46,8 @@ def crawl_submit():
         flash('Запрещено индексировать ресурсы внутренней сети')
         return redirect(url_for('index'))
     username = session['username']
+
+    logging.info('@%s starts crawling from %s', username, url)
 
     links.delete_by_user(username)
     texts.delete_by_user(username)
