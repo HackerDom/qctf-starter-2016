@@ -8,7 +8,8 @@ from search_engine import db, settings
 from search_engine.crawler.crawler import Crawler
 
 
-logging.basicConfig(format='%(levelname)s\t%(asctime)s\t%(name)s\t%(message)s', datefmt='%H:%M:%S')
+logging.basicConfig(format='%(levelname)s\t%(asctime)s\t%(name)s\t%(message)s', datefmt='%H:%M:%S',
+                    level=logging.INFO)
 
 
 def main():
