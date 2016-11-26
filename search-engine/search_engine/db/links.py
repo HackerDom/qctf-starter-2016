@@ -77,3 +77,6 @@ class LinkDAO:
 
     def get_by_user(self, username: str) -> List[dict]:
         return self._collection.find({'username': username}, sort=[('add_time', pymongo.DESCENDING)])
+
+    def delete_by_user(self, username: str):
+        self._collection.delete_many({'username': username})

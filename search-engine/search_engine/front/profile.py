@@ -41,6 +41,10 @@ def crawl_submit():
     if '.local' in url:
         flash('Запрещено индексировать ресурсы внутренней сети')
         return redirect(url_for('index'))
+    username = session['username']
 
-    links.save(session['username'], [url], 0, force_status=True)
+    links.delete_by_user(username)
+    texts.delete_by_user(username)
+
+    links.save(username, [url], 0, force_status=True)
     return redirect(url_for('index'))

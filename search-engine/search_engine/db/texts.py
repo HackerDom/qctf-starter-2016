@@ -37,6 +37,9 @@ class TextDAO:
         self._es.index(index=settings.ES_INDEX_NAME, doc_type=TextDAO._TYPE_PREFIX + username,
                        id=sha1(url.encode()).hexdigest(), body=body)
 
+    def delete_by_user(self, username: str):
+        self._es.delete_by_query(index=settings.ES_INDEX_NAME, doc_type=TextDAO._TYPE_PREFIX + username, body={})
+
     def search(self, username: str, query: str) -> dict:
         body = {
             "query": {
