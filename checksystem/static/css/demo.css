@@ -78,7 +78,7 @@ body {
 .card {
     cursor: pointer;
     float: left;
-    height: 220px;
+    height: 150px;
     background-color: #1A1A1A;
     padding: 10px 0 20px;
     width: 100%;
@@ -426,15 +426,10 @@ body {
 }
 
 .card {
-  max-width: 35rem;
-  position: relative;
-  display: inline-block;
-  margin-bottom: .75rem;
   background-color: #1A1A1A;
   border-radius: .25rem;
   border: 1px solid rgba(0,0,0,.125);
   padding: 1.25rem;
-  margin-right: 10px;
 }
 
 .card-text {
@@ -444,6 +439,10 @@ body {
 .card-title {
   margin-top: 0;
   color: #efefef;
+}
+
+.tasks-list .row {
+    margin-bottom: 20px;
 }
 
 td {
@@ -456,14 +455,41 @@ td {
 
 .modal-content {
     background-color: #1A1A1A;
+    padding: 10px 20px 20px;
+}
+
+.modal-body {
+    padding: 5px 15px;
+}
+
+.modal-footer {
+    text-align: left;
 }
 
 .task-block {
-  position: relative;
+    height: 170px;
+    max-height: 170px;
+}
+
+.task-block .card-text {
+    font-size: 15px;
+    line-height: 22px;
+    max-height: 90px;
+    height: 90px;
+    overflow-y: hidden;
+}
+
+.task-block .card-text p {
+    font-size: 15px;
+    line-height: 22px;
 }
 
 .task-solved-block {
   color: #000;
+}
+
+.task-status {
+    padding-top: 10px;
 }
 
 .card-block.task-solved-block {
@@ -498,17 +524,8 @@ td {
     font-size: 26px;
 }
 
-.skype {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  width: 400px;
-  height: 400px;
-  text-align: center;
-  z-index: 2;
-  border-left: solid 3px #000;
-  border-top: solid 20px #000;
-  background-color: #2b2b2b;
+.close:hover, .close:focus {
+    color: #6b6a6a;
 }
 
 .block img {
@@ -568,4 +585,17 @@ td {
 
 .admin-scoreboard th,td {
   text-align: center;
+}
+
+.navbar .btn.active {
+    pointer-events: none;
+    cursor: default;
+    background-color: #fff;
+    color: black !important;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.results-table td {
+    text-align: left;
 }

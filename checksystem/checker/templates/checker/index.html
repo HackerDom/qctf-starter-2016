@@ -3,7 +3,7 @@
 {% block title %}Правительство{% endblock %}
 
 {% block content %}
-  <div class="tim-title">
+  <div class="tim-title tasks-list">
     {% if not user.team.contest_started %}
       <h2>Дождитесь начала контеста</h2>
     {% else %}
@@ -19,9 +19,8 @@
                   <span>{{ task.title }}</span>
                   <span class="pull-right">{{ task.price }} <i class="fa fa-bitcoin"></i></span>
                 </h4>
-                {# <h5 class="card-title">Стоимость: {{ task.price }} $</h5> #}
               </div>
-              <div class="card-text">{{ task.description|safe|truncatechars_html:185 }}</div>
+              <div class="card-text dotdotdot">{{ task.description|safe|truncatechars_html:185 }}</div>
             </div>
             <div class="modal fade {% if user.team in task.teams.all %}task-solved-modal{% endif %}" id="modal-{{ task.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ task.pk }}" aria-hidden="true">
               <div class="modal-dialog" role="document">
@@ -31,19 +30,22 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title" id="modalLabel-{{ task.pk }}">{{ task.title }}</h4>
-                    <span>Решили {{ task.teams.count }} команд.</span>
+                    <span>
+                        Сотрудников, выполнивших задание: {{ task.teams.count }}
+                    </span>
                   </div>
                   <div class="modal-body">
                     <div class="stamp"></div>
                     {{ task.description|safe }}
                   </div>
                   <div class="modal-footer">
-                    <div class="form-group">
-                      <input task-id="{{ task.pk }}" type="text" class="form-control flag-input flag-input-{{ task.pk }}" placeholder="Флаг">
-                      <span id="task-{{ task.pk }}-status"></span>
+                    <div class="input-group">
+                      <input task-id="{{ task.pk }}" type="text" class="form-control flag-input flag-input-{{ task.pk }}" placeholder="Ответ">
+                      <span class="input-group-btn">
+                        <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Отправить</button>
+                      </span>
                     </div>
-                    <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Отправить</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <div id="task-{{ task.pk }}-status" class="task-status"></div>
                   </div>
                 </div>
               </div>
@@ -83,11 +85,14 @@
             if ('need_refresh' in data) {
               need_refresh = data.need_refresh;
             }
-            $("#task-" + task_id + "-status").show();
-            $("#task-" + task_id + "-status").text(data.message);
+            var $status = $("#task-" + task_id + "-status");
+            $status.show();
+            $status.text(data.message);
             $('#balance').text(data.balance);
             $('#flags-number').text(data.flags);
-            $("#task-" + task_id + "-status").fadeOut(4000, function() {});
+            setTimeout(6000, function(){
+              $status.fadeOut(4000);
+            });
             if (data.is_correct) {
               need_refresh = true;
               $("#card-" + task_id).addClass("task-solved-block");

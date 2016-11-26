@@ -7,3 +7,9 @@ $(window).scroll(function(e) {
     
 });
 
+
+$(document).ready(function(){
+    $('.dotdotdot').dotdotdot({
+
+    });
+});

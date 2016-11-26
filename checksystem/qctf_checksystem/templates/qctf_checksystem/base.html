@@ -55,11 +55,6 @@
   </head>
 
   <body>
-    <!--
-    <div class="skype">
-      <img src="{% static 'img/skype.gif' %}" />
-    </div>
-    -->
     {% include "qctf_checksystem/navbar.html" %}
     <div class="main">
       <div class="container tim-container">
@@ -106,6 +101,7 @@
     <script src="{% static 'js/gsdk-radio.js' %}"></script>
     <script src="{% static 'js/gsdk-bootstrapswitch.js' %}"></script>
     <script src="{% static 'js/get-shit-done.js' %}"></script>
+    <script src="{% static 'js/jquery.dotdotdot.min.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
     <script>
       {% if user.is_authenticated %}
