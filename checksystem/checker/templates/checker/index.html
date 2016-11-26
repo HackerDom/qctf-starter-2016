@@ -85,6 +85,11 @@
         var $flag_input = $('.flag-input-' + task_id);
         $flag_input.addClass('loading');
         var flag = $flag_input.val();
+        var $status = $("#task-" + task_id + "-status");
+        if ($status[0].timeout) {
+            clearTimeout($status[0]);
+        }
+        $status.stop();
         $.ajax({
           type: "POST",
           url: '/check_flag/' + task_id + '/',
@@ -93,12 +98,12 @@
             if ('need_refresh' in data) {
               need_refresh = data.need_refresh;
             }
-            var $status = $("#task-" + task_id + "-status");
+            $status.hide();
+            $status.removeClass('success').text(data.message).css('opacity', 1);
             $status.show();
-            $status.text(data.message);
             $('#balance').text(data.balance);
             $('#flags-number').text(data.flags);
-            setTimeout(function(){
+            $status[0].timeout = setTimeout(function(){
               $status.fadeOut(4000);
             }, 6000);
             if (data.is_correct) {

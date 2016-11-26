@@ -54,7 +54,8 @@ def buy_hint(request, hint_id):
                              'hint': hint.get_hint_text(team)})
 
     if task.is_solved(team):
-        raise Http404
+        return JsonResponse({'error': False, 'balance': team.balance,
+                             'hint': 'Вы выполнили задание, к которому относится этот лот'})
 
     hint.buy(team)
     return JsonResponse({'error': False, 'balance': team.balance,
