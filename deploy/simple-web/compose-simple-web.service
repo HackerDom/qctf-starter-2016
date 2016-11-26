@@ -9,7 +9,7 @@ ExecStartPre=-/usr/bin/docker-compose kill badip
 ExecStartPre=-/usr/bin/docker-compose rm badip
 ExecStartPre=-/usr/bin/docker-compose kill grouping-s
 ExecStartPre=-/usr/bin/docker-compose rm grouping-s
-ExecStart=/usr/bin/docker-compose up
+ExecStart=/usr/bin/docker-compose up --build
 ExecStop=/usr/bin/docker-compose stop
 
 [Install]
