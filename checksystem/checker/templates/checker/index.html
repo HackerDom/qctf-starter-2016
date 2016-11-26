@@ -11,10 +11,10 @@
       </p>
     {% else %}
       {% for task in tasks %}
-        {% if not task.parent or user.team in task.parent.teams.all %}
           {% if forloop.first %}
             <div class="row">
           {% endif %}
+        {% if not task.parent or user.team in task.parent.teams.all %}
           <div class="col-xs-4">
             <div class="card card-block task-block {% if task.is_solved_by_current_team %}task-solved-block{% endif %}" id="card-{{ task.pk }}" data-toggle="modal" data-target="#modal-{{ task.pk }}">
               <div class="card-title">
@@ -58,13 +58,13 @@
               </div>
             </div>
           </div>
+        {% endif %}
           {% if forloop.counter|divisibleby:3 %}
             </div><div class="row">
           {% endif %}
           {% if forloop.last %}
             </div>
           {% endif %}
-        {% endif %}
       {% endfor %}
     {% endif %}
   </div>
