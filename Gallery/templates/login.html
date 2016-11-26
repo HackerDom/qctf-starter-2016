@@ -1,35 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Вход{% endblock %}
 
 {% block content %}
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6 center-block">
-
-		{% if error_message is defined %}
-		<p style="color: red">{{ error_message }}</p>
-		{% endif %}
+		{% include 'error_include.html' %}
 
 		<form action="/login" method="post">
-		  <h3>Login</h3>
+		  <h3>Вход</h3>
 		  <div class="form-group">
-			  <label for="username" class="col-sm-3 control-label">Username</label>
+			  <label for="username" class="col-sm-3 control-label">Имя</label>
 			  <div class="col-sm-9">
-				  <input type="text" id="username" placeholder="Username" class="form-control" autofocus>
+				  <input type="text" name="username" id="username" placeholder="Имя" class="form-control" autofocus>
 			  </div>
 		  </div>
 		  <div class="form-group">
-			  <label for="password" class="col-sm-3 control-label">Password</label>
+			  <label for="password" class="col-sm-3 control-label">Пароль</label>
 			  <div class="col-sm-9">
-				  <input type="password" id="password" placeholder="Password" class="form-control">
+				  <input type="password" name="password" id="password" placeholder="Пароль" class="form-control">
 			  </div>
 		  </div>
 
 		  <div class="form-group">
 			<div class="col-sm-9 col-sm-offset-3">
-			  <button value="Log in" type="submit" class="btn btn-primary submit-file">Log in</button>
-			  <a href="/register" class="btn btn-primary submit-file">Registration</a>
+			  <button value="Log in" type="submit" class="btn btn-primary submit-file">Войти</button>
+			  <a href="/register" class="btn btn-primary submit-file">Регистрация</a>
 			</div>
 		  </div>
 		</form>

@@ -1,18 +1,34 @@
-from flask import Flask
+from flask import Flask, g
 import memcache
-import sqlite3
+import MySQLdb
 
 from controllers import Controllers
 from services import UserService, PhotoService
 from cache import PhotoCache
 from geoip import GeoIpResolver
-from constants import DB_PATH, MEMCACHED_PARAMS, IP_TO_CITY_PATH, CITY_TO_COORDS_PATH, SERVER_PORT, SERVER_DEBUG
+from constants import *
+
+
+def create_db_connection():
+    return MySQLdb.connect(
+        host=DB_HOST, port=DB_PORT, user=DB_USER,
+        password=DB_PASSWORD, database=DB_DATABASE, charset='utf8')
+
+
+def request_db_connection():
+    if not hasattr(g, 'db_connection'):
+        g.db_connection = create_db_connection()
+    return g.db_connection
+
+
+def close_connection(e):
+    if hasattr(g, 'db_connection'):
+        g.db_connection.close()
 
 
 def main():
-    db_connection = sqlite3.connect(DB_PATH, check_same_thread=False)
-    user_service = UserService(db_connection)
-    photo_service = PhotoService(db_connection)
+    user_service = UserService(request_db_connection)
+    photo_service = PhotoService(request_db_connection)
     memcache_client = memcache.Client(*MEMCACHED_PARAMS)
     photo_cache = PhotoCache(memcache_client, photo_service)
     geoip_resolver = GeoIpResolver(IP_TO_CITY_PATH, CITY_TO_COORDS_PATH)
@@ -26,7 +42,11 @@ def main():
     app.add_url_rule('/my', view_func=controllers.my)
     app.add_url_rule('/nearby', view_func=controllers.nearby)
     app.add_url_rule('/featured', view_func=controllers.featured)
+    app.add_url_rule('/all', view_func=controllers.all)
     app.add_url_rule('/upload', view_func=controllers.upload, methods=['GET', 'POST'])
+    app.add_url_rule('/delete', view_func=controllers.delete)
+
+    app.teardown_appcontext(close_connection)
 
     app.run(port=SERVER_PORT, debug=SERVER_DEBUG)
 

@@ -21,7 +21,7 @@ html, body {
   font-size: 64px;
 }
 
-.header a:link,a:visited {
+.header a:link, .header a:visited {
   color: #666;
   text-decoration: none;
   transition: .1s;

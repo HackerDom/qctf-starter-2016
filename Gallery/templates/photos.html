@@ -6,7 +6,9 @@
   <div class="row">
     {% for filename in filenames %}
       <div class="col-xs-4">
-        <div class="image-block" style="background-image: url('/static/photos/{{filename}}');"></div>
+        <a href="/static/photos/{{filename}}">
+          <div class="image-block" style="background-image: url('/static/photos/{{filename}}');"></div>
+        </a>
 
       </div>
       {% if loop.index % 3 == 0 %}

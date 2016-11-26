@@ -47,7 +47,9 @@ class PhotoCache:
         key = 'filename:{}'.format(photo_id)
         value = self._get(key)
         if not value:
-            value = self._photo_service.get_photo_by_id(photo_id).filename
+            photo = self._photo_service.get_photo_by_id(photo_id)
+            if photo is not None:
+                value = photo.filename
             self._set(key, value)
         return value
 
