@@ -1,4 +1,4 @@
-[mysql]
+[mysqld]
 server-id = 2
 log-bin = /var/lib/mysql/mysql-bin
 replicate-do-db = checksystem
