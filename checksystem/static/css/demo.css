@@ -577,11 +577,19 @@ td {
 }
 
 .clar-block {
-  border: solid white 1px;
+
 }
 
-.clar-footer {
-  height: 60px;
+.clar-block {
+    color: white;
+}
+
+.clar-block .time {
+    font-size: 13px;
+}
+
+.clar-block .clar-content {
+    padding: 20px 0;
 }
 
 .read-clar {

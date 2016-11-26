@@ -44,12 +44,18 @@
                 <div class="modal-body">
                   <div id="hint-{{ hint.pk }}-content">
                     {% if user.team in hint.owners.all %}
-                      {{ hint.text|safe }}
+                      <p>
+                          {{ hint.text|safe }}
+                      </p>
                     {% else %}
-                      Купите лот за {{ hint.price }}<i class="fa fa-bitcoin"></i>, чтобы увидеть его содержимое
+                      <p>
+                        Купите лот за {{ hint.price }}<i class="fa fa-bitcoin"></i>, чтобы увидеть его содержимое
+                      </p>
                     {% endif %}
                     {% if user.team in hint.task.teams.all %}
-                      Вы выполнили задание, к которому относится этот лот
+                      <p class="text-success">
+                        Вы выполнили задание, к которому относится этот лот.
+                      </p>
                     {% endif %}
                   </div>
                 </div>
