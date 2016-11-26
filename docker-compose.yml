@@ -16,7 +16,7 @@ services:
       - "3306:3306"
     restart: always
     volumes:
-      - ./mysql:/etc/mysql/conf.d:ro
+      - ./mysql/config:/etc/mysql/conf.d:ro
       - /var/lib/mysql:/var/lib/mysql
 
   nginx:
