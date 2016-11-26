@@ -83,15 +83,21 @@ class Controllers:
         return redirect('/my')
 
     def show_photos(self, title, cached_photos):
-        filenames = [self.photos_cache.get_filename_by_id(cached_photo.id) for cached_photo in cached_photos]
+        filenames = []
+        for cached_photo in cached_photos:
+            filename = self.photos_cache.get_filename_by_id(cached_photo.id)
+            if not filename:
+                filename = self.photos_service.get_photo_by_id(cached_photo.id).filename
+            filenames.append(filename)
         username = self.users_service.get_username_by_user_id(current_user_id())
-        print(username)
         return render_template('photos.html', title=title, filenames=filenames, username=username)
 
     @require_login
     def my(self):
-        return self.show_photos('My photos',
-            self.photos_cache.get_photos_by_user_id(current_user_id()))
+        photos = self.photos_cache.get_photos_by_user_id(current_user_id())
+        if not photos:
+            photos = self.photos_service.get_photos_by_user_id(current_user_id())
+        return self.show_photos('My photos', photos)
 
     @require_login
     def featured(self):
@@ -104,11 +110,17 @@ class Controllers:
         current_coordinates = self.geoip_resolver.get_ip_coords(request.remote_addr)
         if current_coordinates is not None:
             for nearby_coordinates in get_nearby_coordinates(*current_coordinates):
-                results.extend(self.photos_cache.get_photos_by_coordinates(*nearby_coordinates))
+                photos = self.photos_cache.get_photos_by_coordinates(*nearby_coordinates)
+                if not photos:
+                    photos = self.photos_service.get_photos_by_coordinates(*nearby_coordinates)
+                results.extend(photos)
         return self.show_photos('Nearby photos', results)
 
     @require_login
     def upload(self):
+        if request.method == 'GET':
+            return render_template('upload.html')
+
         file = request.files.get('file')
         if not file or not file.filename:
             return render_template('upload.html', error_message='No file provided')

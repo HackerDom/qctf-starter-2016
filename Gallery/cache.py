@@ -15,19 +15,22 @@ class PhotoCache:
         try:
             value = self.client.get(key)
         except Exception:
-            return None
+            value = None
+        print('get', key, value)
         return value
 
     def set(self, key, value):
+        print('set', key, value)
         self.client.set(key, value, time=60, min_compress_len=1000)
 
     def delete(self, key):
+        print('delete', key)
         self.client.delete(key)
 
     def get_photo_list(self, key):
         value = self.get(key)
-        if value is None:
-            return []
+        if not value:
+            return None
         photos = []
         for photo in value.split(','):
             id, user_id = photo.split('-')
@@ -36,12 +39,12 @@ class PhotoCache:
 
     def set_photo_list(self, key, photos):
         value = ','.join('{}-{}'.format(photo.id, photo.user_id) for photo in photos)
-        self.set_photo_list(key, value)
+        self.set(key, value)
 
     def get_filename_by_id(self, id):
         key = 'filename:{}'.format(id)
         value = self.get(key)
-        if value is None:
+        if not value:
             value = self.photos_service.get_photo_by_id(id).filename
             self.set(key, value)
             value = self.get(key)
@@ -51,7 +54,7 @@ class PhotoCache:
         def wrapped(*args, **kwargs):
             key = key_fmt.format(*args, **kwargs)
             value = self.get_photo_list(key)
-            if value is None:
+            if not value:
                 value = method(*args, **kwargs)
                 self.set_photo_list(key, value)
                 value = self.get_photo_list(key)
