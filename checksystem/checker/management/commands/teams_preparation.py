@@ -18,11 +18,11 @@ RATED_TEAMS_FILE = 'rated_teams.csv'
 UNRATED_TEAMS_FILE = 'unrated_teams.csv'
 
 flag_files = [
-    ('Git', 'git_flags.json'),
-    ('Optimization', 'optimization_flags.json'),
-    ('Weather', 'weather_flags.json'),
-    ('Hard Reverse', 'hard_reverse_flags.json'),
-    ('Easy Reverse', 'easy_reverse_flags.json')
+    ('Координаторы (1)', 'git_flags.json'),
+    ('Координаторы (5)', 'optimization_flags.json'),
+    ('Буо-сахиты (1)', 'weather_flags.json'),
+    ('Буо-сахиты (3)', 'hard_reverse_flags.json'),
+    ('Формация П (3)', 'easy_reverse_flags.json')
 ]
 
 replace_info_files = [
@@ -74,7 +74,7 @@ def get_unrated_teams():
         assert len(row) == 5
         start_time = row[1]
         teams.append(AggregatedTeam(
-            region='',
+            region='Spare region MSK' + start_time,
             region_name='spare-' + start_time,
             start_time=start_time,
             team_name='spare-team-' + str(len(teams) + 1),
