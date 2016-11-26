@@ -36,12 +36,14 @@ replace_info_files = [
     ]
 
 contest_day = datetime.datetime(2016, 11, 27)
+MSK_TIMEZONE_OFFSET = 180
+MSK_TIMEZONE = timezone.get_fixed_timezone(MSK_TIMEZONE_OFFSET)
 
 class AggregatedTeam:
     def __init__(self, *, region, region_name, start_time, team_name, login, password):
         self.region = region
         self.region_name = region_name
-        self.start_time = contest_day.replace(hour=int(start_time), tzinfo=timezone.get_fixed_timezone(3))
+        self.start_time = contest_day.replace(hour=int(start_time), tzinfo=MSK_TIMEZONE)
         self.team_name = team_name
         self.login = login
         self.password = password
