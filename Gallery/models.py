@@ -9,9 +9,3 @@ class Photo:
         self.longitude = longitude
         self.filename = filename
         self.is_featured = is_featured
-
-
-class CachedPhotoInfo:
-    def __init__(self, id, user_id):
-        self.id = id
-        self.user_id = user_id
