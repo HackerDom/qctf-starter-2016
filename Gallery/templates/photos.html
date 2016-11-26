@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
+
 {% block title %}{{ title }}{% endblock %}
+
 {% block content %}
-<h1>{{ title }} (user {{ username }})</h1>
-{% for filename in filenames %}
-<img src="/static/photos/{{filename}}" style="max-width: 200px;" />
-{% endfor %}
+  <div class="row">
+    {% for filename in filenames %}
+      <div class="col-xs-4">
+        <div class="image-block" style="background-image: url('/static/photos/{{filename}}');"></div>
+
+      </div>
+      {% if loop.index % 3 == 0 %}
+        </div><div class="row">
+      {% endif %}
+    {% endfor %}
+  </div>
 {% endblock %}

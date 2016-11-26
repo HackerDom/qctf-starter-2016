@@ -1,11 +1,51 @@
 {% extends 'base.html' %}
+
 {% block title %}Upload{% endblock %}
+
 {% block content %}
-<h3>Upload:</h3>
-{% if error_message is defined %}
-<p style="color: red">{{ error_message }}</p>
-{% endif %}
-<form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" value="Choose a photo" /><input type="submit" value="Upload" />
-</form>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 center-block">
+      <h3>Upload image</h3>
+      {% if error_message is defined %}
+      <p style="color: red">{{ error_message }}</p>
+      {% endif %}
+
+      <form action="/upload" method="post" enctype="multipart/form-data">
+          <!-- <input type="file" name="file" value="Choose a photo" /> -->
+
+        <div class="input-group">
+          <label class="input-group-btn">
+            <span class="btn btn-primary">
+              Browse&hellip; <input type="file" name="file" style="display: none;" multiple>
+            </span>
+          </label>
+          <input type="text" class="form-control" readonly>
+        </div>
+
+        <button value="Upload" type="submit" class="btn btn-primary btn-block submit-file">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(function() {
+      $(document).on('change', ':file', function() {
+        var input = $(this);
+        var numFiles = input.get(0).files ? input.get(0).files.length : 1;
+        var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+      });
+
+      $(document).ready( function() {
+        $(':file').on('fileselect', function(event, numFiles, label) {
+          var input = $(this).parents('.input-group').find(':text');
+          input.val(label);
+        });
+      });
+    });
+  </script>
 {% endblock %}
