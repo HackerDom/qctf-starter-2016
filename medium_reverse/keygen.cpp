@@ -66,6 +66,6 @@ int main()
             parts[k] /= BASE;
         }
     }
-    printf("You key is: QCTF-%s-%s-%04X\n", block[0], block[1], checksum(username, username_length));
+    printf("You key is: QCTF_%s_%s_%04X\n", block[0], block[1], checksum(username, username_length));
     
 }

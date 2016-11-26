@@ -71,7 +71,7 @@ int main()
     }
     
     printf("Enter you key: ");
-    scanf("%4s-%15s-%15s-%4s", parts[0], parts[1], parts[2], parts[3]);
+    scanf("%4s_%15s_%15s_%4s", parts[0], parts[1], parts[2], parts[3]);
     
     // check part 0
     if ( strcmp( parts[0], "QCTF" ) != 0 )
