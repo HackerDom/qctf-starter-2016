@@ -102,7 +102,6 @@
               $status.fadeOut(4000);
             }, 6000);
             if (data.is_correct) {
-              need_refresh = true;
               $("#card-" + task_id).addClass("task-solved-block");
               $("#modal-" + task_id).addClass("task-solved-modal");
               $status.addClass('success');
