@@ -468,6 +468,7 @@ td {
 
 .modal-footer {
     text-align: left;
+    padding: 5px 15px;
 }
 
 .task-block {
@@ -494,6 +495,10 @@ td {
 
 .task-status {
     padding-top: 10px;
+}
+
+.task-status.success {
+    color: #49d645;
 }
 
 .card-block.task-solved-block {
@@ -635,4 +640,9 @@ td {
     .modal-dialog.modal-dialog-wide {
         min-width: 800px;
     }
+}
+
+input[type="text"].loading {
+    background-size: 25px 25px;
+    background: #ffffff url("/static/img/loading.gif") no-repeat right center;
 }
