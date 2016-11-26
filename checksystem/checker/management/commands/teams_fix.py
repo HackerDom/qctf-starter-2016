@@ -62,7 +62,7 @@ def get_unrated_teams():
 
 def fix_teams(teams):
     for team in teams:
-        user = User(username=team.login)
+        user = User.objects.get(username=team.login)
         user.set_password(team.password)
         user.save()
 
