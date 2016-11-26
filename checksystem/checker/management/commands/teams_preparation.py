@@ -8,7 +8,8 @@ from checker.models import Flag
 from cabinet.models import Team
 from cabinet.models import User
 from cabinet.models import Region
-
+import datetime
+from django.utils import timezone
 
 RATED_TEAMS_FILE = 'rated_teams.csv'
 UNRATED_TEAMS_FILE = 'unrated_teams.csv'
@@ -29,11 +30,13 @@ replace_info_files = [
     'easy_reverse_replacements.json',
     ]
 
+contest_day = datetime.datetime(2016, 11, 27)
+
 class AggregatedTeam:
     def __init__(self, *, region, region_name, start_time, team_name, login, password):
         self.region = region
         self.region_name = region_name
-        self.start_time = start_time
+        self.start_time = contest_day.replace(hour=int(start_time), tzinfo=timezone.get_fixed_timezone(3))
         self.team_name = team_name
         self.login = login
         self.password = password
@@ -74,7 +77,7 @@ def get_unrated_teams():
 
 def get_or_add_region(name, title, start_time):
     try:
-        return Region.objects.get(name)
+        return Region.objects.get(name=name)
     except Region.DoesNotExist:
         region = Region(name=name, title=title, start_time=start_time)
         region.save()
@@ -87,19 +90,21 @@ def create_teams(teams, replace_info_provider, flag_provider):
         user = User(username=team.login, password=team.password)
         user.save()
         region = get_or_add_region(team.region, team.region_name, team.start_time)
-        dbteam = Team(
-            name=team.team_name,
-            user=user,
-            replace_info=replace_info,
-            region=region,
-            is_visible=True)
+        dbteam = Team.objects.get(user=user)
+        dbteam.name=team.team_name
+        dbteam.replace_info=replace_info
+        dbteam.region=region
+        dbteam.is_visible=True
         dbteam.save()
         for task_name, flag in flag_provider.get_flags_for_index(index):
-            dbflag = Flag(
-                team=dbteam,
-                task=Task.objects.get(title=task_name),
-                flag=flag)
-            dbflag.save()
+            try:
+                dbflag = Flag(
+                    team=dbteam,
+                    task=Task.objects.get(title=task_name),
+                    flag=flag)
+                dbflag.save()
+            except Task.DoesNotExist:
+                raise Exception("Task {} doesn't exist".format(task_name))
 
 
 class ReplaceInfoProvider:
