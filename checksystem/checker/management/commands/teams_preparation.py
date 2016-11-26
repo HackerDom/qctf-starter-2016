@@ -31,6 +31,8 @@ replace_info_files = [
     'weather_replacements.json',
     'hard_reverse_replacements.json',
     'easy_reverse_replacements.json',
+    'ettrw_replacements_1.json',
+    'ettrw_replacements_2.json',
     ]
 
 contest_day = datetime.datetime(2016, 11, 27)
