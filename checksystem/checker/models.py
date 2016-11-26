@@ -80,9 +80,10 @@ class Task(models.Model):
         submit = Submit(team=team, task=self, flag=flag)
         submit.save()
 
+        if is_correct and self.children.count() > 0:
+            need_refresh = True
+
         if not self.is_solved(team) and is_correct:
-            if self.children.count() > 0:
-                need_refresh = True
             self._award_team(team)
             self.teams.add(team)
 
