@@ -2,7 +2,7 @@ version: '2'
 services:
   mongo:
     image: mongo
-	restart: always
+    restart: always
     volumes:
       - /data/db:/data/db
 
@@ -12,7 +12,7 @@ services:
     depends_on:
       - mongo
     env_file: ./production.env
-	restart: always
+    restart: always
 
   crawler:
     build: ./search-engine
@@ -20,7 +20,7 @@ services:
     depends_on:
       - mongo
     env_file: ./production.env
-	restart: always
+    restart: always
     
   front:
     build: ./search-engine
@@ -31,7 +31,7 @@ services:
     env_file: ./production.env
     links:
       - auth:auth.local
-	restart: always
+    restart: always
 
   nginx:
     image: nginx
@@ -39,6 +39,6 @@ services:
       - front
     ports:
       - "80:80"
-	restart: always
+    restart: always
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
