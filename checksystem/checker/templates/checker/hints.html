@@ -1,9 +1,9 @@
 {% extends "qctf_checksystem/base.html" %}
 
-{% block title %}Hints{% endblock %}
+{% block title %}Биржа{% endblock %}
 
 {% block content %}
-<div class="tim-title">
+<div class="tim-title hints-list">
   {% if not user.team.contest_started %}
     <h2>У нас пока ничего для вас нет</h2>
     <p>
@@ -47,6 +47,9 @@
                       {{ hint.text|safe }}
                     {% else %}
                       Купите лот за {{ hint.price }}<i class="fa fa-bitcoin"></i>, чтобы увидеть его содержимое
+                    {% endif %}
+                    {% if user.team in hint.task.teams.all %}
+                      Вы выполнили задание, к которому относится этот лот
                     {% endif %}
                   </div>
                 </div>

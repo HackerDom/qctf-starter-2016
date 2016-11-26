@@ -22,7 +22,7 @@ class Task(models.Model):
     wrong_flag_message = models.TextField()
 
     class Meta:
-        ordering = ['price']
+        ordering = ['price', 'title']
 
     def __str__(self):
         return self.title
@@ -61,7 +61,7 @@ class Task(models.Model):
 
         need_refresh = False
         if not self._check_delay(team):
-            return {'message': 'Пожалуйста, подождите, вы отправляете флаги слишком часто', 'is_correct': False}
+            return {'message': 'Пожалуйста, подождите, вы отправляете ответы слишком часто', 'is_correct': False}
         if team.contest_finished():
             return {'message': 'Соревнование завершено', 'is_correct': False}
         if not team.contest_started():

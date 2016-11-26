@@ -445,7 +445,8 @@ body {
   text-overflow: ellipsis;
 }
 
-.tasks-list .row {
+.tasks-list .row,
+.hints-list .row{
     margin-bottom: 20px;
 }
 
