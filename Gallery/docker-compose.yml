@@ -19,6 +19,8 @@ services:
       - mysql
       - memcached
     env_file: ./production.env
+	volumes:
+	  - ./gallery/static/photos:/app/static/photos
 
   nginx:
     image: nginx
