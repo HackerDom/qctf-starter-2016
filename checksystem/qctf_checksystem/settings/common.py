@@ -113,6 +113,7 @@ STATICFILES_DIRS = [
 
 SUBMIT_DELAY = timedelta(seconds=5)
 CONTEST_DURATION = timedelta(hours=8)
+DEFAULT_REGION_ID = 1
 
 LOGIN_REDIRECT_URL = '/checker/'
 LOGIN_URL = '/profile/login/'
