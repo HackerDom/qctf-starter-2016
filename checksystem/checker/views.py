@@ -67,7 +67,11 @@ def buy_hint(request, hint_id):
 @staff_member_required
 @login_required
 def admin_scoreboard(request):
-    teams = Team.objects.all()
-    tasks = Task.objects.all()
+    teams = (Team
+        .objects
+        .select_related('region')
+        .order_by('-balance', 'submit_time', 'pk')
+        .prefetch_related('tasks'))
+    tasks = Task.objects.all().prefetch_related('teams')
     return render(request, 'checker/admin_scoreboard.html', {'teams': teams,
                                                              'tasks': tasks})
