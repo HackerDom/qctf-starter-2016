@@ -37,6 +37,13 @@ class Controllers:
         self.upload = self.require_login(self.upload)
         self.delete = self.require_admin(self.delete)
 
+    def render(self, template, *args, **kwargs):
+        user_id = current_user_id()
+        if user_id is not None:
+            return render_template(template, *args, **kwargs, user_id=user_id)
+        else:
+            return render_template(template, *args, **kwargs)
+
     def log_in(self, username):
         user_id = self.user_service.get_user_id_by_username(username)
         response = make_response(redirect('/my'))
@@ -71,14 +78,14 @@ class Controllers:
         if is_logged_in():
             return redirect('/my')
         if request.method == 'GET':
-            return render_template('login.html')
+            return self.render('login.html')
 
         username = request.form.get('username')
         password = request.form.get('password')
         if not username or not password:
-            return render_template('login.html', error_message='Имя и пароль не могут быть пустыми')
+            return self.render('login.html', error_message='Имя и пароль не могут быть пустыми')
         if not self.user_service.is_password_correct(username, password):
-            return render_template('login.html', error_message='Неправильное имя или пароль')
+            return self.render('login.html', error_message='Неправильное имя или пароль')
 
         return self.log_in(username)
 
@@ -87,20 +94,20 @@ class Controllers:
 
     def register(self):
         if request.method == 'GET':
-            return render_template('register.html')
+            return self.render('register.html')
 
         username = request.form.get('username')
         password = request.form.get('password')
         if not username or not password:
-            return render_template('register.html', error_message='Имя и пароль не могут быть пустыми')
+            return self.render('register.html', error_message='Имя и пароль не могут быть пустыми')
         if not USERNAME_RE.match(username):
-            return render_template(
+            return self.render(
                 'register.html',
                 error_message='Имя должно состоять из четырёх или больше латинских символа, дефиса или подчёркивания')
         if self.user_service.username_exists(username):
-            return render_template('register.html', error_message='Под этим именем уже зарегистрирован пользователь')
+            return self.render('register.html', error_message='Под этим именем уже зарегистрирован пользователь')
         if not self.user_service.add_user(username, password):
-            return render_template('register.html', error_message='Ошибка при регистрации')
+            return self.render('register.html', error_message='Ошибка при регистрации')
 
         return self.log_in(username)
 
@@ -115,7 +122,7 @@ class Controllers:
         filenames = [self.photo_cache.get_filename_by_id(id) for id in ids]
         filenames = [fn for fn in filenames if fn]
         username = self.user_service.get_username_by_user_id(current_user_id())
-        return render_template('photos.html', title=title, page=page_name, filenames=filenames, username=username)
+        return self.render('photos.html', title=title, page=page_name, filenames=filenames, username=username)
 
     def my(self):
         return self.show_photos('Мои фото', 'my',
@@ -141,25 +148,25 @@ class Controllers:
 
     def upload(self):
         if request.method == 'GET':
-            return render_template('upload.html')
+            return self.render('upload.html')
 
         file = request.files.get('file')
         if not file or not file.filename:
-            return render_template('upload.html', error_message='Выберите файл')
+            return self.render('upload.html', error_message='Выберите файл')
         if not file.filename.lower().endswith('.jpg') and not file.filename.lower().endswith('jpeg'):
-            return render_template('upload.html', error_message='Пока что поддерживается только формат JPEG :(')
+            return self.render('upload.html', error_message='Пока что поддерживается только формат JPEG :(')
         file_bytes = file.read(MAX_PHOTO_SIZE + 1)
         if len(file_bytes) == MAX_PHOTO_SIZE + 1:
-            return render_template(
+            return self.render(
                 'upload.html',
                 error_message='Файл слишком большой (>{} байтов)'.format(MAX_PHOTO_SIZE))
 
         try:
             coords = extract_coordinates_from_jpeg(file_bytes)
         except Exception:
-            return render_template('upload.html', error_message='Из фото не вышло извлечь геометку')
+            return self.render('upload.html', error_message='Из фото не вышло извлечь геометку')
         if coords is None:
-            return render_template('upload.html', error_message='В фото нет геометки')
+            return self.render('upload.html', error_message='В фото нет геометки')
 
         user_id = current_user_id()
         upload_time = datetime.datetime.utcnow()
@@ -168,7 +175,7 @@ class Controllers:
             f.write(file_bytes)
         photo = Photo(None, user_id, upload_time, *coords, filename, False)
         if self.photo_service.add_photo(photo) is None:
-            return render_template('upload.html', error_message='Ошибка при загрузке')
+            return self.render('upload.html', error_message='Ошибка при загрузке')
         try:
             self.photo_cache.invalidate(photo)
         except Exception:

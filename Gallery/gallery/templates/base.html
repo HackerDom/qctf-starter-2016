@@ -22,6 +22,7 @@
         <div class="row navigation">
             {% for href, id, caption in navigation_bar %}
                 <div class="col-md-2 {% if loop.last %}col-md-offset-2{% endif %}">
+                    {% if loop.last %}{% if user_id is defined %}<b>(id={{ user_id }})</b> {% endif %}{% endif %}
                     <a href="{{href}}" {% if id== page %} class="active" {% endif %}>
                         {{caption}}
                     </a>
