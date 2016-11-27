@@ -11,7 +11,7 @@ from cabinet.models import Team
 
 @login_required
 def index(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.all().prefetch_related('teams')
     team = request.user.team
     for task in tasks:
         task.is_solved_by_current_team = task.is_solved(team)
@@ -30,9 +30,11 @@ def check_flag(request, task_id):
 
 
 def scoreboard(request):
-    teams = Team.objects.filter(region__start_time__lte=timezone.now(),
-                                is_visible=True).order_by('-balance',
-                                                          'submit_time', 'pk')
+    teams = Team.objects
+        .filter(region__start_time__lte=timezone.now(), is_visible=True)
+        .select_related('region')
+        .order_by('-balance', 'submit_time', 'pk')
+        .prefetch_related('hints')
     return render(request, 'checker/scoreboard.html', {'teams': teams})
 
 
