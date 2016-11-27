@@ -10,4 +10,4 @@ COPY . /app
 
 EXPOSE 80
 
-CMD ["gunicorn", "--config", "gunicorn.conf.py", "app:app"]
+CMD ["./cmd.sh"]
