@@ -110,7 +110,10 @@ class Hint(models.Model):
 
     @transaction.atomic
     def buy(self, team):
-        if not self.is_bought(team) and team.balance >= self.price:
+        if (not self.is_bought(team) and 
+            team.balance >= self.price and 
+            not team.contest_finished() and
+            team.contest_started()):
             self.owners.add(team)
             team.spend_money(self.price)
 
