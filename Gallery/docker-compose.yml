@@ -5,6 +5,7 @@ services:
     env_file: ./production.env
     ports:
       - "3306:3306"
+    restart: always
     volumes:
       - /var/lib/mysql:/var/lib/mysql
 
@@ -12,6 +13,7 @@ services:
     image: memcached
     ports:
       - "127.0.0.1:11211:11211"
+    restart: always
 
   gallery:
     build: ./gallery
@@ -19,6 +21,7 @@ services:
       - mysql
       - memcached
     env_file: ./production.env
+    restart: always
     volumes:
       - ./gallery/static/photos:/app/static/photos
 
@@ -29,6 +32,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    restart: always
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
