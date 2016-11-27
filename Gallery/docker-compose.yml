@@ -10,6 +10,8 @@ services:
 
   memcached:
     image: memcached
+    ports:
+      - "127.0.0.1:11211:11211"
 
   gallery:
     build: ./gallery
