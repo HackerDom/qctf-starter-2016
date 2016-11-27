@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask, g
 import memcache
 import MySQLdb
@@ -25,6 +27,8 @@ def close_connection(e):
     if hasattr(g, 'db_connection'):
         g.db_connection.close()
 
+
+logging.basicConfig(format='%(levelname)s\t%(asctime)s\t%(name)s\t%(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
 user_service = UserService(request_db_connection)
 photo_service = PhotoService(request_db_connection)

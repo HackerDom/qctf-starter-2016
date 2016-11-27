@@ -1,3 +1,5 @@
+import logging
+
 from flask import request
 
 from constants import SERVER_DEBUG
@@ -46,9 +48,11 @@ class GeoIpResolver:
             else:
                 lo = mid + 1
         ip_from, ip_to, city = self._ips[lo]
+        logging.info('{} {}'.format(lo, city))
         if not (ip_from <= ip_value <= ip_to):
             return None
         if city not in self._cities:
             return None
         lat, long = self._cities[city]
+        logging.info('{} {}'.format(lat, long))
         return 'N', lat, 'E', long

@@ -1,3 +1,4 @@
+import logging
 import functools
 import datetime
 import random
@@ -126,10 +127,13 @@ class Controllers:
 
     def nearby(self):
         ids = []
-        current_coordinates = self.geoip_resolver.resolve(request.remote_addr)
-        if current_coordinates is not None:
-            for nearby_coordinates in get_nearby_coordinates(*current_coordinates):
-                ids.extend(self.photo_cache.get_photos_by_coordinates(*nearby_coordinates))
+        ip = request.headers.get('X-Real-IP')
+        if ip is not None:
+            current_coordinates = self.geoip_resolver.resolve(ip)
+            logging.info('Current coordinated for {}: {}'.format(ip, current_coordinates))
+            if current_coordinates is not None:
+                for nearby_coordinates in get_nearby_coordinates(*current_coordinates):
+                    ids.extend(self.photo_cache.get_photos_by_coordinates(*nearby_coordinates))
         return self.show_photos('Фото рядом', 'nearby', ids=ids)
 
     def all(self):
