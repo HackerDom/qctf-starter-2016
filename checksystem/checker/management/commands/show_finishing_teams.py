@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from cabinet.models import Team, Region
 from django.conf import settings
 from django.utils import timezone
-import json
+import datetime
 
 def get_regions_in_interval(left, right):
     regions = (Region
@@ -32,18 +32,22 @@ def get_tour_info(l_offset, r_offset, amount):
         result[region.name] = get_team_infos_in_region(region, amount)
     return result
 
+def print_tour_info(tour_info):
+    for region, teams in tour_info.items():
+        for team in teams:
+            print(region, team['name'], team['balance'], sep="~")
+
 class Command(BaseCommand):
     help = 'Creates default categories from file'
 
     def add_arguments(self, parser):
-        parser.add_argument('left_offset', type=int)
-        parser.add_argument('right_offset', type=int)
-        parser.add_argument('top_n', type=int)
+        parser.add_argument('left_offset', type=int, nargs='?', default=0)
+        parser.add_argument('right_offset', type=int, nargs='?', default=3600)
+        parser.add_argument('top_n', type=int, nargs='?', default=6)
 
     def handle(self, *args, **options):
         l_offset = options['left_offset']
         r_offset = options['right_offset']
         top_n = options['top_n']
         tour_info = get_tour_info(l_offset, r_offset, top_n)
-        tour_info_json = json.dumps(tour_info, indent=4)
-        self.stdout.write(tour_info_json)
+        print_tour_info(tour_info)
