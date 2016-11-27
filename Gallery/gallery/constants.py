@@ -5,7 +5,7 @@ import re
 
 
 SERVER_PORT = 4567
-SERVER_DEBUG = True
+SERVER_DEBUG = False
 with open('secrets/password_secret.txt') as f:
     PASSWORD_SECRET = f.read().strip()
 with open('secrets/jwt_secret.txt') as f:
