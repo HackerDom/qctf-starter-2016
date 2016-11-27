@@ -30,11 +30,11 @@ def check_flag(request, task_id):
 
 
 def scoreboard(request):
-    teams = Team.objects
+    teams = (Team.objects 
         .filter(region__start_time__lte=timezone.now(), is_visible=True)
         .select_related('region')
         .order_by('-balance', 'submit_time', 'pk')
-        .prefetch_related('hints')
+        .prefetch_related('hints'))
     return render(request, 'checker/scoreboard.html', {'teams': teams})
 
 
