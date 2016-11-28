@@ -1,4 +1,3 @@
-import logging
 import functools
 import datetime
 import random
@@ -9,7 +8,7 @@ from flask import request, render_template, make_response, redirect
 
 from models import Photo
 from utils import encode_jwt, decode_jwt, check_jwt, extract_coordinates_from_jpeg, get_nearby_coordinates
-from constants import MAX_PHOTO_SIZE, USERNAME_RE, PHOTO_DIR
+from constants import MAX_PHOTO_SIZE, USERNAME_RE, PHOTO_DIR, WAIT_AFTER_UPLOAD_FOR_USER, WAIT_AFTER_UPLOAD_GLOBAL, SERVER_DEBUG
 
 
 def is_logged_in():
@@ -61,7 +60,7 @@ class Controllers:
             if not is_logged_in():
                 return redirect('/login')
             user_id = decode_jwt(request.cookies.get('jwt'))['user_id']
-            if self.user_service.get_user_by_user_id(user_id) is None:
+            if self.user_service.get_username_by_user_id(user_id) is None:
                 return self.log_out()
             return f(*args, **kwargs)
         return wrapper
@@ -106,8 +105,7 @@ class Controllers:
                 error_message='Имя должно состоять из четырёх или больше латинских символа, дефиса или подчёркивания')
         if self.user_service.username_exists(username):
             return self.render('register.html', error_message='Под этим именем уже зарегистрирован пользователь')
-        if not self.user_service.add_user(username, password):
-            return self.render('register.html', error_message='Ошибка при регистрации')
+        self.user_service.add_user(username, password)
 
         return self.log_in(username)
 
@@ -135,9 +133,10 @@ class Controllers:
     def nearby(self):
         ids = []
         ip = request.headers.get('X-Real-IP')
+        if SERVER_DEBUG and 'ip' in request.args:
+            ip = request.args.get('ip')
         if ip is not None:
             current_coordinates = self.geoip_resolver.resolve(ip)
-            logging.info('Current coordinated for {}: {}'.format(ip, current_coordinates))
             if current_coordinates is not None:
                 for nearby_coordinates in get_nearby_coordinates(*current_coordinates):
                     ids.extend(self.photo_cache.get_photos_by_coordinates(*nearby_coordinates))
@@ -150,6 +149,17 @@ class Controllers:
         if request.method == 'GET':
             return self.render('upload.html')
 
+        def is_uploading_too_frequent():
+            last_upload = self.photo_service.get_last_upload_time()
+            user_last_upload = self.photo_service.get_last_upload_time_by_user_id(current_user_id())
+            current = datetime.datetime.utcnow()
+            return (
+                last_upload is not None and last_upload + WAIT_AFTER_UPLOAD_GLOBAL > current or
+                user_last_upload is not None and user_last_upload + WAIT_AFTER_UPLOAD_FOR_USER > current)
+
+        if is_uploading_too_frequent():
+            self.render('upload.html', error_message='Фотографии загружаются слишком часто. Попробуйте ещё раз')
+
         file = request.files.get('file')
         if not file or not file.filename:
             return self.render('upload.html', error_message='Выберите файл')
@@ -159,7 +169,7 @@ class Controllers:
         if len(file_bytes) == MAX_PHOTO_SIZE + 1:
             return self.render(
                 'upload.html',
-                error_message='Файл слишком большой (>{} байтов)'.format(MAX_PHOTO_SIZE))
+                error_message='Файл слишком большой (>{} байт)'.format(MAX_PHOTO_SIZE))
 
         try:
             coords = extract_coordinates_from_jpeg(file_bytes)
@@ -168,14 +178,16 @@ class Controllers:
         if coords is None:
             return self.render('upload.html', error_message='В фото нет геометки')
 
+        if is_uploading_too_frequent():
+            self.render('upload.html', error_message='Фотографии загружаются слишком часто. Попробуйте ещё раз')
+
         user_id = current_user_id()
         upload_time = datetime.datetime.utcnow()
         filename = hashlib.sha256(str(random.random()).encode()).hexdigest()[:10] + '.jpg'
         with open(PHOTO_DIR + filename, 'wb') as f:
             f.write(file_bytes)
         photo = Photo(None, user_id, upload_time, *coords, filename, False)
-        if self.photo_service.add_photo(photo) is None:
-            return self.render('upload.html', error_message='Ошибка при загрузке')
+        self.photo_service.add_photo(photo)
         try:
             self.photo_cache.invalidate(photo)
         except Exception:

@@ -1,10 +1,3 @@
-import logging
-
-from flask import request
-
-from constants import SERVER_DEBUG
-
-
 class GeoIpResolver:
     def __init__(self, ip_to_city_path, city_to_coords_path):
         self._load_ips(ip_to_city_path)
@@ -28,8 +21,6 @@ class GeoIpResolver:
                     self._cities[int(city_id)] = int(float(lat)), int(float(long))
 
     def resolve(self, ip):
-        if SERVER_DEBUG and 'ip' in request.args:
-            ip = request.args['ip']
         a, b, c, d = list(map(int, ip.split('.')))
         ip_value = a * 256**3 + b * 256**2 + c * 256 + d
 
@@ -48,11 +39,9 @@ class GeoIpResolver:
             else:
                 lo = mid + 1
         ip_from, ip_to, city = self._ips[lo]
-        logging.info('{} {}'.format(lo, city))
         if not (ip_from <= ip_value <= ip_to):
             return None
         if city not in self._cities:
             return None
         lat, long = self._cities[city]
-        logging.info('{} {}'.format(lat, long))
         return 'N', lat, 'E', long

@@ -23,9 +23,9 @@ def check_jwt(token):
         payload = decode_jwt(token)
     except DecodeError:
         return False
-    if payload is None or not isinstance(payload, dict) or set(payload.keys()) != {'user_id', 'username', 'expires'}:
+    if not isinstance(payload, dict) or set(payload.keys()) != {'user_id', 'username', 'expires'}:
         return False
-    return datetime.datetime.utcfromtimestamp(payload['expires']) >= datetime.datetime.now()
+    return datetime.datetime.utcfromtimestamp(payload['expires']) >= datetime.datetime.utcnow()
 
 
 def get_nearby_coordinates(lat_ref, lat, long_ref, long):
