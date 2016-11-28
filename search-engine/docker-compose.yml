@@ -6,6 +6,17 @@ services:
     volumes:
       - /data/db:/data/db
 
+    mem_limit: 1250M
+
+  elasticsearch:
+    image: elasticsearch
+    restart: always
+    volumes:
+      - /usr/share/elasticsearch/data:/usr/share/elasticsearch/data
+
+    mem_limit: 1250M
+    memswap_limit: 1250M
+
   auth:
     build: ./search-engine
     command: gunicorn search_engine.auth:app
@@ -19,6 +30,7 @@ services:
     command: python3 -m search_engine.crawler
     depends_on:
       - mongo
+      - elasticsearch
     env_file: ./production.env
     links:
       - auth:auth.local
@@ -28,6 +40,7 @@ services:
     build: ./search-engine
     command: gunicorn search_engine.front:app
     depends_on:
+      - elasticsearch
       - mongo
     env_file: ./production.env
     links:
