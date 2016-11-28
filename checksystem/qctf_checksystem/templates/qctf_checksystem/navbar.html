@@ -48,6 +48,8 @@
             {% else %}
                 <ul class="nav navbar-nav navbar-right">
                   <li><a href="/scoreboard/" {% if request.get_full_path == "/scoreboard/" %} class="btn btn-default active" {% endif %}>Результаты</a></li>
+                  <li><a href="/profile/login/" {% if request.get_full_path == "/profile/login/" %} class="btn btn-default active" {% endif %}>Авторизация</a></li>
+                  <li><a href="/profile/register/" {% if request.get_full_path == "/profile/register/" %} class="btn btn-default active" {% endif %}>Регистрация</a></li>
                </ul>
             {% endif %}
           </div><!-- /.container-fluid -->
