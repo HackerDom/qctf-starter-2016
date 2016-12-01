@@ -1,6 +1,6 @@
 {
   "ListenOn": ":8080",
-  "AllowedIP": "80.93.177.242",
-  "BannedDomain": "algo.kolambda.com",
+  "AllowedIP": "78.155.217.71",
+  "BannedDomain": "destroy.grouping-s.contest.qctf.ru",
   "RequestUserAgent": "Translator/1.0"
 }
