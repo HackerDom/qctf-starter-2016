@@ -86,6 +86,7 @@ def main():
     if len(args) < 3:
         args.append(DEFAULT_OUTPUT_FILENAME)
     _, flag, output_filename = args
+    generate_file(flag, output_filename)
 
 
 if __name__ == '__main__':
