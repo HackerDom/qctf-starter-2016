@@ -1,6 +1,0 @@
-[mysqld]
-server-id = 2
-log-bin = /var/lib/mysql/mysql-bin
-replicate-do-db = checksystem
-relay-log = /var/lib/mysql/mysql-relay-bin
-relay-log-index = /var/lib/mysql/mysql-relay-bin.index
