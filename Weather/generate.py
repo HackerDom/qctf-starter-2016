@@ -3,7 +3,9 @@ import struct
 import sys
 
 
-FLAG = 'QCTF_NaNs_are_not_what_they_seem'
+DEFAULT_FLAG = 'QCTF_NaNs_are_not_what_they_seem'
+DEFAULT_OUTPUT_FILENAME = 'temperature_data'
+
 MIN_TEMPERATURE = -30
 MAX_TEMPERATURE = 30
 STATION_NAMES = [
@@ -15,8 +17,6 @@ STATION_NAMES = [
     'Mississippi Canyon 311A'
 ]
 USUAL_MEASUREMENTS_NUMBER = 100
-
-DEFAULT_OUTPUT_FILENAME = 'temperature_data'
 
 
 def generate_name():
@@ -73,12 +73,20 @@ def generate_all_measurements(usual_measurements_number, payload):
     return all
 
 
-def main():
-    measurements = generate_all_measurements(USUAL_MEASUREMENTS_NUMBER, FLAG)
-
-    filename = ' '.join(sys.argv[1:]) or DEFAULT_OUTPUT_FILENAME
-    with open(filename, 'wb') as output:
+def generate_file(flag, output_filename):
+    measurements = generate_all_measurements(USUAL_MEASUREMENTS_NUMBER, flag)
+    with open(output_filename, 'wb') as output:
         output.write(b''.join(measurements))
+
+
+def main():
+    args = sys.argv
+    if len(args) < 2:
+        args.append(DEFAULT_FLAG)
+    if len(args) < 3:
+        args.append(DEFAULT_OUTPUT_FILENAME)
+    _, flag, output_filename = args
+    generate_file(flag, output_filename)
 
 
 if __name__ == '__main__':
