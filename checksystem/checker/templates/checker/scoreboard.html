@@ -1,0 +1,35 @@
+{% extends "qctf_checksystem/base.html" %}
+
+{% block title %}Результаты{% endblock %}
+{% block meta %}
+<meta http-equiv="refresh" content="30">
+{% endblock %}
+
+{% block content %}
+  <div class="tim-title results-table">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Место</th>
+            <th>Команда</th>
+            <th>Баланс</th>
+            <th>Заданий</th>
+            <th>Покупок на бирже</th>
+            <th>Площадка</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for team in teams %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ team.get_name }}</td>
+              <td>{{ team.balance }}</td>
+              <td>{{ team.tasks_number }}</td>
+              <td>{{ team.hints.count }}</td>
+              <td>{{ team.region.name }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+{% endblock %}

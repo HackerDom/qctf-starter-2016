@@ -1,12 +1,13 @@
-kurlyandian/translator/translator
-.idea
-
-production.env
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+kurlyandian/translator/translator
+.idea
+production.env
+checksystem/qctf_checksystem/static
+*.sqlite3
 
 # C extensions
 *.so
@@ -28,7 +29,6 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-.idea
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

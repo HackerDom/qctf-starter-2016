@@ -1,0 +1,662 @@
+
+body {
+    color: #fff;
+    overflow-y: scroll;
+}
+
+.tim-container{
+    background: #0F0F0F;
+
+}
+.tim-row{
+    margin-bottom: 20px;
+}
+.tim-title{
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+.tim-typo{
+    padding-left: 25%;
+    margin-bottom: 40px;
+    position: relative;
+}
+.tim-typo .tim-note{
+    bottom: 10px;
+    color: #c0c1c2;
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 13px;
+    left: 0;
+    margin-left: 20px;
+    position: absolute;
+    width: 260px;
+}
+.tim-row{
+    margin-top: 50px;
+}
+.tim-row h3{
+    margin-top: 0;
+}
+.switch{
+    margin-right: 20px;
+}
+#navbar-full .navbar{
+    border-radius: 0 !important;
+    margin-bottom: 0;
+}
+.navigation-example{
+    margin-top: 0px;
+}
+.space{
+    height: 130px;
+    display: block;
+}
+.navigation-example .img-src{
+    background-attachment: scroll;
+}
+.main{
+    background-color: #1A1A1A;
+}
+.navigation-example{
+    height: 660px;
+    background-image: url('../img/bg.jpg');
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+}
+#notifications{
+    background-color: #FFFFFF;
+    display: block;
+    width: 100%;
+    position: relative;
+}
+.tim-note{
+    text-transform: capitalize;
+}
+
+.card {
+    cursor: pointer;
+    float: left;
+    height: 150px;
+    background-color: #1A1A1A;
+    padding: 10px 0 20px;
+    width: 100%;
+
+    transition: .1s;
+}
+
+.card:hover {
+  outline-style: solid;
+  outline-color: #777;
+  background-color: #2B2B2B;
+}
+
+.wide-card {
+  max-width: 100% !important;
+}
+
+.card h3{
+    margin-bottom: 20px;
+    color: #000;
+}
+.card button{
+    bottom: 10px;
+    left: 115px;
+    position: absolute;
+    color: #efefef;
+}
+.subscribe-form{
+    padding-top: 20px;
+    color: #000;
+}
+.subscribe-form .form-control{
+
+}
+
+.space-100{
+    height: 100px;
+    display: block;
+    width: 100%;
+}
+
+.be-social{
+    padding-bottom: 20px;
+/*     border-bottom: 1px solid #aaa; */
+    margin: 0 auto 40px;
+}
+.txt-white{
+    color: #FFFFFF;
+}
+.txt-gray{
+    color: #ddd !important;
+}
+.footer{
+    background-color: #DDDDDD;
+    background-image: url('../img/cover_4_blur.jpg');
+    background-attachment: fixed;
+    position: relative;
+}
+.heart{
+    color: #FF3B30;
+}
+.footer .overlayer{
+    background-color: rgba(27, 27, 27, 0.7);
+    position: relative;
+}
+.footer .credits {
+    margin-top: 25px;
+    padding: 20px 0 15px;
+    text-align: center;
+    color: #EEE;
+}
+.footer .credits a{
+    color: #FFFFFF;
+}
+.social-share{
+    float: left;
+    margin-right: 8px;
+}
+.social-share a{
+    color: #FFFFFF;
+}
+#subscribe_email{
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+}
+.pick-class-label{
+    border-radius: 8px;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    margin-right: 10px;
+    padding: 15px 23px;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+.parallax-pro{
+  width:100%;
+  display: block;
+  position: relative;
+  background-color: #000;
+}
+.parallax-pro > .img-src{
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+
+}
+.parallax-pro:after{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.3);
+    display: block;
+    content: "";
+    z-index: 0;
+}
+.parallax-pro .container{
+    padding-top: 20px;
+    z-index: 1;
+    position: relative;
+}
+.parallax-pro .hello a{
+    color: #fff;
+    text-decoration: none;
+}
+.parallax-pro .hello{
+    font-size: 48px;
+    font-weight: 300;
+    position: relative;
+/*     width: 430px; */
+    margin: 30px auto 50px;
+}
+.parallax-pro .label{
+    font-size: 18px;
+    position: absolute;
+    text-transform: uppercase;
+    background-color: #FF9500;
+    color: #FFFFFF;
+    width: 60px;
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 0;
+    line-height: 30px;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+.parallax-pro small{
+    padding-top: 15px;
+    font-size: 20px;
+    display: block;
+    color: #fff;
+}
+.parallax-pro ul{
+     width: 280px;
+    margin: 0 auto;
+}
+.parallax-pro li{
+    padding: 9px 0;
+    border-bottom: 1px solid #777;
+}
+.parallax-pro .actions{
+    margin-top: 40px;
+}
+.parallax-pro .actions{
+    margin-left: 10px;
+}
+.parallax-pro .motto{
+    color: #FFFFFF;
+    font-size: 64px;
+    font-weight: 600;
+    position: relative;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.27);
+    text-transform: uppercase;
+    z-index: 3;
+    margin: 0 auto;
+    top: 22%;
+    width: 285px;
+}
+.parallax-pro .motto .pro{
+    position: absolute;
+    font-size: 18px;
+    background-color: #FFFFFF;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 70px;
+    color: #333333;
+    text-shadow: 0 0 0;
+}
+.parallax-pro .motto .square{
+       padding: 7px 14px;
+    height: auto;
+    width: auto;
+    line-height: inherit;
+    border-radius: 6px;
+    bottom: 22px;
+    right: -25px;
+    color: #FFFFFF;
+    background-color: #ff9500;
+    font-weight: 300;
+    background-color: #ff9500;
+}
+.social-share{
+    margin-right: 0px;
+    margin-top: 10px;
+}
+.footer h4{
+    margin: 0px 0 20px;
+}
+.space-30{
+    height: 30px;
+    display: block;
+}
+.credits{
+    display: block;
+    margin: 15px 0;
+    color: #ddd;
+    opacity: .8;
+}
+.credits a{
+    color: #FFFFFF;
+}
+.sharing-title{
+    margin: 10px;
+    line-height: 40px;
+}
+.social-line{
+    padding: 5px 0;
+}
+.section-gray{
+    padding: 10px 0;
+    background-color: #EEE;
+}
+.section-gray h5{
+    margin: 0;
+    line-height: 40px;
+}
+
+/*   EXTRA SHIT  */
+/* @cristina: fisier singular, folosit pentru efectul de blur la parallax in header */
+
+.blurred-container{
+  position:relative;
+  width:100%;
+  height:70px;
+  top:0;
+  left:0;
+}
+.blurred-container > .img-src{
+    position:fixed;
+    width:100%;
+    height:540px;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position: center center;
+}
+.blur{
+  opacity:0;
+}
+
+.logo-container{
+    margin-top: 10px;
+}
+.logo-container .logo{
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid #333333;
+    height: 50px;
+    width: 50px;
+    float: left;
+    text-align: center;
+}
+.logo-container .logo img{
+    height: 100%;
+}
+.logo-container .brand{
+    font-size: 24px;
+    color: #FFFFFF;
+    float: left;
+    height: 50px;
+    line-height: 40px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+.blurred-container .motto{
+    color: #FFFFFF;
+    font-size: 76px;
+    font-weight: 600;
+
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.33);
+    text-transform: uppercase;
+    top: 100px;
+    z-index: 3;
+
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    width: 306px;
+    height: 0;
+}
+.blurred-container .motto .border{
+    float: left;
+    border: 3px solid #FFFFFF;
+    padding: 0px 30px;
+    text-align: center;
+}
+.blurred-container .motto .no-right-border{
+    border-right: none;
+}
+
+@media (max-width: 768px){
+    .blurred-container .motto{
+        font-size: 60px;
+        width: 268px;
+        top: 130px;
+    }
+}
+.main{
+    background-color: #0F0F0F;
+    position: relative;
+}
+
+#buttons .btn, #tooltips .btn{
+    margin-bottom: 15px;
+}
+.img-dog{
+    display: inline-block;
+    margin-bottom: 25px;
+}
+
+.card {
+  background-color: #1A1A1A;
+  border-radius: .25rem;
+  border: 1px solid rgba(0,0,0,.125);
+  padding: 1.25rem;
+}
+
+.card-text {
+  color: #efefef;
+}
+
+.card-title {
+  margin-top: 0;
+  color: #efefef;
+  max-height: 35px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tasks-list .row,
+.hints-list .row{
+    margin-bottom: 20px;
+}
+
+td {
+  color: #eee;
+}
+
+.task-modal {
+  color: #efefef;
+}
+
+.modal-content {
+    background-color: #1A1A1A;
+    padding: 10px 20px 20px;
+}
+
+.modal-body {
+    padding: 5px 15px;
+    font-size: 16px;
+}
+
+.modal-body p {
+    margin: 20px 0;
+}
+
+.modal-footer {
+    text-align: left;
+    padding: 5px 15px;
+}
+
+.task-block {
+    height: 170px;
+    max-height: 170px;
+}
+
+.task-block .card-text {
+    font-size: 15px;
+    line-height: 22px;
+    max-height: 90px;
+    height: 90px;
+    overflow-y: hidden;
+}
+
+.task-block .card-text p {
+    font-size: 15px;
+    line-height: 22px;
+}
+
+.task-solved-block {
+  color: #000;
+}
+
+.task-status {
+    padding-top: 10px;
+}
+
+.task-status.success {
+    color: #49d645;
+}
+
+.card-block.task-solved-block {
+  opacity: 0.3;
+}
+
+/*.stamp {
+  background-repeat: no-repeat;
+  width: 100%;
+  pointer-events: none;
+  position: absolute;
+}
+
+.card-block.task-solved-block .stamp {
+  height: 230px;
+  background-image: url('/static/img/stamp.png');
+  background-size: 320px 225px;
+}
+
+.task-solved-modal .stamp {
+  height: 310px;
+  background-image: url('/static/img/stamp.png');
+  background-size: 70%;
+  left: 85px;
+  top: -20px;
+
+}*/
+
+.close {
+    color: #fff;
+    text-shadow: 0 !important;
+    font-size: 26px;
+}
+
+.close:hover, .close:focus {
+    color: #6b6a6a;
+}
+
+.block img {
+  width: 100%;
+}
+
+.help-icon {
+  cursor: pointer;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  font-size:35px;
+  background: #1A1A1A;
+  padding: 6px;
+
+  -webkit-border-radius: 1100%;
+  -moz-border-radius: 100%;
+  -o-border-radius: 100%;
+  border-radius: 100%;
+
+  border: 2px solid #E5E5E5;
+  color: #E5E5E5;
+
+  text-align: center;
+  display: fixed;
+  vertical-align: middle;
+
+  width: 60px;
+  height: 60px;
+  -moz-transition: .3s;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+}
+
+.help-icon:hover {
+  background-color: #E5E5E5;
+  color: #1A1A1A;
+}
+
+.clar-block {
+
+}
+
+.clar-block {
+    color: white;
+}
+
+.clar-block .time {
+    font-size: 13px;
+}
+
+.clar-block .clar-content {
+    padding: 20px 0;
+}
+
+.read-clar {
+  opacity: 0.5;
+}
+
+.scoreboard-solved {
+  font-weight: bold;
+  text-align: center;
+}
+
+.admin-scoreboard th {
+    text-align: left
+}
+
+.admin-scoreboard td {
+  text-align: center;
+}
+
+.navbar .btn.active {
+    pointer-events: none;
+    cursor: default;
+    background-color: #ccc;
+    color: black !important;
+    font-weight: bold;
+    font-size: 16px;
+    border: 0;
+
+    padding: 25px 15px !important;
+    margin: 0 !important;
+    border-radius: 0;
+}
+
+.results-table td {
+    text-align: left;
+}
+
+@media (max-width: 767px) {
+    .navbar .nav-data + li {
+        margin-top: 40px;
+    }
+
+    .navbar li a {
+        text-align: left;
+    }
+}
+
+.modal-open {
+    overflow-y: scroll;
+}
+
+.modal {
+    overflow-y: auto;
+}
+
+@media (min-width: 900px) {
+    .modal-dialog.modal-dialog-wide {
+        min-width: 800px;
+    }
+}
+
+input[type="text"].loading {
+    background-size: 25px 25px;
+    background: #ffffff url("/static/img/loading.gif") no-repeat right center;
+}

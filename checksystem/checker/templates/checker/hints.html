@@ -1,0 +1,100 @@
+{% extends "qctf_checksystem/base.html" %}
+
+{% block title %}Биржа{% endblock %}
+
+{% block content %}
+<div class="tim-title hints-list">
+  {% if not user.team.contest_started %}
+    <h2>У нас пока ничего для вас нет</h2>
+    <p>
+      Приходите позже
+    </p>
+  {% else %}
+    {% for hint in hints %}
+      {% if forloop.first %}
+        <div class="row">
+      {% endif %}
+      {% if not hint.task.parent or user.team in hint.task.parent.teams.all %}
+
+       <div class="col-xs-4">
+          <div class="card card-block task-block {% if user.team in hint.task.teams.all %}task-solved-block{% endif %}" id="card-{{ hint.pk }}" data-toggle="modal" data-target="#modal-{{ hint.pk }}">
+            <div class="card-title">
+              <h4 class="card-title">
+                <span class="pull-right">&ndash;{{ hint.price }} <i class="fa fa-bitcoin"></i></span>
+                <span>{{ hint.name }}</span>
+              </h4>
+            </div>
+            <div class="card-text">
+
+              {{ hint.description|safe|truncatechars_html:185 }}
+            </div>
+          </div>
+
+
+
+          <div class="modal fade {% if user.team in hint.owners.all %}hint-bought-modal{% endif %}" id="modal-{{ hint.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ hint.pk }}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content task-modal">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="modalLabel-{{ hint.pk }}">{{ hint.name }}</h4>
+                </div>
+                <div class="modal-body">
+                  <div id="hint-{{ hint.pk }}-content">
+                    {% if user.team in hint.owners.all %}
+                      <p>
+                          {{ hint.text|safe }}
+                      </p>
+                    {% else %}
+                      <p>
+                        Купите лот за {{ hint.price }}<i class="fa fa-bitcoin"></i>, чтобы увидеть его содержимое
+                      </p>
+                    {% endif %}
+                    {% if user.team in hint.task.teams.all %}
+                      <p class="text-success">
+                        Вы выполнили задание, к которому относится этот лот.
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  {% if user.team not in hint.owners.all and user.team not in hint.task.teams.all and not team.contest_finished and team.contest_started%}
+                      <button type="button" hint-id="{{ hint.pk }}" class="btn btn-success buy-hint-button">Купить</button>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      {% if forloop.counter|divisibleby:3 %}
+        </div><div class="row">
+      {% endif %}
+      {% if forloop.last %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(function() {
+      $('.buy-hint-button').click(function() {
+        var hint_id = $(this).attr('hint-id');
+        $.ajax({
+          type: "POST",
+          url: '/hints/' + hint_id + '/buy/',
+          success: function(data) {
+            $('#balance').text(data.balance);
+            $('#hint-' + hint_id + '-content').html(data.hint);
+          },
+          dataType: 'json'
+        });
+      });
+    });
+  </script>
+{% endblock %}

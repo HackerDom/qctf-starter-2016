@@ -1,0 +1,134 @@
+{% extends "qctf_checksystem/base.html" %}
+
+{% block title %}Задания{% endblock %}
+
+{% block content %}
+  <div class="tim-title tasks-list">
+    {% if not user.team.contest_started %}
+      <h2>У нас пока ничего для вас нет</h2>
+      <p>
+        Приходите позже
+      </p>
+    {% else %}
+      {% for task in tasks %}
+          {% if forloop.first %}
+            <div class="row">
+          {% endif %}
+        {% if not task.parent or user.team in task.parent.teams.all %}
+          <div class="col-xs-4">
+            <div class="card card-block task-block {% if task.is_solved_by_current_team %}task-solved-block{% endif %}" id="card-{{ task.pk }}" data-toggle="modal" data-target="#modal-{{ task.pk }}">
+              <div class="card-title">
+                <h4 class="card-title">
+                  <span class="pull-right">{{ task.price }} <i class="fa fa-bitcoin"></i></span>
+                  <span>{{ task.title }}</span>
+                </h4>
+              </div>
+              <div class="card-text dotdotdot">{{ task.description|safe|truncatechars_html:185 }}</div>
+            </div>
+            <div class="modal fade {% if user.team in task.teams.all %}task-solved-modal{% endif %}" id="modal-{{ task.pk }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel-{{ task.pk }}" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content task-modal">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabel-{{ task.pk }}">{{ task.title }}</h4>
+                    <span>
+                        Сотрудников, выполнивших задание: {{ task.get_visible_teams_solved_count }}
+                    </span>
+                  </div>
+                  <div class="modal-body">
+                    <div class="stamp"></div>
+                    {{ task.description|safe }}
+                  </div>
+                  <div class="modal-footer">
+                    <div class="input-group">
+                      <input task-id="{{ task.pk }}" type="text" class="form-control flag-input flag-input-{{ task.pk }}" placeholder="Ответ">
+                      <span class="input-group-btn">
+                        <button type="button" task-id="{{ task.pk }}" class="btn btn-success submit-flag-button">Отправить</button>
+                      </span>
+                    </div>
+                    <div id="task-{{ task.pk }}-status" class="task-status {% if task.is_solved_by_current_team %}success{% endif %}">
+                        {% if task.is_solved_by_current_team %}
+                            Вы выполнили это задание
+                        {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+          {% if forloop.counter|divisibleby:3 %}
+            </div><div class="row">
+          {% endif %}
+          {% if forloop.last %}
+            </div>
+          {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    var need_refresh = false;
+    $(function() {
+      $('.modal').on('hidden.bs.modal', function () {
+        if (need_refresh) {
+          location.reload();
+        }
+      });
+
+      function send_flag(task_id) {
+        var $flag_input = $('.flag-input-' + task_id);
+        $flag_input.addClass('loading');
+        var flag = $flag_input.val();
+        var $status = $("#task-" + task_id + "-status");
+        if ($status[0].timeout) {
+            clearTimeout($status[0]);
+        }
+        $status.stop();
+        $.ajax({
+          type: "POST",
+          url: '/check_flag/' + task_id + '/',
+          data: {flag: flag},
+          success: function(data) {
+            if ('need_refresh' in data) {
+              need_refresh = data.need_refresh;
+            }
+            $status.hide();
+            $status.removeClass('success').text(data.message).css('opacity', 1);
+            $status.show();
+            $('#balance').text(data.balance);
+            $('#flags-number').text(data.flags);
+            $status[0].timeout = setTimeout(function(){
+              $status.fadeOut(4000);
+            }, 6000);
+            if (data.is_correct) {
+              $("#card-" + task_id).addClass("task-solved-block");
+              $("#modal-" + task_id).addClass("task-solved-modal");
+              $status.addClass('success');
+            }
+          },
+          dataType: 'json'
+        }).always(function() {
+            $flag_input.removeClass('loading');
+        });
+      }
+
+      $('.submit-flag-button').click(function() {
+        var task_id = $(this).attr('task-id');
+        send_flag(task_id);
+      });
+
+      $(".flag-input").keyup(function(event) {
+        if (event.keyCode === 13) {
+          var task_id = $(this).attr('task-id');
+          send_flag(task_id);
+        }
+      });
+    });
+  </script>
+{% endblock %}

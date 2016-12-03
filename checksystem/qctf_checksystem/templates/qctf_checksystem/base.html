@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	{% block meta %}{% endblock %}
+
+    <title>{% block title %}QCTF Starter 2016{% endblock %}</title>
+    <!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter41162049 = new Ya.Metrika({ id:41162049, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, ut:"noindex" }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/41162049?ut=noindex" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ionicons.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/gsdk.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    {% block styles %}{% endblock %}
+  </head>
+
+  <body>
+    {% include "qctf_checksystem/navbar.html" %}
+    <div class="main">
+      <div class="container tim-container">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+
+    {% if user.is_authenticated and user.team.contest_started %}
+        <i class="ion-help help-icon" data-pack="default" data-tags="question, ?" data-toggle="modal" data-target="#legend-modal"></i>
+
+        <div id="legend-modal" class="modal fade" role="dialog">
+          <div class="modal-dialog modal-dialog-wide">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Письмо от 27 ноября 2016 г. № 612/КФ</h4>
+              </div>
+              <div class="modal-body">
+                <p>
+                    Четырнадцать месяцев назад корпорация Black Circle Labs построила три суперкомпьютера,
+                    предназначенных для распознавания, воспроизведения и&nbsp;программирования человеческих эмоций:
+                    Leviathan, Transfixion и&nbsp;BuriedThought. Сразу несколько преступных группировок изъявили
+                    желание получить компьютеры в&nbsp;свои руки&nbsp;— неудивительно, ведь с&nbsp;помощью любой из&nbsp;этих
+                    машин можно заставить кого угодно подписать нужную бумагу&nbsp;или даже убить человека.
+                </p>
+                <p>
+                    Нашему ведомству поставлена задача защитить компьютеры от&nbsp;угрожающих безопасности
+                    человечества формаций и&nbsp;группировок, наиболее крупными и&nbsp;опасными из&nbsp;которых
+                    являются группировка S, представленная высококлассными компьютерными специалистами
+                    формация Координаторов, религиозная формация&nbsp;П и&nbsp;террористическая группировка буо-сахитов.
+                    Сейчас преступники сильны как никогда, поэтому нам нужна ваша помощь.
+                    Вам предстоит выполнить несколько наших заданий и помешать преступникам
+                    получить доступ к&nbsp;суперкомпьютерам.
+                </p>
+                <p>
+                    Да,&nbsp;ещё кое-что: у&nbsp;нас налажен контакт с&nbsp;биржей. Некоторые документы,
+                    представленные там, могут помочь вам в&nbsp;работе, однако помните, что эти
+                    услуги вам придётся оплатить из своего кармана.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.custom.min.js' %}"></script>
+    {% block globals %} {% endblock %}
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/gsdk-checkbox.js' %}"></script>
+    <script src="{% static 'js/gsdk-radio.js' %}"></script>
+    <script src="{% static 'js/gsdk-bootstrapswitch.js' %}"></script>
+    <script src="{% static 'js/get-shit-done.js' %}"></script>
+    <script src="{% static 'js/jquery.dotdotdot.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script>
+      {% if user.is_authenticated %}
+        $( document ).ready(function() {
+          var data = {{ user.team.replace_info|safe }};
+          for (var i = 0; i < data.length; i++) {
+            var dataItem = data[i];
+            $(".main").html($(".main").html().replace(new RegExp(dataItem[0], 'g'),dataItem[1]));
+          }
+        });
+      {% endif %}
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    </script>
+    {% if request.first_visit %}
+      <script>
+        $( document ).ready(function() {
+          $('#legend-modal').modal('show');
+        });
+      </script>
+    {% endif %}
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

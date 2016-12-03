@@ -1,0 +1,63 @@
+{% block navbar %}
+<div id="navbar-full">
+    <div class="container">
+        <nav class="navbar navbar-ct-blue navbar-fixed-top" role="navigation">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="{% url 'checker:index' %}">
+                     <div class="logo-container">
+                        <div class="logo">
+                            <img src="/static/img/logo.gif">
+                        </div>
+                        <div class="brand visible-lg">
+                            {% if user.is_authenticated %}{{ user.team.get_name|truncatechars_html:25 }}{% else %}QCTF{% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            {% if user.is_authenticated %}
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav navbar-right">
+                      {% if user.is_authenticated and user.team.contest_started%}
+                        <li class="nav-data">
+                          <ul>
+                            <li><span id="flags-number">{{ user.team.tasks.count }}</span> <i class="fa fa-flag"></i></li>
+                            <li><span id="balance">{{ user.team.balance }}</span> <i class="fa fa-bitcoin"></i></li>
+                          </ul>
+                        </li>
+                      {% endif %}
+                      <li><a href="/" {% if request.get_full_path == "/" %} class="btn btn-default active" {% endif %}>Задания</a></li>
+                      {% if user.team.contest_started %}
+                        <li><a href="/market/" {% if request.get_full_path == "/market/" %} class="btn btn-default active" {% endif %}>Биржа</a></li>
+                        <li><a href="/scoreboard/" {% if request.get_full_path == "/scoreboard/" %} class="btn btn-default active" {% endif %}>Результаты</a></li>
+                        {% if user.team.get_total_clars_count > 0 %}
+                          <li><a href="/clarifications/" {% if request.get_full_path == "/clarifications/" %} class="btn btn-default active" {% endif %}>Сообщения <span class="badge">{% if user.team.get_clars_count > 0 %}{{ user.team.get_clars_count }}{% endif %}</span></a></li>
+                        {% endif %}
+                      {% endif %}
+                      <li><a href="/profile/logout/" {% if request.get_full_path == "/profile/logout/" %} class="btn btn-default active" {% endif %}>Выйти</a></li>
+                   </ul>
+                </div><!-- /.navbar-collapse -->
+            {% else %}
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/scoreboard/" {% if request.get_full_path == "/scoreboard/" %} class="btn btn-default active" {% endif %}>Результаты</a></li>
+                  <li><a href="/profile/login/" {% if request.get_full_path == "/profile/login/" %} class="btn btn-default active" {% endif %}>Авторизация</a></li>
+                  <li><a href="/profile/register/" {% if request.get_full_path == "/profile/register/" %} class="btn btn-default active" {% endif %}>Регистрация</a></li>
+               </ul>
+            {% endif %}
+          </div><!-- /.container-fluid -->
+        </nav>
+    </div><!--  end container-->
+    <div class='blurred-container'>
+    </div>
+
+
+</div>
+{% endblock %}
