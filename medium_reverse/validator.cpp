@@ -29,16 +29,29 @@ unsigned int checksum ( char *addr, int count )
 }
 
 
-bool valid_string( char *p )
+bool valid_string_part1( char *p )
 {
     while( *p != '\0' )
     {
-        if( *p > 'Z' || *p < 'A' )
+        if( *p >= 'A' + 20 || *p < 'A' )
             return false;
         p++;
     }
     return true;
 }
+
+
+bool valid_string_part2( char *p )
+{
+    while( *p != '\0' )
+    {
+        if( *p > 'Z' || *p < ('Z' - 19) )
+            return false;
+        p++;
+    }
+    return true;
+}
+
 
 bool valid_hex( char *p )
 {
@@ -71,7 +84,7 @@ int main()
     }
     
     printf("Enter you key: ");
-    scanf("%4s-%15s-%15s-%4s", parts[0], parts[1], parts[2], parts[3]);
+    scanf("%4s_%15s_%15s_%4s", parts[0], parts[1], parts[2], parts[3]);
     
     // check part 0
     if ( strcmp( parts[0], "QCTF" ) != 0 )
@@ -79,7 +92,7 @@ int main()
     
 
     // check part 1
-    if ( !valid_string( parts[1] ) )
+    if ( !valid_string_part1( parts[1] ) )
         goto ERROR;
 
     t = 0;
@@ -94,7 +107,7 @@ int main()
 
 
     // check part 2    
-    if ( !valid_string( parts[2] ) )
+    if ( !valid_string_part2( parts[2] ) )
         goto ERROR;
 
     t = 0;
