@@ -12,6 +12,6 @@
 
 Авторские права на все задания, изображения, описания и проверяющую систему принадлежат [их авторам](AUTHORS.md).
 
-Разборы заданий доступны на [вики](https://github.com/HackerDom/qctf-starter-2016/wiki).
+Разборы заданий доступны на [вики](https://github.com/HackerDom/qctf-starter-2016/wiki/QCTF-Starter-2016).
 
 По всем вопросам пишите на qctf@hackerdom.ru.
