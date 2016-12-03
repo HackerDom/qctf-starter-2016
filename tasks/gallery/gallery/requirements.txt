@@ -1,0 +1,6 @@
+Flask==0.11.1
+gunicorn==19.6.0
+piexif==1.0.8
+PyJWT==1.4.2
+python3-memcached==1.51
+mysqlclient==1.3.9

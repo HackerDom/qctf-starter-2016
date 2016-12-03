@@ -1,0 +1,18 @@
+badip:
+  build: ../../badip/www
+  ports:
+    - "9081:9081"
+  restart: always
+
+grouping-s:
+  build: ../../grouping-s/www/translator
+  ports:
+    - "127.0.0.1:8001:8080"
+  restart: always
+
+dna:
+  build: ../../dna/www/
+  command: gunicorn dna_checker_app:app
+  ports:
+    - "127.0.0.1:8002:80"
+  restart: always

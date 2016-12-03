@@ -1,0 +1,6 @@
+{
+  "ListenOn": ":8080",
+  "AllowedIP": "78.155.217.71",
+  "BannedDomain": "destroy.grouping-s.contest.qctf.ru",
+  "RequestUserAgent": "Translator/1.0"
+}
