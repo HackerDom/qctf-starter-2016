@@ -1,0 +1,11 @@
+[Unit]
+After=network.target
+
+[Service]
+User=root
+ExecStart=/root/webcam/start_feeding_video.sh
+WorkingDirectory=/root/webcam/
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

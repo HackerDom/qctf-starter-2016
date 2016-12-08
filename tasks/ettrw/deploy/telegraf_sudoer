@@ -1,0 +1,2 @@
+telegraf ALL=(root) NOPASSWD: /usr/local/bin/telegraf-lxc-stats
+telegraf ALL=(root) NOPASSWD: /sbin/iptables
